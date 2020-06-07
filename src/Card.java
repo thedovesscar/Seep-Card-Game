@@ -93,7 +93,7 @@ public class Card {
 
 
 	/**
-	 * @return the cardPoints
+	 * @return the card's points for a game of Seep
 	 */
 	public int getCardPoints() {
 		return cardPoints;
@@ -117,9 +117,7 @@ public class Card {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Card Name: "+ cardName + " Card Count: "+  cardCounter + " Card Number as String: "
-				+ cardNumberString + " Card Number as Int: "+ cardValue
-				+ " Card Points in Seep: "+ cardPoints + " Card Suit: "+ cardSuit;
+		return "Card Name: "+ cardName + "--- Card Points in Seep: "+ cardPoints;
 	}
 
 }
