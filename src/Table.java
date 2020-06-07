@@ -16,5 +16,8 @@ public class Table {
 		table.remove(card);
 	}
 	
+	public Card getCard(int position) {
+		return table.get(position);
+	}
 	
 }

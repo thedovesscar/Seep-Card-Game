@@ -6,7 +6,7 @@ public class Seep {
 	private int currentPlayer;
 	private int[] playerList;
 	public Hand[] hand;
-	private Table table;
+	public Table table;
 	private Stash[] stash;
 	private Deck deck;
 	
@@ -57,6 +57,7 @@ public class Seep {
 				for(int j = 0; j < 12; j++) {
 					hand[i].addCard(deck.dealCard());
 				} // end of for.inner loop
+				hand[i].sortByValue();
 			} // end of for.outer loop
 		} //end of While
 		
