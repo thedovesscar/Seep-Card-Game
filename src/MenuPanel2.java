@@ -19,12 +19,10 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static String player;
-	
 	private static boolean gameIsOn;
  
-	private static JTextField rightCountTextField, wrongCountTextField;
-	private JLabel   rightClickLabel, wrongClickLabel;
+	private static JTextField baseTextField;
+	private JLabel   baseLabel;
 	private JButton  startButton, quitButton, stopGameButton, hiScoreButton;
 	private JPanel   buttonPanel, scorePanel;
 	
@@ -94,24 +92,15 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		scorePanel.add(Box.createRigidArea(new Dimension(150,5)));
 		buttonPanel.add(scorePanel);
 	
-		rightClickLabel = new JLabel("Right: ");
-		scorePanel.add(rightClickLabel);
+		baseLabel = new JLabel("Right: ");
+		scorePanel.add(baseLabel);
 	
-		rightCountTextField = new JTextField(3);
-		rightCountTextField.setMaximumSize(new Dimension(50,40)); //EDIT
-		rightCountTextField.setEditable(false);
-		rightCountTextField.setFocusable(false);
-		scorePanel.add(rightCountTextField);
+		baseTextField = new JTextField(3);
+		baseTextField.setMaximumSize(new Dimension(50,40)); //EDIT
+		baseTextField.setEditable(false);
+		baseTextField.setFocusable(false);
+		scorePanel.add(baseTextField);
 	
-		wrongClickLabel = new JLabel(" Wrong: ");
-		scorePanel.add(wrongClickLabel);
-	
-	
-		wrongCountTextField = new JTextField(3);
-		wrongCountTextField.setMaximumSize(new Dimension(50,40)); //EDIT
-		wrongCountTextField.setEditable(false);
-		wrongCountTextField.setFocusable(false);
-		scorePanel.add(wrongCountTextField);
 	
 	 }
 
@@ -128,7 +117,7 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 	}
 		
 	public void setPlayer() {
-		player = JOptionPane.showInputDialog("Please Enter Your Name: ");
+//		player = JOptionPane.showInputDialog("Please Enter Your Name: ");
 		
 	}
 	

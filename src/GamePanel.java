@@ -26,6 +26,10 @@ public class GamePanel extends JPanel {
 //		mpp = new MenuPanel();
 //		gpp = new GameplayPanel();
 //		bpp = new ButtonPanel();
+
+		mpp = new MenuPanel2();
+		gpp = new GameplayPanel2();
+		bpp = new ButtonPanel2();
 		
 		setBackground(new Color(50,50,200));
 		mpp.setBackground(new Color(60,60,200));

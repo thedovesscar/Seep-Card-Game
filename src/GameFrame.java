@@ -21,7 +21,7 @@ public class GameFrame extends JFrame{
 		super("Let's Play Some Bhabi!"); 
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1005, 705);						 //gives a little padding
+		setSize(1005, 805);						 //gives a little padding
 		
 		gamePanel = new GamePanel();
 		add(gamePanel);
