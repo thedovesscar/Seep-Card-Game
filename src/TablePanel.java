@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -28,7 +29,8 @@ public class TablePanel extends JPanel{
 		
 		gameSeep = Seep.getInstance();
 		
-		card1Label = new JLabel(gameSeep.table.getCard(0).getCardName());
+		//TODO this is what final might look like once each picture has an associated picture.
+		card1Label = new JLabel(new ImageIcon(gameSeep.table.getCard(0).getCardImg()));
 		card2Label = new JLabel(gameSeep.table.getCard(1).getCardName());
 		card3Label = new JLabel(gameSeep.table.getCard(2).getCardName());
 		card4Label = new JLabel(gameSeep.table.getCard(3).getCardName());

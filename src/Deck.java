@@ -45,8 +45,6 @@ public class Deck {
 			}
 		}
 		
-		cardsUsed = 0;
-		
 	}
 	
 	

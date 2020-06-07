@@ -36,6 +36,8 @@ public class Card {
 	 * This card's counter number (in the order it was instantiated)
 	 */
 	private final int cardCounter;
+	
+	public String cardImg;
 	private static int counter = 0;
 
 	/**
@@ -48,6 +50,7 @@ public class Card {
 		cardNumberString = "Joker";
 		cardPoints = 0;
 		cardValue = 0;
+		cardImg = "";
 	}
 	/**
 	 * Construct a Card Object
@@ -113,11 +116,19 @@ public class Card {
 	public int getCardCounter() {
 		return cardCounter;
 	}
+	
+	public String getCardImg() {
+		return cardImg;
+	}
+	
+	public void setCardImg(String cardImg) {
+		this.cardImg = cardImg;
+	}
 
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Card Name: "+ cardName + "--- Card Points in Seep: "+ cardPoints;
+		return ""+ cardName + " --- Card Points in Seep: "+ cardPoints;
 	}
-
+	
 }
