@@ -5,9 +5,8 @@ public class BhabiGameAPP {
 		// TODO Auto-generated method stub
 		new GameFrame();
 		
-		
-		// TODO needs to be transferred into its appropriate place
-		Deck.getInstance();
+		Seep game= Seep.getInstance();
+		game.display();
 	}
 
 }

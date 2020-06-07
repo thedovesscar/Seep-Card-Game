@@ -79,7 +79,7 @@ public class Hand {
                     + position);
         return hand.get(position);
     }
-
+    
     /**
      * Sorts the cards in the hand so that cards of the same suit are
      * grouped together, and within a suit the cards are sorted by value.
