@@ -20,6 +20,7 @@ public class TablePanel extends JPanel{
 	private JLabel card2Label;
 	private JLabel card3Label;
 	private JLabel card4Label;
+	private Dimension cardDimension = new Dimension(10, 50);
 	public Seep gameSeep;
 	
 	public TablePanel() {
@@ -30,10 +31,15 @@ public class TablePanel extends JPanel{
 		gameSeep = Seep.getInstance();
 		
 		//TODO this is what final might look like once each picture has an associated picture.
+//		card1Label = new JLabel(new ImageIcon(gameSeep.table.getCard(0).getCardImg()));
 		card1Label = new JLabel(new ImageIcon(gameSeep.table.getCard(0).getCardImg()));
-		card2Label = new JLabel(gameSeep.table.getCard(1).getCardName());
-		card3Label = new JLabel(gameSeep.table.getCard(2).getCardName());
-		card4Label = new JLabel(gameSeep.table.getCard(3).getCardName());
+		card2Label = new JLabel(new ImageIcon(gameSeep.table.getCard(1).getCardImg()));
+		card3Label = new JLabel(new ImageIcon(gameSeep.table.getCard(2).getCardImg()));
+		card4Label = new JLabel(new ImageIcon(gameSeep.table.getCard(3).getCardImg()));
+		card1Label.setSize(cardDimension);
+		card2Label.setSize(cardDimension);
+		card3Label.setSize(cardDimension);
+		card4Label.setSize(cardDimension);
 		this.add(card1Label);
 		this.add(card2Label);
 		this.add(card3Label);

@@ -12,10 +12,17 @@ public class Card {
 	 */
 	private final String cardName;
 	
+	
+	public final static int SPADE = 0;
+	public final static int CLOVER = 1;
+	public final static int HEART = 2;
+	public final static int DIAMOND = 3;
+	
+	private final int cardSuit;
 	/**
 	 * This card's Suit
 	 */
-	private final String cardSuit;
+	private final String cardSuitString;
 	
 	/**
 	 * This card's Number presented as a String
@@ -46,7 +53,8 @@ public class Card {
 	Card () {
 		cardCounter = 0;
 		cardName = "Common Joker";
-		cardSuit = "Suitless";
+		cardSuit = 4;
+		cardSuitString = "Suitless";
 		cardNumberString = "Joker";
 		cardPoints = 0;
 		cardValue = 0;
@@ -61,11 +69,12 @@ public class Card {
 	 * @param pointsGiven "1"
 	 * @param valueGiven "1"
 	 */
-	Card(String nameGiven, String suitGiven, String numberStringGiven, int pointsGiven, int valueGiven)   {
+	Card(String nameGiven, int suitGiven, String suitStringGiven, String numberStringGiven, int pointsGiven, int valueGiven)   {
 		counter++; 
 		cardCounter = counter;
 		cardName = nameGiven;
 		cardSuit = suitGiven;
+		cardSuitString = suitStringGiven;
 		cardNumberString = numberStringGiven;
 		cardPoints = pointsGiven;
 		cardValue = valueGiven;
@@ -78,12 +87,15 @@ public class Card {
 		return cardName;
 	}
 
-
-	/**
-	 * @return the cardSuit
-	 */
-	public String getCardSuit() {
+	public int getCardSuit() {
 		return cardSuit;
+	}
+	
+	/**
+	 * @return the cardSuit as a String
+	 */
+	public String getCardSuitString() {
+		return cardSuitString;
 	}
 
 

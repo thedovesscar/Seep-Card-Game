@@ -28,22 +28,35 @@ public class Deck {
 		
 		while (cardsCreated < 52) {
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Spades", "Spade", i + "", i, i);
+				deck[cardsCreated] = new Card(i +" of Spades", 0, "Spade", i + "", i, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Hearts", "Heart", i + "", 0, i);
+				deck[cardsCreated] = new Card(i +" of Hearts", 1,  "Heart", i + "", 0, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Clovers", "Clover", i + "", 0, i);
+				deck[cardsCreated] = new Card(i +" of Clovers", 2, "Clover", i + "", 0, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Diamonds", "Diamond", i + "", 0, i);
+				deck[cardsCreated] = new Card(i +" of Diamonds", 3, "Diamond", i + "", 0, i);
 				cardsCreated++;
 			}
 		}
+		deck[0].setCardImg("img/AS.png");
+		deck[1].setCardImg("img/2S.png");
+		deck[2].setCardImg("img/3S.png");
+		deck[3].setCardImg("img/4S.png");
+		deck[4].setCardImg("img/5S.png");
+		deck[5].setCardImg("img/6S.png");
+		deck[6].setCardImg("img/7S.png");
+		deck[7].setCardImg("img/8S.png");
+		deck[8].setCardImg("img/9S.png");
+		deck[9].setCardImg("img/10S.png");
+		deck[10].setCardImg("img/JS.png");
+		deck[11].setCardImg("img/QS.png");
+		deck[12].setCardImg("img/KS.png");
 		
 	}
 	

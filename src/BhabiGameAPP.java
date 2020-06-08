@@ -5,8 +5,7 @@ public class BhabiGameAPP {
 		// TODO Auto-generated method stub
 		new GameFrame();
 		
-		Seep game= Seep.getInstance();
-		game.display();
+		Seep.getInstance().display();
 	}
 
 }
