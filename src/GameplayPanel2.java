@@ -31,9 +31,9 @@ public class GameplayPanel2 extends JPanel {
 		mp = new MiddlePanel();
 		p3p = new Player3Panel();
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		add(p1p);
-		add(mp);
 		add(p3p);
+		add(mp);
+		add(p1p);
 		
 		
 	} //end CONSTRUCTOR

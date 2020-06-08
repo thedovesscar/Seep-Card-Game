@@ -28,35 +28,74 @@ public class Deck {
 		
 		while (cardsCreated < 52) {
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Spades", 0, "Spade", i + "", i, i);
+				deck[cardsCreated] = new Card(i +" of Spades", Card.SPADE, "Spade", i + "", i, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Hearts", 1,  "Heart", i + "", 0, i);
+				deck[cardsCreated] = new Card(i +" of Clovers", Card.CLOVER,  "Clover", i + "", 0, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Clovers", 2, "Clover", i + "", 0, i);
+				deck[cardsCreated] = new Card(i +" of Hearts", Card.HEART, "Heart", i + "", 0, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Diamonds", 3, "Diamond", i + "", 0, i);
+				deck[cardsCreated] = new Card(i +" of Diamonds", Card.DIAMOND, "Diamond", i + "", 0, i);
 				cardsCreated++;
 			}
 		}
-		deck[0].setCardImg("img/AS.png");
-		deck[1].setCardImg("img/2S.png");
-		deck[2].setCardImg("img/3S.png");
-		deck[3].setCardImg("img/4S.png");
-		deck[4].setCardImg("img/5S.png");
-		deck[5].setCardImg("img/6S.png");
-		deck[6].setCardImg("img/7S.png");
-		deck[7].setCardImg("img/8S.png");
-		deck[8].setCardImg("img/9S.png");
-		deck[9].setCardImg("img/10S.png");
-		deck[10].setCardImg("img/JS.png");
-		deck[11].setCardImg("img/QS.png");
-		deck[12].setCardImg("img/KS.png");
+		deck[0].setCardImg("images/AS.png");
+		deck[1].setCardImg("images/2S.png");
+		deck[2].setCardImg("images/3S.png");
+		deck[3].setCardImg("images/4S.png");
+		deck[4].setCardImg("images/5S.png");
+		deck[5].setCardImg("images/6S.png");
+		deck[6].setCardImg("images/7S.png");
+		deck[7].setCardImg("images/8S.png");
+		deck[8].setCardImg("images/9S.png");
+		deck[9].setCardImg("images/10S.png");
+		deck[10].setCardImg("images/JS.png");
+		deck[11].setCardImg("images/QS.png");
+		deck[12].setCardImg("images/KS.png");
+		deck[13].setCardImg("images/AC.png");
+		deck[14].setCardImg("images/2C.png");
+		deck[15].setCardImg("images/3C.png");
+		deck[16].setCardImg("images/4C.png");
+		deck[17].setCardImg("images/5C.png");
+		deck[18].setCardImg("images/6C.png");
+		deck[19].setCardImg("images/7C.png");
+		deck[20].setCardImg("images/8C.png");
+		deck[21].setCardImg("images/9C.png");
+		deck[22].setCardImg("images/10C.png");
+		deck[23].setCardImg("images/JC.png");
+		deck[24].setCardImg("images/QC.png");
+		deck[25].setCardImg("images/KC.png");
+		deck[26].setCardImg("images/AH.png");
+		deck[27].setCardImg("images/2H.png");
+		deck[28].setCardImg("images/3H.png");
+		deck[29].setCardImg("images/4H.png");
+		deck[30].setCardImg("images/5H.png");
+		deck[31].setCardImg("images/6H.png");
+		deck[32].setCardImg("images/7H.png");
+		deck[33].setCardImg("images/8H.png");
+		deck[34].setCardImg("images/9H.png");
+		deck[35].setCardImg("images/10H.png");
+		deck[36].setCardImg("images/JH.png");
+		deck[37].setCardImg("images/QH.png");
+		deck[38].setCardImg("images/KH.png");
+		deck[39].setCardImg("images/AD.png");
+		deck[40].setCardImg("images/2D.png");
+		deck[41].setCardImg("images/3D.png");
+		deck[42].setCardImg("images/4D.png");
+		deck[43].setCardImg("images/5D.png");
+		deck[44].setCardImg("images/6D.png");
+		deck[45].setCardImg("images/7D.png");
+		deck[46].setCardImg("images/8D.png");
+		deck[47].setCardImg("images/9D.png");
+		deck[48].setCardImg("images/10D.png");
+		deck[49].setCardImg("images/JD.png");
+		deck[50].setCardImg("images/QD.png");
+		deck[51].setCardImg("images/KD.png");
 		
 	}
 	
