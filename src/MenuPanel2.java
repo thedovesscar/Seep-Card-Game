@@ -38,7 +38,7 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		setGameOn(false); //game hasn't started yet
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		this.setPreferredSize(new Dimension(1000,100)); //EDIT added to fit Frame
+		this.setPreferredSize(new Dimension(1200,100)); //EDIT added to fit Frame
 		this.add(buttonPanel);
 		this.add(scorePanel);
 	}

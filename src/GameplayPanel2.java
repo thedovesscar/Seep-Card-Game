@@ -21,7 +21,7 @@ public class GameplayPanel2 extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 
-	Dimension dim = new Dimension(1000,500);
+	Dimension dim = new Dimension(1200,500);
 	
 	
 	GameplayPanel2() {

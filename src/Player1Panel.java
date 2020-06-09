@@ -36,7 +36,7 @@ public class Player1Panel extends JPanel{
 	public Player1Panel() {
 
 		// TODO Auto-generated constructor stub
-		setPreferredSize(new Dimension(200, 500));
+		setPreferredSize(new Dimension(265, 500));
 		this.setBackground(new Color(144,144,144));
 
 		gameSeep = Seep.getInstance();

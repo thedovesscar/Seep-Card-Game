@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ButtonPanel2 extends JPanel implements ActionListener {
@@ -16,34 +17,32 @@ public class ButtonPanel2 extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	JLabel card1Label;
+	JLabel card2Label;
+	JLabel card3Label;
+	JLabel card4Label;
+	JLabel card5Label;
+	JLabel card6Label;
+	JLabel card7Label;
+	JLabel card8Label;
+	JLabel card9Label;
+	JLabel card10Label;
+	JLabel card11Label;
+	JLabel card12Label;
+	
+	Seep gameSeep;
+	
+	
+	
+	///////////////////////
 	static String wrongFile;
 	static String rightFile;
 	
 	AudioInputStream audioInputStream;
 	
-	private JButton 
-				oneButton,
-				twoButton,
-				threeButton,
-				fourButton,
-				fiveButton,
-				sixButton,
-				sevenButton,
-				eightButton,
-				nineButton;
 	Toolkit tk;
 	
 	Dimension butDim = new Dimension(100,100);
-	
-	ImageIcon num1 = new ImageIcon("images//num1.gif");
-	ImageIcon num2 = new ImageIcon("images//num2.gif");
-	ImageIcon num3 = new ImageIcon("images//num3.gif");
-	ImageIcon num4 = new ImageIcon("images//num4.gif");
-	ImageIcon num5 = new ImageIcon("images//num5.gif");
-	ImageIcon num6 = new ImageIcon("images//num6.gif");
-	ImageIcon num7 = new ImageIcon("images//num7.gif");
-	ImageIcon num8 = new ImageIcon("images//num8.gif");
-	ImageIcon num9 = new ImageIcon("images//num9.gif");
 	
 	AudioClips wrongGuess;
 	AudioClips rightGuess;  //these are the soundclips for answers
@@ -53,66 +52,36 @@ public class ButtonPanel2 extends JPanel implements ActionListener {
 	 */
 	ButtonPanel2() {
 		 
-		setPreferredSize(new Dimension(1000,200)); //EDIT added to fit Frame
+		setPreferredSize(new Dimension(1200,200)); //EDIT added to fit Frame
+		gameSeep = Seep.getInstance();
+		card1Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(0).getCardImg()));
+		card2Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(1).getCardImg()));
+		card3Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(2).getCardImg()));
+		card4Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(3).getCardImg()));
+		card5Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(4).getCardImg()));
+		card6Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(5).getCardImg()));
+		card7Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(6).getCardImg()));
+		card8Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(7).getCardImg()));
+		card9Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(8).getCardImg()));
+		card10Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(9).getCardImg()));
+		card11Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(10).getCardImg()));
+		card12Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(11).getCardImg()));
+	
+		this.add(card1Label);
+		this.add(card2Label);
+		this.add(card3Label);
+		this.add(card4Label);
+		this.add(card5Label);
+		this.add(card6Label);
+		this.add(card7Label);
+		this.add(card8Label);
+		this.add(card9Label);
+		this.add(card10Label);
+		this.add(card11Label);
+		this.add(card12Label);
 		
-		JPanel NumButtonPanel = new JPanel();
-		NumButtonPanel.setBackground(Color.white);
+	
 		
-		/**
-		 * EDITED== 
-		 * 
-		 * 		-changed to "new java.awt.Dimension(50, 50)" to custom Dimension obj "butDim"
-		 * 
-		 *      -changed "new ImageIcon("images/gif#.gif"" to custom ImgIcon obj
-		 * 
-		 */
-		
-		oneButton = new JButton(num1);
-		NumButtonPanel.add(oneButton);
-		oneButton.addActionListener(this);
-		oneButton.setPreferredSize(butDim);
-
-		twoButton = new JButton(num2);
-		NumButtonPanel.add(twoButton);
-		twoButton.addActionListener(this);
-		twoButton.setPreferredSize(butDim);
-		
-		threeButton = new JButton(num3);
-		NumButtonPanel.add(threeButton);
-		threeButton.addActionListener(this);
-		threeButton.setPreferredSize(butDim);
-		
-		fourButton = new JButton(num4);
-		NumButtonPanel.add(fourButton);
-		fourButton.addActionListener(this);
-		fourButton.setPreferredSize(butDim);
-		
-		fiveButton = new JButton(num5);
-		NumButtonPanel.add(fiveButton);
-		fiveButton.addActionListener(this);
-		fiveButton.setPreferredSize(butDim);
-		
-		sixButton = new JButton(num6);
-		NumButtonPanel.add(sixButton);
-		sixButton.addActionListener(this);
-		sixButton.setPreferredSize(butDim);
-		
-		sevenButton = new JButton(num7);
-		NumButtonPanel.add(sevenButton);
-		sevenButton.addActionListener(this);
-		sevenButton.setPreferredSize(butDim);
-		
-		eightButton = new JButton(num8);
-		NumButtonPanel.add(eightButton);
-		eightButton.addActionListener(this);
-		eightButton.setPreferredSize(butDim);
-		
-		nineButton = new JButton(num9);
-		NumButtonPanel.add(nineButton);
-		nineButton.addActionListener(this);
-		nineButton.setPreferredSize(butDim);
-		
-		add(NumButtonPanel);
 		
 	} //END of ButtonPanel Constructor
 	
@@ -120,114 +89,8 @@ public class ButtonPanel2 extends JPanel implements ActionListener {
 	 * actionPerformend Event handling 
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
-		
-		if (MenuPanel.isGameOn()) { //this makes sure buttons only work when Game is active
-			if (source == oneButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 1) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-			} else if (source == twoButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 2) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-
-				GameplayPanel.setupNewQuestion();
-
-			} else if (source == threeButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 3) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-			} else if (source == fourButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 4) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-
-			} else if (source == fiveButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 5) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-
-			} else if (source == sixButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 6) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-
-			} else if (source == sevenButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 7) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-				
-
-			} else if (source == eightButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 8) {
-					MenuPanel.incrementRightCount();
-					right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-
-			} else if (source == nineButton) {
-
-				if (RandomNumber.getNumberOfObjects() == 9) {
-					MenuPanel.incrementRightCount(); right();
-				} else {
-					MenuPanel.incrementWrongCount();
-					wrong();
-				}
-				GameplayPanel.setupNewQuestion();
-
-			} //end of button9
-			
-		} // end of if ( isGameOn() ){}
-		
-
-    } //end of ActionListener
+	public void actionPerformed(ActionEvent e) {}
+	
 	
 	private void wrong() {
 		try  //this try catch block deals with getting looping sound playing

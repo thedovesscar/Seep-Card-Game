@@ -29,7 +29,7 @@ public class Player3Panel extends JPanel{
 	public Seep gameSeep;
 	
 	public Player3Panel() {
-		setPreferredSize(new Dimension(200, 500));
+		setPreferredSize(new Dimension(265, 500));
 		this.setBackground(new Color(91,99,111));
 
 		gameSeep = Seep.getInstance();
