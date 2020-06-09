@@ -32,15 +32,15 @@ public class Deck {
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Clovers", Card.CLOVER,  "Clover", i + "", 0, i);
+				deck[cardsCreated] = new Card(Card.CLOVER, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Hearts", Card.HEART, "Heart", i + "", 0, i);
+				deck[cardsCreated] = new Card(Card.HEART, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Diamonds", Card.DIAMOND, "Diamond", i + "", 0, i);
+				deck[cardsCreated] = new Card(Card.DIAMOND, i);
 				cardsCreated++;
 			}
 		}

@@ -66,7 +66,7 @@ public class Card {
 	}
 
 	/**
-	 * updated Constructor that only uses 2 Param, both as Int Value
+	 * updated from old Constructor so that now only uses 2 Param, both as Int Value
 	 * @param number
 	 * @param suit
 	 */
@@ -81,25 +81,7 @@ public class Card {
 		cardCounter = counter;
 	}
 	
-	/**
-	 * Construct a Card Object
-	 * 
-	 * @param nameGiven "Ace of Spades"
-	 * @param suitGiven	"Spades"
-	 * @param numberStringGiven "Ace"
-	 * @param pointsGiven "1"
-	 * @param numberGiven "1"
-	 */
-	Card(String nameGiven, int suitGiven, String suitStringGiven, String numberStringGiven, int pointsGiven, int numberGiven)   {
-		counter++; 
-		cardCounter = counter;
-		cardName = nameGiven;
-		cardSuit = suitGiven;
-		cardSuitString = suitStringGiven;
-		cardNumberString = numberStringGiven;
-		cardPoints = pointsGiven;
-		cardNumber= numberGiven;
-	}
+
 	private String getSuitString(int suit) {
 		switch (suit) {
 			case 0: 
