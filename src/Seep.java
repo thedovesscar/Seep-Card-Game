@@ -57,6 +57,7 @@ public class Seep {
 				for(int j = 0; j < 12; j++) {
 					hand[i].addCard(deck.dealCard());
 				} // end of for.inner loop
+				hand[i].sortBySuit();
 				hand[i].sortByValue();
 			} // end of for.outer loop
 		} //end of While

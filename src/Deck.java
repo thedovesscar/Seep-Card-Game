@@ -28,7 +28,7 @@ public class Deck {
 		
 		while (cardsCreated < 52) {
 			for (int i = 1; i <= 13; i++) {
-				deck[cardsCreated] = new Card(i +" of Spades", Card.SPADE, "Spade", i + "", i, i);
+				deck[cardsCreated] = new Card(Card.SPADE, i);
 				cardsCreated++;
 			}
 			for (int i = 1; i <= 13; i++) {

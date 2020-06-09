@@ -42,9 +42,9 @@ public class Stash {
 		int cardAmount = getCardCount();
 		
 		if (cardAmount > 26) {
-			points += 6;
+			points += 4;
 		} else if (cardAmount == 26) {
-			points += 3;
+			points += 2;
 		}
 			
 		return points;

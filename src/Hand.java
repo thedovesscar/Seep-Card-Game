@@ -85,24 +85,24 @@ public class Hand {
      * grouped together, and within a suit the cards are sorted by value.
      * Note that aces are considered to have the lowest value, 1.
      */
-//    public void sortBySuit() {
-//        ArrayList<Card> newHand = new ArrayList<Card>();
-//        while (hand.size() > 0) {
-//            int pos = 0;  // Position of minimal card.
-//            Card c = hand.get(0);  // Minimal card.
-//            for (int i = 1; i < hand.size(); i++) {
-//                Card c1 = hand.get(i);
-//                if ( c1.getCardSuit() < c.getCardSuit() ||
-//                        (c1.getCardSuit() == c.getCardSuit() && c1.getCardValue() < c.getCardValue()) ) {
-//                    pos = i;
-//                    c = c1;
-//                }
-//            }
-//            hand.remove(pos);
-//            newHand.add(c);
-//        }
-//        hand = newHand;
-//    }
+    public void sortBySuit() {
+        ArrayList<Card> newHand = new ArrayList<Card>();
+        while (hand.size() > 0) {
+            int pos = 0;  // Position of minimal card.
+            Card c = hand.get(0);  // Minimal card.
+            for (int i = 1; i < hand.size(); i++) {
+                Card c1 = hand.get(i);
+                if ( c1.getCardSuit() < c.getCardSuit() ||
+                        (c1.getCardSuit() == c.getCardSuit() && c1.getCardNumber() < c.getCardNumber()) ) {
+                    pos = i;
+                    c = c1;
+                }
+            }
+            hand.remove(pos);
+            newHand.add(c);
+        }
+        hand = newHand;
+    }
 
     /**
      * Sorts the cards in the hand so that cards of the same value are
@@ -116,8 +116,8 @@ public class Hand {
             Card c = hand.get(0);  // Minimal card.
             for (int i = 1; i < hand.size(); i++) {
                 Card c1 = hand.get(i);
-                if ( c1.getCardValue() < c.getCardValue() ||
-                        (c1.getCardValue() == c.getCardValue() /* && c1.getCardSuit() < c.getCardSuit() */)) {
+                if ( c1.getCardNumber() < c.getCardNumber() ||
+                        (c1.getCardNumber() == c.getCardNumber() /* && c1.getCardSuit() < c.getCardSuit() */)) {
                     pos = i;
                     c = c1;
                 }

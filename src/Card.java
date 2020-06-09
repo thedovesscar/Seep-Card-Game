@@ -18,9 +18,18 @@ public class Card {
 	public final static int HEART = 2;
 	public final static int DIAMOND = 3;
 	
-	private final int cardSuit;
 	/**
-	 * This card's Suit
+	 * This card's suit as a Int
+	 */
+	private final int cardSuit;
+
+	/**
+	 * This card's Number presented as a Int
+	 */
+	private final int cardNumber;
+	
+	/**
+	 * This card's Suit as string
 	 */
 	private final String cardSuitString;
 	
@@ -33,11 +42,6 @@ public class Card {
 	 * This card's points in a Game (mainly Seep)
 	 */
 	private final int cardPoints;
-	
-	/**
-	 * This card's Number presented as a Int
-	 */
-	private final int cardValue;
 	
 	/**
 	 * This card's counter number (in the order it was instantiated)
@@ -57,9 +61,26 @@ public class Card {
 		cardSuitString = "Suitless";
 		cardNumberString = "Joker";
 		cardPoints = 0;
-		cardValue = 0;
+		cardNumber = 0;
 		cardImg = "";
 	}
+
+	/**
+	 * updated Constructor that only uses 2 Param, both as Int Value
+	 * @param number
+	 * @param suit
+	 */
+	Card(int suit, int number) {
+		cardSuit = suit;
+		cardSuitString = getSuitString(suit);
+		cardNumber = number;
+		cardNumberString = getNumberString(number);
+		cardPoints = getCardPoints(suit, number);
+		cardName = cardNumberString + " of " + cardSuitString + "s";
+		counter++;
+		cardCounter = counter;
+	}
+	
 	/**
 	 * Construct a Card Object
 	 * 
@@ -67,9 +88,9 @@ public class Card {
 	 * @param suitGiven	"Spades"
 	 * @param numberStringGiven "Ace"
 	 * @param pointsGiven "1"
-	 * @param valueGiven "1"
+	 * @param numberGiven "1"
 	 */
-	Card(String nameGiven, int suitGiven, String suitStringGiven, String numberStringGiven, int pointsGiven, int valueGiven)   {
+	Card(String nameGiven, int suitGiven, String suitStringGiven, String numberStringGiven, int pointsGiven, int numberGiven)   {
 		counter++; 
 		cardCounter = counter;
 		cardName = nameGiven;
@@ -77,8 +98,74 @@ public class Card {
 		cardSuitString = suitStringGiven;
 		cardNumberString = numberStringGiven;
 		cardPoints = pointsGiven;
-		cardValue = valueGiven;
+		cardNumber= numberGiven;
 	}
+	private String getSuitString(int suit) {
+		switch (suit) {
+			case 0: 
+				return "Spade";
+			case 1: 
+				return "Clover";
+			case 2: 
+				return "Heart"; 
+			case 3: 
+				return "Diamond";	
+			default: 
+				return "Not a Valid Card Suit";
+		}
+					
+		
+	}
+
+
+
+		private String getNumberString(int number) {
+
+			switch (number) {
+				case 1:
+					return "Ace";
+				case 2: 
+					return "Two";
+				case 3: 
+					return "Three";
+				case 4: 
+					return "Four";
+				case 5: 
+					return "Five";
+				case 6: 
+					return "Six"; 
+				case 7: 
+					return "Seven";
+				case 8: 
+					return "Eight";
+				case 9: 
+					return "Nine";
+				case 10:
+					return "Ten";
+				case 11: 
+					return "Jack";
+				case 12: 
+					return "Queen";
+				case 13: 
+					return "King";
+				default: 
+					return "Not a valid card Number"; 
+			} 
+		}
+
+		private int getCardPoints ( int suit, int number){
+		if (suit == Card.SPADE) {
+		return number;
+		} // end of if SPADE
+		 else if (number == 1) {
+		return 1;
+		} 
+		else if (suit == Card.DIAMOND && number == 10) {
+		return 2;
+		}
+		else return 0;
+
+		}
 
 	/**
 	 * @return the cardName
@@ -117,8 +204,8 @@ public class Card {
 	/**
 	 * @return the cardValue
 	 */
-	public int getCardValue() {
-		return cardValue;
+	public int getCardNumber() {
+		return cardNumber;
 	}
 
 
