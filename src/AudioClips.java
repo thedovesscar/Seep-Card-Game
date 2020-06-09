@@ -62,7 +62,7 @@
 		{ 
 			try
 			{ 
-				filePath = "sounds//Celesta.wav"; 
+				filePath = "sounds//C/elesta.wav"; 
 				AudioClips audioPlayer = 
 								new AudioClips(filePath); 
 				

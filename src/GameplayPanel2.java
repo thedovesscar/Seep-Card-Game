@@ -79,6 +79,10 @@ public class GameplayPanel2 extends JPanel {
 		this.repaint();
 	}
 	
+	public void redrawTable() {
+		mp.redrawTable();
+	}
+	
 	
 	public void clearHands() {
 		p1p.clearHand();

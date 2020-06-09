@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -16,10 +17,7 @@ public class TablePanel extends JPanel{
 	
 	
 	// TODO For Now! table cannot be statically configured! can hold 0 - 52 cards!
-	private JLabel card1Label;
-	private JLabel card2Label;
-	private JLabel card3Label;
-	private JLabel card4Label;
+	private ArrayList<JLabel> cardLabel;
 	public Seep gameSeep;
 	
 	public TablePanel() {
@@ -28,20 +26,17 @@ public class TablePanel extends JPanel{
 		this.setBackground(new Color(111,11,111));
 		
 		gameSeep = Seep.getInstance();
-		
+		cardLabel = new ArrayList<JLabel>();
 
 	}
 	
 	public void dealCards() {
-
-		card1Label = new JLabel(new ImageIcon(gameSeep.table.getCard(0).getCardImg()));
-		card2Label = new JLabel(new ImageIcon(gameSeep.table.getCard(1).getCardImg()));
-		card3Label = new JLabel(new ImageIcon(gameSeep.table.getCard(2).getCardImg()));
-		card4Label = new JLabel(new ImageIcon(gameSeep.table.getCard(3).getCardImg()));
-		this.add(card1Label);
-		this.add(card2Label);
-		this.add(card3Label);
-		this.add(card4Label);
+		cardLabel.clear();
+		
+		for (int i = 0; i < gameSeep.table.getCardCount(); i++) {
+			cardLabel.add(new JLabel(new ImageIcon(gameSeep.table.getCard(i).getCardImg())));
+			add(cardLabel.get(i));
+		}
 		this.revalidate();
 		this.repaint();
 	}

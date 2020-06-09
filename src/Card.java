@@ -209,7 +209,7 @@ public class Card {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return ""+ cardName + " --- Card Points in Seep: "+ cardPoints;
+		return cardName;
 	}
 	
 }

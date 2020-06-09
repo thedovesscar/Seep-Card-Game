@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.ImageIcon;
@@ -18,6 +19,7 @@ public class UserPanel extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private ArrayList<JLabel> cardLabel;	
 	JLabel card1Label;
 	JLabel card2Label;
 	JLabel card3Label;
@@ -59,62 +61,73 @@ public class UserPanel extends JPanel implements ActionListener {
 		setPreferredSize(new Dimension(1200,200)); //EDIT added to fit Frame
 		gameSeep = Seep.getInstance();
 		
+		cardLabel = new ArrayList<JLabel>();
+		
 		
 	} //END of ButtonPanel Constructor
 	public void dealCards(boolean asking) {
-
-		if (asking == true) {
-			card1Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(0).getCardImg()));
-			card2Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(1).getCardImg()));
-			card3Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(2).getCardImg()));
-			card4Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(3).getCardImg()));
-			
-			this.add(card1Label);
-			this.add(card2Label);
-			this.add(card3Label);
-			this.add(card4Label);
-			
-			this.revalidate();
-			this.repaint();
-		}
+		this.removeAll();
+		cardLabel.clear();
 		
-		else {card1Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(0).getCardImg()));
-		card2Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(1).getCardImg()));
-		card3Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(2).getCardImg()));
-		card4Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(3).getCardImg()));
-		card5Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(4).getCardImg()));
-		card6Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(5).getCardImg()));
-		card7Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(6).getCardImg()));
-		card8Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(7).getCardImg()));
-		card9Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(8).getCardImg()));
-		card10Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(9).getCardImg()));
-		card11Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(10).getCardImg()));
-		card12Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(11).getCardImg()));
-		
-		int pointsInHand = 0;
 		for (int i = 0; i < gameSeep.hand[0].getCardCount(); i++) {
-			pointsInHand += gameSeep.hand[0].getCard(i).getCardPoints();
+			cardLabel.add(new JLabel(new ImageIcon(gameSeep.hand[0].getCard(i).getCardImg())));
+			add(cardLabel.get(i));
 		}
-		
-		pointsInHandJLabel = new JLabel("Points in Hand: " + pointsInHand);
-		
-		this.add(card1Label);
-		this.add(card2Label);
-		this.add(card3Label);
-		this.add(card4Label);
-		this.add(card5Label);
-		this.add(card6Label);
-		this.add(card7Label);
-		this.add(card8Label);
-		this.add(card9Label);
-		this.add(card10Label);
-		this.add(card11Label);
-		this.add(card12Label);
-		this.add(pointsInHandJLabel);
 		this.revalidate();
 		this.repaint();
-	}
-	
+//		
+//		if (asking == true) {
+//			card1Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(0).getCardImg()));
+//			card2Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(1).getCardImg()));
+//			card3Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(2).getCardImg()));
+//			card4Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(3).getCardImg()));
+//			
+//			this.add(card1Label);
+//			this.add(card2Label);
+//			this.add(card3Label);
+//			this.add(card4Label);
+//			
+//			this.revalidate();
+//			this.repaint();
+//		}
+//		
+//		else {card1Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(0).getCardImg()));
+//		card2Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(1).getCardImg()));
+//		card3Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(2).getCardImg()));
+//		card4Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(3).getCardImg()));
+//		card5Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(4).getCardImg()));
+//		card6Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(5).getCardImg()));
+//		card7Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(6).getCardImg()));
+//		card8Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(7).getCardImg()));
+//		card9Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(8).getCardImg()));
+//		card10Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(9).getCardImg()));
+//		card11Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(10).getCardImg()));
+//		card12Label = new JLabel(new ImageIcon(gameSeep.hand[0].getCard(11).getCardImg()));
+//		
+//		int pointsInHand = 0;
+//		for (int i = 0; i < gameSeep.hand[0].getCardCount(); i++) {
+//			pointsInHand += gameSeep.hand[0].getCard(i).getCardPoints();
+//		}
+//		
+//		pointsInHandJLabel = new JLabel("Points in Hand: " + pointsInHand);
+//		
+//		this.add(card1Label);
+//		this.add(card2Label);
+//		this.add(card3Label);
+//		this.add(card4Label);
+//		this.add(card5Label);
+//		this.add(card6Label);
+//		this.add(card7Label);
+//		this.add(card8Label);
+//		this.add(card9Label);
+//		this.add(card10Label);
+//		this.add(card11Label);
+//		this.add(card12Label);
+//		this.add(pointsInHandJLabel);
+//		this.revalidate();
+//		this.repaint();
+//	}
+//	
 	}
 	
 	public void dealCards() {

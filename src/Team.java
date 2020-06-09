@@ -50,6 +50,9 @@ public class Team {
 		stash.clear();
 	}
 
+	public void addCard(Card card) {
+		stash.addCard(card);
+	}
 	
 
 }

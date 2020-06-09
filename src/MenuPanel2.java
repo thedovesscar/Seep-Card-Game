@@ -144,6 +144,7 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		    if (!isGameOn()) {
 		    	
 		    	gameSeep.dealCards();
+		    	gameSeep.firstTurn();
 				setGameOn(true);
 			} //end if for when game is On or Not.
 		    
@@ -154,6 +155,12 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		if (source == stopGameButton) {
 		    
 			if (isGameOn()) {
+				//TODO
+				//TODO
+				//TODO
+//				Seep.endGame();
+				//TODO 
+				//TODO
 				gpp.clearHands();
 				uPanel.clearHand();
 				setGameOn(false);

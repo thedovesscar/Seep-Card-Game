@@ -28,6 +28,14 @@ public class MiddlePanel extends JPanel{
 		this.revalidate();
 		this.repaint();
 	}
+	
+	public void redrawTable() {
+		tp.removeAll();
+		tp.dealCards();
+		tp.revalidate();
+		tp.repaint();
+	}
+	
 	public void dealCards(boolean asking) {
 		if (asking)  p2p.dealCards(true);
 		else  p2p.dealCards(false);
