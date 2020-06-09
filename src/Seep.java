@@ -7,10 +7,6 @@ public class Seep {
 	private int[] playerList;
 	public Hand[] hand;
 	public Table table;
-	private Stash[] stash;
-	int team1toteam2;
-	int team1Baaji = 0;
-	int team2Baaji = 0;
 	private Deck deck;
 	
 	GameplayPanel2 gameviewPanel;
@@ -31,10 +27,6 @@ public class Seep {
 			hand[i] =  new Hand();
 		}
 		
-		stash = new Stash[2];
-		for (int i = 0; i < 2; i++) {
-			stash[i] =  new Stash();
-		}
 		
 		table = new Table();
 	} //end of Seep Constructor
