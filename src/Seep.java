@@ -3,6 +3,7 @@ public class Seep {
 
 	private static volatile Seep instance = null;
 	
+	public static int startingPlayer;
 	public static int currentPlayer;
 	private int[] playerList;
 	public Hand[] hand;
@@ -18,7 +19,8 @@ public class Seep {
 					+ " to create SingletonExample instance");
 		}
 		
-		currentPlayer = 0;
+		startingPlayer = 0;
+		currentPlayer = startingPlayer;
 		deck = Deck.getInstance();
 		playerList = new int[4];
 		
@@ -60,18 +62,18 @@ public class Seep {
 		gameviewPanel.setupTable();
 		
 		for (int i = 0; i < 4; i++) {
-			hand[currentPlayer].addCard(deck.dealCard());
+			hand[startingPlayer].addCard(deck.dealCard());
 		} 
 
 		
 //		else userPanel.dealCards(false);
 		
-		boolean hasFaceCard = hand[currentPlayer].hasFaceCard();
+		boolean hasFaceCard = hand[startingPlayer].hasFaceCard();
 		
 		if (hasFaceCard) {
 			for (int i = 0; i < 12; i++) {
 				for (int j = 0; j< 4; j++) {
-					if (currentPlayer == j) continue;
+					if (startingPlayer == j) continue;
 					else {
 						hand[j].addCard(deck.dealCard());
 					}
@@ -84,11 +86,11 @@ public class Seep {
 			
 			//checking to see if user has 4 before dealing to user
 			userPanel = UserPanel.getInstance();
-			if (currentPlayer == 0) {
+			if (startingPlayer == 0) {
 			userPanel.dealCards(true);
 			} else userPanel.dealCards(false);
 			for (int i = 1; i < 4; i++) {
-				if(currentPlayer == i) {
+				if(startingPlayer == i) {
 					gameviewPanel.deal(i, true);
 				} else gameviewPanel.deal(i, false);
 			}
