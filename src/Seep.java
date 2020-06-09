@@ -8,7 +8,13 @@ public class Seep {
 	public Hand[] hand;
 	public Table table;
 	private Stash[] stash;
+	int team1toteam2;
+	int team1Baaji = 0;
+	int team2Baaji = 0;
 	private Deck deck;
+	
+	GameplayPanel2 gameviewPanel;
+	UserPanel userPanel;
 	
 	private Seep() {
 		if (instance != null) {
@@ -31,8 +37,6 @@ public class Seep {
 		}
 		
 		table = new Table();
-		
-		dealCards();
 	} //end of Seep Constructor
 	
 	public static Seep getInstance() {
@@ -45,23 +49,60 @@ public class Seep {
 		}
 		return instance;
 	}
+	
 	public void dealCards() {
+		for(Hand h : hand) {
+			if (h.getCardCount() > 0) {
+				h.clear();
+			}
+		}
+		
+		table.clear();
 		deck.shuffle();
 		
 		for (int i = 0; i < 4; i++) {
 			table.addCard(deck.dealCard());
 		} //end of Table dealing loop
+
+		gameviewPanel = GameplayPanel2.getInstance();
+		gameviewPanel.setupTable();
 		
-		while (deck.cardsLeft() > 0) {
-			for(int i = 0; i < 4; i++) {
-				for(int j = 0; j < 12; j++) {
-					hand[i].addCard(deck.dealCard());
-				} // end of for.inner loop
-				hand[i].sortBySuit();
-				hand[i].sortByValue();
-			} // end of for.outer loop
-		} //end of While
+		for (int i = 0; i < 4; i++) {
+			hand[currentPlayer].addCard(deck.dealCard());
+		} 
+
 		
+//		else userPanel.dealCards(false);
+		
+		boolean hasFaceCard = hand[currentPlayer].hasFaceCard();
+		
+		if (hasFaceCard) {
+			for (int i = 0; i < 12; i++) {
+				for (int j = 0; j< 4; j++) {
+					if (currentPlayer == j) continue;
+					else {
+						hand[j].addCard(deck.dealCard());
+					}
+				}
+			}
+			for (Hand h: hand) {
+				h.sortBySuit();
+				h.sortByValue();
+			}
+			
+			//checking to see if user has 4 before dealing to user
+			userPanel = UserPanel.getInstance();
+			if (currentPlayer == 0) {
+			userPanel.dealCards(true);
+			} else userPanel.dealCards(false);
+			for (int i = 1; i < 4; i++) {
+				if(currentPlayer == i) {
+					gameviewPanel.deal(i, true);
+				} else gameviewPanel.deal(i, false);
+			}
+		} // end if Player has Valid faceCard
+		
+		else System.out.println("There were no Face Cards");
 	} //end of dealCards()
 	
 	public void display() {

@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 
 public class GameplayPanel2 extends JPanel {
 
+	private static volatile GameplayPanel2 instance = null;
+	
 	Player1Panel p1p;
 	MiddlePanel mp;
 	Player3Panel p3p;
@@ -24,7 +26,7 @@ public class GameplayPanel2 extends JPanel {
 	Dimension dim = new Dimension(1200,500);
 	
 	
-	GameplayPanel2() {
+	private GameplayPanel2() {
 		
 		setPreferredSize(dim);
 		p1p = new Player1Panel();
@@ -37,6 +39,52 @@ public class GameplayPanel2 extends JPanel {
 		
 		
 	} //end CONSTRUCTOR
+	
+	public static GameplayPanel2 getInstance() {
+		if (instance == null) {
+			synchronized (GameplayPanel2.class) {
+				if (instance == null) {
+					instance = new GameplayPanel2();
+				}
+			}
+		}
+		return instance;
+	}
+	
+	public void deal (int player, boolean asking) {
+		switch (player) {
+		
+		case 1: 
+			if (asking) p1p.dealCards(true);
+			else p1p.dealCards(false);
+			break;
+		case 2: 
+			if (asking) mp.dealCards(true);
+			else mp.dealCards(false);
+			break;
+		case 3: 
+			if (asking) p3p.dealCards(true);
+			else p3p.dealCards(false);
+			break;
+		default:
+			System.out.println("Hmm I could'nt tell who was going first to start the game. I'm from GamePlayPanel2");
+			break;
+		
+		}
+	}
+	
+	public void setupTable() {
+		mp.setupTable();
+		this.revalidate();
+		this.repaint();
+	}
+	
+	
+	public void clearHands() {
+		p1p.clearHand();
+		p3p.clearHand();
+		mp.clearHands();
+	}
 	
 	/**
 	 * This method should be called whenever player answers a 

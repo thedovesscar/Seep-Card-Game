@@ -25,6 +25,14 @@ public class Hand {
         hand.clear();
     }
 
+    public boolean hasFaceCard() {
+    	for (Card c: hand) {
+    		if (c.getCardNumber() >= 9) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
     /**
      * Add a card to the hand.  It is added at the end of the current hand.
      * @param c the non-null card to be added.

@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
 	
 	MenuPanel2 mpp;
 	GameplayPanel2 gpp;
-	ButtonPanel2 bpp;
+	UserPanel upp;
 	
 	
 	GamePanel(){
@@ -28,17 +28,17 @@ public class GamePanel extends JPanel {
 //		bpp = new ButtonPanel();
 
 		mpp = new MenuPanel2();
-		gpp = new GameplayPanel2();
-		bpp = new ButtonPanel2();
+		gpp = GameplayPanel2.getInstance();
+		upp = UserPanel.getInstance();
 		
 		setBackground(new Color(50,50,200));
 		mpp.setBackground(new Color(60,60,200));
 		gpp.setBackground(new Color(40,40,200));
-		bpp.setBackground(new Color(50,50,170));
+		upp.setBackground(new Color(50,50,170));
 		
 		add(mpp);
 		add(gpp);
-		add(bpp);
+		add(upp);
 		
 	} //end GAMEPANEL constructor
 	

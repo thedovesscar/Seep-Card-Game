@@ -21,6 +21,9 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 	
 	private static boolean gameIsOn;
  
+	Seep gameSeep;
+	GameplayPanel2 gpp;
+	UserPanel uPanel;
 	private static JTextField baseTextField;
 	private JLabel   baseLabel;
 	private JButton  startButton, quitButton, stopGameButton, hiScoreButton;
@@ -41,6 +44,9 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		this.setPreferredSize(new Dimension(1200,100)); //EDIT added to fit Frame
 		this.add(buttonPanel);
 		this.add(scorePanel);
+		gameSeep = Seep.getInstance();
+		gpp = GameplayPanel2.getInstance();
+		uPanel = UserPanel.getInstance();
 	}
 
 	// buttonPanel has BoxLayout horizontally.
@@ -135,11 +141,9 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		} //end quit Button action.
 		
 		if (source == startButton) {
-			
 		    if (!isGameOn()) {
 		    	
-		    	setPlayer();
-				GameplayPanel.setupNewQuestion();
+		    	gameSeep.dealCards();
 				setGameOn(true);
 			} //end if for when game is On or Not.
 		    
@@ -150,7 +154,8 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		if (source == stopGameButton) {
 		    
 			if (isGameOn()) {
-				
+				gpp.clearHands();
+				uPanel.clearHand();
 				setGameOn(false);
 				
 			} // will only trigger if game is actually ON

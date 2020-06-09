@@ -16,6 +16,10 @@ public class Table {
 		table.remove(card);
 	}
 	
+	public void clear() {
+		table.clear();
+	}
+	
 	public Card getCard(int position) {
 		return table.get(position);
 	}
