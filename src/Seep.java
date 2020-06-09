@@ -3,7 +3,7 @@ public class Seep {
 
 	private static volatile Seep instance = null;
 	
-	private int currentPlayer;
+	public static int currentPlayer;
 	private int[] playerList;
 	public Hand[] hand;
 	public Table table;
