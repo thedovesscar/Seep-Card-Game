@@ -31,10 +31,10 @@ public class GamePanel extends JPanel {
 		gpp = GameplayPanel2.getInstance();
 		upp = UserPanel.getInstance();
 		
-		setBackground(new Color(50,50,200));
-		mpp.setBackground(new Color(60,60,200));
-		gpp.setBackground(new Color(40,40,200));
-		upp.setBackground(new Color(50,50,170));
+		setBackground(new Color(230,77,77));
+		mpp.setBackground(new Color(238,84,84));
+		gpp.setBackground(new Color(250,60,60));
+		upp.setBackground(new Color(238,84,84));
 		
 		add(mpp);
 		add(gpp);

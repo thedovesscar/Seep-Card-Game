@@ -65,6 +65,12 @@ public class UserPanel extends JPanel implements ActionListener {
 		
 		
 	} //END of ButtonPanel Constructor
+	
+	/**
+	 * This method returns a dynamic card Labels.
+	 * @param asking boolean.. this is just to overload the dealCard
+	 * but the other DealCard function is likely deprecated.
+	 */
 	public void dealCards(boolean asking) {
 		this.removeAll();
 		cardLabel.clear();

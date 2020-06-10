@@ -65,7 +65,7 @@ public class Seep {
 
 		gameviewPanel = GameplayPanel2.getInstance();
 		gameviewPanel.setupTable();
-		
+		clearScores();
 		for (int i = 0; i < 4; i++) {
 			hand[startingPlayer].addCard(deck.dealCard());
 		} 
@@ -119,6 +119,7 @@ public class Seep {
 			else System.out.println("Card not chosen was" + h.getCard(i));
 		} //end of for
 		
+		boolean cardFound = false;
 		for (int i = 0; i < table.getCardCount(); i++) {
 			
 			if ( chosenNumber == table.getCard(i).getCardNumber()) {
@@ -133,18 +134,32 @@ public class Seep {
 				gameviewPanel.redrawTable();
 				userPanel = UserPanel.getInstance();
 				userPanel.dealCards(true);
+				cardFound = true;
+				updateScores();
 			}
 			
-			else System.out.println("There was not a same card to pick up");
+			else System.out.println("This was not the same card");
 			
 		}
 		
-		
-		
-		
-		
-		
-		
+		if (!cardFound) {
+			hand[startingPlayer].removeCard(chosenCard);
+			table.addCard(chosenCard);
+			gameviewPanel.redrawTable();
+			userPanel.dealCards(false);
+			
+		}
+			
+	}
+	
+	public void clearScores() {
+		MenuPanel2.addYourScore(0);
+		MenuPanel2.addOppScore(0);
+	}
+	
+	public void updateScores() {
+		MenuPanel2.addYourScore(team[0].getRealtimeScore());
+		MenuPanel2.addOppScore(team[1].getRealtimeScore());
 	}
 	
 	/**

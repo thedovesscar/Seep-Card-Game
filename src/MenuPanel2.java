@@ -24,8 +24,9 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 	Seep gameSeep;
 	GameplayPanel2 gpp;
 	UserPanel uPanel;
-	private static JTextField baseTextField;
-	private JLabel   baseLabel;
+	private static int yourScore, oppScore;
+	private static JTextField yourScoreTextField, oppScoreTextField;
+	private JLabel   yourScoreLabel, oppScoreLabel;
 	private JButton  startButton, quitButton, stopGameButton, hiScoreButton;
 	private JPanel   buttonPanel, scorePanel;
 	
@@ -53,7 +54,7 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 	private void setupButtonPanel () {
 		buttonPanel = new JPanel();
 
-		buttonPanel.setBackground(new Color(60,60,200));
+		buttonPanel.setBackground(new Color(238,84,84));
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
 		// Add some blank space on the left edge so the START button
@@ -91,22 +92,30 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		scorePanel = new JPanel();
 		
 		//EDIT
-		scorePanel.setBackground(new Color(60,60,200));
+		scorePanel.setBackground(new Color(238,84,84));
 		scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.X_AXIS));
 		
 		// EDIT: moving over score panel to center it more
 		scorePanel.add(Box.createRigidArea(new Dimension(150,5)));
 		buttonPanel.add(scorePanel);
 	
-		baseLabel = new JLabel("Right: ");
-		scorePanel.add(baseLabel);
+		yourScoreLabel = new JLabel("Your Score: ");
+		scorePanel.add(yourScoreLabel);
+
+		yourScoreTextField = new JTextField(3);
+		yourScoreTextField.setMaximumSize(new Dimension(50,40)); //EDIT
+		yourScoreTextField.setEditable(false);
+		yourScoreTextField.setFocusable(false);
+		scorePanel.add(yourScoreTextField);
+		
+		oppScoreLabel = new JLabel("Opponent's Score: ");
+		scorePanel.add(oppScoreLabel);
 	
-		baseTextField = new JTextField(3);
-		baseTextField.setMaximumSize(new Dimension(50,40)); //EDIT
-		baseTextField.setEditable(false);
-		baseTextField.setFocusable(false);
-		scorePanel.add(baseTextField);
-	
+		oppScoreTextField = new JTextField(3);
+		oppScoreTextField.setMaximumSize(new Dimension(50,40)); //EDIT
+		oppScoreTextField.setEditable(false);
+		oppScoreTextField.setFocusable(false);
+		scorePanel.add(oppScoreTextField);
 	
 	 }
 
@@ -127,6 +136,15 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		
 	}
 	
+	public static void addYourScore(int score) {
+		yourScore = score;
+		yourScoreTextField.setText(Integer.toString(yourScore));
+	}
+	
+	public static void addOppScore(int score) {
+		oppScore = score;
+		oppScoreTextField.setText(Integer.toString(oppScore));
+	}
  
 	public void actionPerformed (ActionEvent e) {
 		Object source = e.getSource();
@@ -161,6 +179,7 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 //				Seep.endGame();
 				//TODO 
 				//TODO
+				
 				gpp.clearHands();
 				uPanel.clearHand();
 				setGameOn(false);
