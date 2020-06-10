@@ -2,10 +2,15 @@ import jdk.internal.dynalink.beans.StaticClass;
 
 public class CardMath {
 
-	private static Card tempCard;
 	static Seep gameSeep = Seep.getInstance();
 	static Table table = Table.getInstance();
 	
+	
+	/**
+	 * This should be called beginning of turn to check if Seep is possible.
+	 * @param card
+	 * @return
+	 */
 	static boolean checkForSeep(Card card) {
 	
 		int cardNumber = card.getCardNumber();
@@ -19,7 +24,19 @@ public class CardMath {
 		else return false;
 	}
 	
+	
+	/**
+	 *  Should be called when there are 3 Stacks
+	 * @param Card c 
+	 */
 	static void checkForCombo(Card c) {
+		
+	}
+	
+	/**
+	 * Idk if it's necessary to keep this.
+	 */
+	static void checkForSame () {
 		
 	}
 

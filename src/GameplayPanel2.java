@@ -51,23 +51,20 @@ public class GameplayPanel2 extends JPanel {
 		return instance;
 	}
 	
-	public void deal (int player, boolean asking) {
+	public void deal (int player) {
 		switch (player) {
 		
 		case 1: 
-			if (asking) p1p.dealCards(true);
-			else p1p.dealCards(false);
+			p1p.dealCards();
 			break;
 		case 2: 
-			if (asking) mp.dealCards(true);
-			else mp.dealCards(false);
+			mp.dealCards();
 			break;
-		case 3: 
-			if (asking) p3p.dealCards(true);
-			else p3p.dealCards(false);
+		case 3:
+			p3p.dealCards();
 			break;
 		default:
-			System.out.println("Hmm I could'nt tell who was going first to start the game. I'm from GamePlayPanel2");
+			System.out.println("Hmm I couldn't tell who was going first to start the game. I'm from GamePlayPanel2");
 			break;
 		
 		}

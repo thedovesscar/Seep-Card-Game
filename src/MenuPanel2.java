@@ -162,7 +162,6 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		    if (!isGameOn()) {
 		    	
 		    	gameSeep.dealCards();
-		    	gameSeep.firstTurn();
 				setGameOn(true);
 			} //end if for when game is On or Not.
 		    
@@ -189,10 +188,10 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 		} //end stopGameButton action
 		
 		if (source == hiScoreButton) {
+
 			
-			//button will only activate when the game is off
-			if (!isGameOn()) {	
-//				scoresList.showScoresList();
+			if (isGameOn()) {	
+				gameSeep.checkTurn();
 			}
 			
 		} //end hiScoreButton action

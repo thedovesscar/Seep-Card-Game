@@ -36,9 +36,8 @@ public class MiddlePanel extends JPanel{
 		tp.repaint();
 	}
 	
-	public void dealCards(boolean asking) {
-		if (asking)  p2p.dealCards(true);
-		else  p2p.dealCards(false);
+	public void dealCards() {
+		p2p.dealCards(); 
 		this.revalidate();
 		this.repaint();
 	}

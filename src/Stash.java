@@ -59,4 +59,7 @@ public class Stash {
 		return cardCount;
 	}
 
+	public void clearEverything() {
+		
+	}
 }

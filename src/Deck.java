@@ -138,6 +138,13 @@ public class Deck {
         return deck.length - cardsUsed;
     }
     
+    public boolean hasCardsLeft() {
+    	if (deck.length - cardsUsed > 0) {
+    		return true;
+    	}
+    	
+    	else return false;
+    }
     /**
      * Removes the next card from the deck and return it.  It is illegal
      * to call this method if there are no more cards in the deck.  You can

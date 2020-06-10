@@ -1,4 +1,4 @@
-import sun.tools.jar.resources.jar;
+
 
 public class Seep {
 
@@ -11,6 +11,7 @@ public class Seep {
 	public Table table;
 	private Deck deck;
 	private Team[] team;
+	private int turns;
 	
 	GameplayPanel2 gameviewPanel;
 	UserPanel userPanel;
@@ -21,11 +22,11 @@ public class Seep {
 					+ " to create SingletonExample instance");
 		}
 		
-		startingPlayer = 0;
+		startingPlayer = 1;
 		currentPlayer = startingPlayer;
 		deck = Deck.getInstance();
 		playerList = new int[4];
-		
+		turns = 0;
 		hand = new Hand[4];
 		for (int i = 0; i < 4; i++) {
 			hand[i] =  new Hand();
@@ -50,6 +51,7 @@ public class Seep {
 	}
 	
 	public void dealCards() {
+		turns = 0;
 		for(Hand h : hand) {
 			if (h.getCardCount() > 0) {
 				h.clear();
@@ -58,14 +60,8 @@ public class Seep {
 		
 		table.clear();
 		deck.shuffle();
-		
-		for (int i = 0; i < 4; i++) {
-			table.addCard(deck.dealCard());
-		} //end of Table dealing loop
-
-		gameviewPanel = GameplayPanel2.getInstance();
-		gameviewPanel.setupTable();
 		clearScores();
+		
 		for (int i = 0; i < 4; i++) {
 			hand[startingPlayer].addCard(deck.dealCard());
 		} 
@@ -73,6 +69,13 @@ public class Seep {
 		boolean hasFaceCard = hand[startingPlayer].hasFaceCard();
 		
 		if (hasFaceCard) {
+			for (int i = 0; i < 4; i++) {
+				table.addCard(deck.dealCard());
+			} //end of Table dealing loop
+
+			gameviewPanel = GameplayPanel2.getInstance();
+			gameviewPanel.setupTable();
+			
 			for (int i = 0; i < 12; i++) {
 				for (int j = 0; j< 4; j++) {
 					if (startingPlayer == j) continue;
@@ -93,31 +96,57 @@ public class Seep {
 			} else userPanel.dealCards(false);
 			for (int i = 1; i < 4; i++) {
 				if(startingPlayer == i) {
-					gameviewPanel.deal(i, true);
-				} else gameviewPanel.deal(i, false);
+					gameviewPanel.deal(i);
+				} else gameviewPanel.deal(i);
+			}
+			
+			while (deck.hasCardsLeft()) {
+				hand[startingPlayer].addCard(deck.dealCard());
+				
 			}
 		} // end if Player has Valid faceCard
 		
-		
 		// TODO need to throw exception and end the game.. to reshuffle and start again
-		else System.out.println("There were no Face Cards");
+		else dealCards();
+		
+		
+		
+		
 	} //end of dealCards()
 	
+	public void checkTurn() {
+		if (turns == 0) {
+			firstTurn();
+		}
+		else nextTurn();
+		
+	}	
 	
+	/**
+	 * This contains all the initial moves required during the asking phase
+	 * TODO needs to be updated for all possible moves.
+	 * TODO needs to be updated for what can be selected.
+	 */
 	public void firstTurn() {
 		
 		Card chosenCard = new Card();
 		int chosenNumber = 0;
 		Hand h = hand[startingPlayer];
-		for (int i = 0; i < 4; i++) {
+		
+		for (int i = 3; i >= 0; i++) {
 			if (h.getCard(i).getCardNumber() >= 9) {
 				chosenCard = h.getCard(i);
 				chosenNumber = chosenCard.getCardNumber();
 				System.out.println("Card chosen was" + h.getCard(i));
 				break;
 			}
-			else System.out.println("Card not chosen was" + h.getCard(i));
-		} //end of for
+			
+		} //end of for searching for Card to ask.
+		
+		if (CardMath.checkForSeep(chosenCard)) {
+			doTheSeep(chosenCard);
+			return;
+		}
 		
 		boolean cardFound = false;
 		for (int i = 0; i < table.getCardCount(); i++) {
@@ -125,20 +154,26 @@ public class Seep {
 			if ( chosenNumber == table.getCard(i).getCardNumber()) {
 				Card c = table.getCard(i);
 				System.out.println("found it!!" + chosenCard + "  " + c);
+				
 				table.removeCard(c);
 				hand[startingPlayer].removeCard(chosenCard);
-				team[startingPlayer%2].addCard(c);
-				team[startingPlayer%2].addCard(chosenCard);
+				
+				team[startingPlayer%2].pickupCard(c);
+				team[startingPlayer%2].pickupCard(chosenCard);
 				System.out.println("Cards " +  c +" and "+ chosenCard + " are in the stash");
+				
 				gameviewPanel = GameplayPanel2.getInstance();
 				gameviewPanel.redrawTable();
-				userPanel = UserPanel.getInstance();
-				userPanel.dealCards(true);
-				cardFound = true;
+				
+				updatePanel(startingPlayer);
+				hand[startingPlayer].sortBySuit();
+				hand[startingPlayer].sortByValue();
 				updateScores();
+
+				cardFound = true;
 			}
 			
-			else System.out.println("This was not the same card");
+			else System.out.println("ERROR: firstTurn() This was not the same card");
 			
 		}
 		
@@ -146,11 +181,37 @@ public class Seep {
 			hand[startingPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
 			gameviewPanel.redrawTable();
-			userPanel.dealCards(false);
+			updatePanel(startingPlayer);
+			hand[startingPlayer].sortBySuit();
+			hand[startingPlayer].sortByValue();
 			
 		}
-			
+			currentPlayer++;
+			turns++;
+	} //end of First Turn()
+	
+	public void nextTurn() {
+		turns++;
 	}
+	
+	public void endTurn() {
+		
+	}
+	
+	public void doTheSeep(Card card) {
+		int cardsOnTable = table.getCardCount();
+		Card currentCard;
+		for(int i = 0; i < cardsOnTable; i++) {
+			currentCard = table.getCard(i);
+			team[currentPlayer%2].pickupCard(currentCard);
+			table.removeCard(currentCard);
+		}
+		team[currentPlayer%2].pickupCard(card);
+		hand[currentPlayer].removeCard(card);
+		updatePanel(currentPlayer);
+		gameviewPanel.redrawTable();
+	}
+	
 	
 	public void clearScores() {
 		MenuPanel2.addYourScore(0);
@@ -162,6 +223,26 @@ public class Seep {
 		MenuPanel2.addOppScore(team[1].getRealtimeScore());
 	}
 	
+	public void updatePanel(int player) {
+		if (player==0) {
+			userPanel = UserPanel.getInstance();
+			userPanel.dealCards(true);
+		}
+		
+		if (player==1) {
+			gameviewPanel.deal(1);;
+		}
+		
+		if (player==2) {
+			gameviewPanel.deal(2);;
+		}
+		
+		if (player==3) {
+			gameviewPanel.deal(3);;
+		}
+		
+		
+	}
 	/**
 	 * this was just to demo test if the shuffling was working for the cards
 	 */
@@ -174,4 +255,5 @@ public class Seep {
 		} //end of For Loop
 	} //test Display()
 	
+
 } //end of Seep class

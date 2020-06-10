@@ -50,7 +50,7 @@ public class Team {
 		stash.clear();
 	}
 
-	public void addCard(Card card) {
+	public void pickupCard(Card card) {
 		stash.addCard(card);
 	}
 	
