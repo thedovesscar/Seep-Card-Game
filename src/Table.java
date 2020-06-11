@@ -68,9 +68,7 @@ public class Table {
 		}  //
 		if (!stackExists) {
 			stack.add(new Stack(card));
-		}
-		for (Stack s: stack) {
-			System.out.println(s.getStackValue()); 
+			System.out.println("A stack of " + cardNum + " has been created");
 		}
 		
 	}

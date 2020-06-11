@@ -178,7 +178,7 @@ public class MenuPanel2 extends JPanel implements ActionListener{
 //				Seep.endGame();
 				//TODO 
 				//TODO
-				
+				gameSeep.clearScores();
 				gpp.clearHands();
 				uPanel.clearHand();
 				setGameOn(false);

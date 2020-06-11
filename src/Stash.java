@@ -35,7 +35,7 @@ public class Stash {
 	 * @return team's points
 	 */
 	public int countPoints() {
-		
+		points = 0;
 		for (Card c: stash) {
 			points += c.getCardPoints();
 		}

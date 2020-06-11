@@ -1,4 +1,5 @@
-
+import javax.swing.JOptionPane;
+import javax.xml.stream.events.EndDocument;
 
 public class Seep {
 
@@ -6,7 +7,7 @@ public class Seep {
 	
 	public static int startingPlayer;
 	public static int currentPlayer;
-	private int[] playerList;
+	private String[] player;
 	public Hand[] hand;
 	public Table table;
 	private Deck deck;
@@ -22,10 +23,10 @@ public class Seep {
 					+ " to create SingletonExample instance");
 		}
 		
-		startingPlayer = 1;
+		startingPlayer = 3;
 		currentPlayer = startingPlayer;
 		deck = Deck.getInstance();
-		playerList = new int[4];
+		player = new String[]{"You" , "Player 1", "Player 2", "Player 3"};
 		turns = 0;
 		hand = new Hand[4];
 		for (int i = 0; i < 4; i++) {
@@ -60,7 +61,6 @@ public class Seep {
 		
 		table.clear();
 		deck.shuffle();
-		clearScores();
 		
 		for (int i = 0; i < 4; i++) {
 			hand[startingPlayer].addCard(deck.dealCard());
@@ -118,8 +118,10 @@ public class Seep {
 		if (turns == 0) {
 			firstTurn();
 		}
+		else if (turns == 47) {
+			endGame();
+		}
 		else nextTurn();
-		
 	}	
 	
 	/**
@@ -131,59 +133,54 @@ public class Seep {
 		
 		Card chosenCard = new Card();
 		int chosenNumber = 0;
-		Hand h = hand[startingPlayer];
 		
-		for (int i = 3; i >= 0; i++) {
-			if (h.getCard(i).getCardNumber() >= 9) {
-				chosenCard = h.getCard(i);
-				chosenNumber = chosenCard.getCardNumber();
-				System.out.println("Card chosen was" + h.getCard(i));
-				break;
-			}
-			
-		} //end of for searching for Card to ask.
+		chosenCard = CardMath.findAskingCard(hand[startingPlayer]);
+		chosenNumber = chosenCard.getCardNumber();
 		
 		if (CardMath.checkForSeep(chosenCard)) {
 			doTheSeep(chosenCard);
 			return;
 		}
 		
-		boolean cardFound = false;
-		for (int i = 0; i < table.getCardCount(); i++) {
+		
+		if (CardMath.isAskingCardonTable(chosenCard)) {
 			
-			if ( chosenNumber == table.getCard(i).getCardNumber()) {
-				Card c = table.getCard(i);
-				System.out.println("found it!!" + chosenCard + "  " + c);
+			for (int i = 0; i < table.getCardCount(); i++) {
+			
+				if ( chosenNumber == table.getCard(i).getCardNumber()) {
+					Card foundCard = table.getCard(i);
+					System.out.println("found it!!" + chosenCard + "  " + foundCard);
+					
+					table.removeCard(foundCard);
+					chosenCard = CardMath.checkForSpadeVersion(hand[startingPlayer], chosenCard, true);
+					hand[startingPlayer].removeCard(chosenCard);
 				
-				table.removeCard(c);
-				hand[startingPlayer].removeCard(chosenCard);
+					team[startingPlayer%2].pickupCard(foundCard);
+					team[startingPlayer%2].pickupCard(chosenCard);
+					JOptionPane.showMessageDialog(null, player[startingPlayer] + " picked up " + chosenCard + " and " + foundCard);
+					System.out.println("Cards " +  foundCard +" and "+ chosenCard + " are in the stash");
 				
-				team[startingPlayer%2].pickupCard(c);
-				team[startingPlayer%2].pickupCard(chosenCard);
-				System.out.println("Cards " +  c +" and "+ chosenCard + " are in the stash");
+					gameviewPanel = GameplayPanel2.getInstance();
+					gameviewPanel.redrawTable();
 				
-				gameviewPanel = GameplayPanel2.getInstance();
-				gameviewPanel.redrawTable();
-				
-				updatePanel(startingPlayer);
-				hand[startingPlayer].sortBySuit();
-				hand[startingPlayer].sortByValue();
-				updateScores();
+					updatePanel(startingPlayer);
+					hand[startingPlayer].sortBySuit();
+					hand[startingPlayer].sortByValue();
+					updateScores();
 
-				cardFound = true;
+				
+				} //TODO this does not pick up all suits of a given Card Number; need to fix and seperate Hand Card Removal and Table Clearance
 			}
-			
-			else System.out.println("ERROR: firstTurn() This was not the same card");
-			
 		}
 		
-		if (!cardFound) {
+		else {
 			hand[startingPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
 			gameviewPanel.redrawTable();
 			updatePanel(startingPlayer);
 			hand[startingPlayer].sortBySuit();
 			hand[startingPlayer].sortByValue();
+			JOptionPane.showMessageDialog(null, player[startingPlayer] + " threw down " + chosenCard);
 			
 		}
 			currentPlayer++;
@@ -191,10 +188,55 @@ public class Seep {
 	} //end of First Turn()
 	
 	public void nextTurn() {
+		if (currentPlayer >= 4) {
+			currentPlayer = 0;
+		}
+		playTurn();
 		turns++;
 	}
 	
-	public void endTurn() {
+	public void playTurn() {
+		int chosenCardSpot = hand[currentPlayer].getCardCount()/2;
+		if (chosenCardSpot <= 1) chosenCardSpot = 0;
+		
+		Card chosenCard = hand[currentPlayer].getCard(chosenCardSpot);
+		Card foundCard = new Card();
+		
+		int chosenNum = chosenCard.getCardNumber();
+		
+		if (CardMath.checkForSame(chosenNum)) {
+			foundCard = CardMath.getSameCard(chosenCard);
+			
+			table.removeCard(foundCard);
+			chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
+			hand[currentPlayer].removeCard(chosenCard);
+		
+			team[currentPlayer%2].pickupCard(foundCard);
+			team[currentPlayer%2].pickupCard(chosenCard);
+			JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
+			System.out.println("Cards " +  foundCard +" and "+ chosenCard + " are in the stash");
+			
+			gameviewPanel = GameplayPanel2.getInstance();
+			gameviewPanel.redrawTable();
+		
+			updatePanel(currentPlayer);
+			hand[currentPlayer].sortBySuit();
+			hand[currentPlayer].sortByValue();
+			updateScores();
+			
+		} else {
+			hand[currentPlayer].removeCard(chosenCard);
+			table.addCard(chosenCard);
+			gameviewPanel.redrawTable();
+			updatePanel(currentPlayer);
+			hand[currentPlayer].sortBySuit();
+			hand[currentPlayer].sortByValue();
+			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+			
+		}
+		currentPlayer++;
+	}
+	public void endGame() {
 		
 	}
 	
@@ -214,6 +256,8 @@ public class Seep {
 	
 	
 	public void clearScores() {
+		team[0].newGame();
+		team[1].newGame();
 		MenuPanel2.addYourScore(0);
 		MenuPanel2.addOppScore(0);
 	}

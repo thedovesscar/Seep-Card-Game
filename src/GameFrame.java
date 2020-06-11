@@ -18,7 +18,7 @@ public class GameFrame extends JFrame{
 	
 	GameFrame(){
 		
-		super("Let's Play Some Bhabi!"); 
+		super("Let's Play Some Seep!"); 
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1205, 805);						 //gives a little padding

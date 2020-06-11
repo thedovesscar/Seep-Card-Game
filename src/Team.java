@@ -37,12 +37,16 @@ public class Team {
 
 	public int getRealtimeScore() {
 		realtimeScore = stash.countPoints();
-		cumultiveScore += realtimeScore;
 		return realtimeScore;
 	}
 
 	public int getCumultiveScore() {
 		return cumultiveScore;
+	}
+	
+	public void completeGame() {
+		cumultiveScore += realtimeScore;
+		
 	}
 	
 	public void newGame() {
