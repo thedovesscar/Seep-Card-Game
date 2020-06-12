@@ -18,7 +18,6 @@ public class Table {
 					+ " to create SingletonExample instance");
 		}
 		
-		
 		table = new ArrayList<Card>();
 		stack = new ArrayList<Stack>();
 	} // Table constructor
