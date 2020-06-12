@@ -1,16 +1,25 @@
 import javax.swing.JOptionPane;
 
-import jdk.internal.dynalink.beans.StaticClass;
 
 public class CardMath {
 
 	static Seep gameSeep = Seep.getInstance();
 	static Table table = Table.getInstance();
-	
+	static Card handCard = new Card();
+	static Card tableCard = new Card();
 	public CardMath() {
 		
 	}
 	
+	/**
+	 * This method should check generically if seep is possible
+	 * and should return the value that will allow the seep to occur
+	 * then method to check if user has the card value to commit the seep
+	 * @return
+	 */
+	static int checkForSeep() {
+		return 0; //TODO
+	}
 	/**
 	 * This should be called beginning of turn to check if Seep is possible.
 	 * @param card
@@ -92,7 +101,47 @@ public class CardMath {
 		return false;
 	}
 
-	static Card checkForSpadeVersion(Hand hand, Card card, boolean asking) {
+	static boolean checkTableforCard(Hand hand) {
+		for (int ii = 0; ii < table.getCardCount(); ii++) {
+			for (int jj = 0; jj < hand.getCardCount(); jj++) {
+				if (table.getCard(ii).getCardNumber() == hand.getCard(jj).getCardNumber()) {
+					handCard = hand.getCard(jj);
+					tableCard = table.getCard(ii);
+					return true;
+				}
+					
+			}
+		}
+		return false;
+	}
+	/**
+	 * This is similar to the regular checkForSpadeVersion(hand, card)
+	 * excpet this should be called only when it is the asking players turn;
+	 * @param hand
+	 * @param card
+	 * @param asking
+	 * @return
+	 */
+	
+	/**
+	 * This is simple test for which card to throw down
+	 * will throw lowest card that isnt a spade
+	 * and then throw lowest card if all spades
+	 * @param hand
+	 * @return
+	 */
+	static Card throwDownCard(Hand hand) {
+		
+		for(int ii = 0; ii < hand.getCardCount(); ii++) {
+			if ( hand.getCard(ii).getCardSuit() != Card.SPADE)
+				return hand.getCard(ii);
+		}
+		
+		return hand.getCard(0);
+	}
+	
+	
+ 	static Card checkForSpadeVersion(Hand hand, Card card, boolean asking) {
 		Card cardFound = card;
 		int cardNum = card.getCardNumber();
 		
@@ -106,6 +155,15 @@ public class CardMath {
 		return cardFound;
 	}
 	
+	/**
+	 * This Method is to be called when Card is found on Table 
+	 * and player is about to pick it up. 
+	 * THis checks player hand to see if they havec the spade 
+	 * to pic up the points
+	 * @param hand
+	 * @param card
+	 * @return
+	 */
 	static Card checkForSpadeVersion(Hand hand, Card card) {
 		Card cardFound = card;
 		int cardNum = card.getCardNumber();

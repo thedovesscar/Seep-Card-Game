@@ -1,5 +1,5 @@
 import javax.swing.JOptionPane;
-import javax.xml.stream.events.EndDocument;
+
 
 public class Seep {
 
@@ -196,17 +196,12 @@ public class Seep {
 	}
 	
 	public void playTurn() {
-		int chosenCardSpot = hand[currentPlayer].getCardCount()/2;
-		if (chosenCardSpot <= 1) chosenCardSpot = 0;
 		
-		Card chosenCard = hand[currentPlayer].getCard(chosenCardSpot);
+		Card chosenCard = new Card();
 		Card foundCard = new Card();
-		
-		int chosenNum = chosenCard.getCardNumber();
-		
-		if (CardMath.checkForSame(chosenNum)) {
-			foundCard = CardMath.getSameCard(chosenCard);
-			
+		if (CardMath.checkTableforCard(hand[currentPlayer])) {
+			chosenCard = CardMath.handCard;
+			foundCard = CardMath.tableCard;
 			table.removeCard(foundCard);
 			chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
 			hand[currentPlayer].removeCard(chosenCard);
@@ -223,8 +218,10 @@ public class Seep {
 			hand[currentPlayer].sortBySuit();
 			hand[currentPlayer].sortByValue();
 			updateScores();
+		
 			
 		} else {
+			chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 			hand[currentPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
 			gameviewPanel.redrawTable();
