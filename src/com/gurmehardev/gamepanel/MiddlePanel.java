@@ -1,13 +1,13 @@
+package com.gurmehardev.gamepanel;
+
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import sun.nio.cs.ext.TIS_620;
-
 public class MiddlePanel extends JPanel{
 
+	private static final long serialVersionUID = 1L;
 	Player2Panel p2p;
 	TablePanel tp;
 	

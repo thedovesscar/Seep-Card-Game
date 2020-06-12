@@ -1,3 +1,7 @@
+package com.gurmehardev.cardgame.seep;
+
+import com.gurmehardev.gamepanel.*;
+import com.gurmehardev.cardgame.*;
 import javax.swing.JOptionPane;
 
 

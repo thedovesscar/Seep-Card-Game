@@ -1,4 +1,4 @@
-
+package com.gurmehardev.cardgame;
 /**
  * This class creates a full Deck of cards using Singleton Creation Pattern
  * to ascertain only one deck is made.

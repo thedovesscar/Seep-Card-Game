@@ -1,3 +1,5 @@
+package com.gurmehardev.audioware;
+
 // Java program to play an Audio 
 	// file using Clip Object 
 	import java.io.File; 

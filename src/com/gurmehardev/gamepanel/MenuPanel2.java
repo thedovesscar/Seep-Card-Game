@@ -1,3 +1,6 @@
+package com.gurmehardev.gamepanel;
+
+import com.gurmehardev.cardgame.seep.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

@@ -1,12 +1,8 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+package com.gurmehardev.gamepanel;
 
+
+import java.awt.Dimension;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class GameplayPanel2 extends JPanel {
@@ -96,11 +92,7 @@ public class GameplayPanel2 extends JPanel {
 	 * which will call the corresponding image.
 	 * 
 	 */
-	public static void setupNewQuestion() {
-		RandomNumber.generateNumberOfObjects();
-		int i = RandomNumber.getNumberOfObjects();
-		setNewImage(i);
-	} //end setupNewQuestion
+	
 	
 	
 	/**

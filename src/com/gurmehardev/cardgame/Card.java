@@ -1,3 +1,5 @@
+package com.gurmehardev.cardgame;
+
 /**
  * This class contains all the private static fields that contain
  * the value of each card instantiated.
@@ -54,7 +56,7 @@ public class Card {
 	/**
 	 * Card default Constructor - will create a Joker card
 	 */
-	Card () {
+	public Card () {
 		cardCounter = 0;
 		cardName = "Common Joker";
 		cardSuit = 4;

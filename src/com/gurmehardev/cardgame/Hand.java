@@ -1,4 +1,4 @@
-
+package com.gurmehardev.cardgame;
 /**
  * An object of type Hand represents a hand of cards.  The
  * cards belong to the class Card.  A hand is empty when it

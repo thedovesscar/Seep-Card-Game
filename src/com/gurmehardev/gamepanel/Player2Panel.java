@@ -1,8 +1,9 @@
+package com.gurmehardev.gamepanel;
+
+import com.gurmehardev.cardgame.seep.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

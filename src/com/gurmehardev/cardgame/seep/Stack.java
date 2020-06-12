@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package com.gurmehardev.cardgame.seep;
+
+import com.gurmehardev.cardgame.*;
 
 public class Stack {
 

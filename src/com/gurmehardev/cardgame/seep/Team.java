@@ -1,3 +1,6 @@
+package com.gurmehardev.cardgame.seep;
+
+import com.gurmehardev.cardgame.*;
 import java.util.ArrayList;
 
 /**

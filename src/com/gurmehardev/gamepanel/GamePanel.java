@@ -1,3 +1,5 @@
+package com.gurmehardev.gamepanel;
+
 import java.awt.Color;
 
 import javax.swing.JPanel;
@@ -21,7 +23,7 @@ public class GamePanel extends JPanel {
 	UserPanel upp;
 	
 	
-	GamePanel(){
+	public GamePanel(){
 		
 //		mpp = new MenuPanel();
 //		gpp = new GameplayPanel();

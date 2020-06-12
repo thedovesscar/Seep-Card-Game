@@ -1,13 +1,14 @@
-import java.awt.Color;
+package com.gurmehardev.gamepanel;
+
+import com.gurmehardev.audioware.*;
+import com.gurmehardev.cardgame.seep.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 

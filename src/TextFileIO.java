@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-import java.lang.*;
 
 /**
  * This class deals with reading and writing the High
