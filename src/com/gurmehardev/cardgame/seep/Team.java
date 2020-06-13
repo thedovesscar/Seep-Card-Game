@@ -61,5 +61,7 @@ public class Team {
 		stash.addCard(card);
 	}
 	
-
+	public int countCards() {
+		return stash.getCardCount();
+	}
 }

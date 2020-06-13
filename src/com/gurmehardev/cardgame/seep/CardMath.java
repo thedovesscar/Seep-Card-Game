@@ -95,6 +95,29 @@ public class CardMath {
 		return tempCard;
 	}
 	
+	static boolean canAskingCardBeBuilt(Card card, Hand hand) {
+		int handS = hand.getCardCount();
+		int tableS = table.getCardCount();
+		int reqValue = card.getCardNumber();
+		
+		for ( int x = 0 ; x < 4; x++ ) {
+			for ( int y = 0; y < tableS; y++) {
+				if (hand.getCard(x).getCardNumber() + table.getCard(y).getCardNumber() == reqValue) {
+					if (hand.getCard(x) == card) {
+						return false;
+					}
+					else {
+						handCard = hand.getCard(x);
+						tableCard = table.getCard(y);
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	static boolean isAskingCardonTable(Card card) {
 		for (int i = 0; i < table.getCardCount(); i++) {
 			if (card.getCardNumber() == table.getCard(i).getCardNumber()) {

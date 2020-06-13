@@ -1,6 +1,7 @@
 package com.gurmehardev.cardgame.seep;
 
 import com.gurmehardev.gamepanel.*;
+import com.sun.webkit.ThemeClient;
 import com.gurmehardev.cardgame.*;
 import javax.swing.JOptionPane;
 
@@ -74,7 +75,7 @@ public class Seep {
 		
 		if (hasFaceCard) {
 			for (int i = 0; i < 4; i++) {
-				table.addCard(deck.dealCard());
+				table.addAskingCard(deck.dealCard());
 			} //end of Table dealing loop
 
 			gameviewPanel = GameplayPanel2.getInstance();
@@ -119,13 +120,18 @@ public class Seep {
 	} //end of dealCards()
 	
 	public void checkTurn() {
+		if (currentPlayer >= 4) {
+			currentPlayer = 0;
+		}
 		if (turns == 0) {
 			firstTurn();
 		}
 		else if (turns == 47) {
 			endGame();
 		}
-		else nextTurn();
+		else playTurn();
+		turns++;
+		currentPlayer++;
 	}	
 	
 	/**
@@ -136,6 +142,8 @@ public class Seep {
 	public void firstTurn() {
 		
 		Card chosenCard = new Card();
+		Card buildTableCard = new Card();
+		Card buildHandCard = new Card();
 		int chosenNumber = 0;
 		
 		chosenCard = CardMath.findAskingCard(hand[startingPlayer]);
@@ -146,6 +154,20 @@ public class Seep {
 			return;
 		}
 		
+		if (CardMath.canAskingCardBeBuilt(chosenCard, hand[startingPlayer]) ) {
+			buildHandCard = CardMath.handCard;
+			buildTableCard = CardMath.tableCard;
+			JOptionPane.showMessageDialog(null, "Card can be built!!! " + buildHandCard+  " "+ buildTableCard);
+			table.removeCard(buildTableCard);
+			hand[startingPlayer].removeCard(buildHandCard);
+			updatePanel(startingPlayer);
+			
+			table.addCard(buildHandCard, chosenNumber);
+			table.addCard(buildTableCard, chosenNumber);
+			gameviewPanel.redrawTable();
+			return;
+			
+		}
 		
 		if (CardMath.isAskingCardonTable(chosenCard)) {
 			
@@ -187,17 +209,9 @@ public class Seep {
 			JOptionPane.showMessageDialog(null, player[startingPlayer] + " threw down " + chosenCard);
 			
 		}
-			currentPlayer++;
-			turns++;
+			
 	} //end of First Turn()
 	
-	public void nextTurn() {
-		if (currentPlayer >= 4) {
-			currentPlayer = 0;
-		}
-		playTurn();
-		turns++;
-	}
 	
 	public void playTurn() {
 		
@@ -235,10 +249,11 @@ public class Seep {
 			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 			
 		}
-		currentPlayer++;
 	}
+	
 	public void endGame() {
-		
+		System.out.println(team[0].getRealtimeScore() + "  " + team[0].countCards());
+		System.out.println(team[1].getRealtimeScore() + "  " + team[1].countCards());
 	}
 	
 	public void doTheSeep(Card card) {
