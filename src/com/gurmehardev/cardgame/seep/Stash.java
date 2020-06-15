@@ -8,11 +8,13 @@ public class Stash {
 	private int cardCount;
 	private int points;
 	private ArrayList<Card> stash;
+	private int seep;
 	
 	public Stash() {
 		cardCount = 0;
 		points = 0;
 		stash = new ArrayList<Card>();
+		seep = 0;
 	}
 	
 	/**
@@ -49,7 +51,12 @@ public class Stash {
 		} else if (cardAmount == 26) {
 			points += 2;
 		}
-			
+		
+		if (seep != 0) {
+			for (int s = seep; s > 0; s--) {
+				points += 50;
+			}
+		}
 		return points;
 	}
 	
@@ -64,5 +71,9 @@ public class Stash {
 
 	public void clearEverything() {
 		
+	}
+	
+	public void seep() {
+		seep++;
 	}
 }

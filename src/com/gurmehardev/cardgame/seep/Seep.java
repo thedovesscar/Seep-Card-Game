@@ -1,7 +1,6 @@
 package com.gurmehardev.cardgame.seep;
 
 import com.gurmehardev.gamepanel.*;
-import com.sun.webkit.ThemeClient;
 import com.gurmehardev.cardgame.*;
 import javax.swing.JOptionPane;
 
@@ -12,6 +11,7 @@ public class Seep {
 	
 	public static int startingPlayer;
 	public static int currentPlayer;
+	private int lastPicker;
 	private String[] player;
 	public Hand[] hand;
 	public Table table;
@@ -28,8 +28,7 @@ public class Seep {
 					+ " to create SingletonExample instance");
 		}
 		
-		startingPlayer = 3;
-		currentPlayer = startingPlayer;
+		startingPlayer = 0;
 		deck = Deck.getInstance();
 		player = new String[]{"You" , "Player 1", "Player 2", "Player 3"};
 		turns = 0;
@@ -56,8 +55,13 @@ public class Seep {
 		return instance;
 	}
 	
+	/**
+	 * called at start of every new game or a restart
+	 * will reshuffle and deal cards for a new game
+	 */
 	public void dealCards() {
 		turns = 0;
+		currentPlayer = startingPlayer;
 		for(Hand h : hand) {
 			if (h.getCardCount() > 0) {
 				h.clear();
@@ -75,7 +79,7 @@ public class Seep {
 		
 		if (hasFaceCard) {
 			for (int i = 0; i < 4; i++) {
-				table.addAskingCard(deck.dealCard());
+				table.placeCard(deck.dealCard());
 			} //end of Table dealing loop
 
 			gameviewPanel = GameplayPanel2.getInstance();
@@ -126,10 +130,13 @@ public class Seep {
 		if (turns == 0) {
 			firstTurn();
 		}
-		else if (turns == 47) {
+		else if (turns >= 47) {
 			endGame();
 		}
-		else playTurn();
+		else {
+			playTurn();
+			}
+		
 		turns++;
 		currentPlayer++;
 	}	
@@ -149,11 +156,12 @@ public class Seep {
 		chosenCard = CardMath.findAskingCard(hand[startingPlayer]);
 		chosenNumber = chosenCard.getCardNumber();
 		
-		if (CardMath.checkForSeep(chosenCard)) {
-			doTheSeep(chosenCard);
-			return;
-		}
+//		if (CardMath.checkForSeep(chosenCard)) {
+//			doTheSeep(chosenCard);
+//			return;
+//		}
 		
+		//checking to see if Card can be built
 		if (CardMath.canAskingCardBeBuilt(chosenCard, hand[startingPlayer]) ) {
 			buildHandCard = CardMath.handCard;
 			buildTableCard = CardMath.tableCard;
@@ -165,41 +173,60 @@ public class Seep {
 			table.addCard(buildHandCard, chosenNumber);
 			table.addCard(buildTableCard, chosenNumber);
 			gameviewPanel.redrawTable();
+			
+			// once card stack is built, checking to see if other single cards
+			// add up to the built stack value
+			if (CardMath.areThereMoreCombos(chosenNumber)) {
+				updatePanel(startingPlayer);
+				hand[startingPlayer].sortBySuit();
+				hand[startingPlayer].sortByValue();
+				gameviewPanel.redrawTable();
+			}
+			
+			updateScores();
 			return;
 			
 		}
 		
-		if (CardMath.isAskingCardonTable(chosenCard)) {
+		// this will pick up if same card is on ground
+		else if (CardMath.isAskingCardonTable(chosenCard)) {
 			
-			for (int i = 0; i < table.getCardCount(); i++) {
+			table.removeCard(CardMath.tableCard);
+			hand[startingPlayer].removeCard(chosenCard);
+			updatePanel(startingPlayer);
+			gameviewPanel.redrawTable();
+			pickupCard(chosenCard);
+			pickupCard(CardMath.tableCard);
+			updateScores();
+			System.out.println(player[startingPlayer]+ " picked up " + chosenCard + " and " + CardMath.tableCard);
 			
-				if ( chosenNumber == table.getCard(i).getCardNumber()) {
-					Card foundCard = table.getCard(i);
-					System.out.println("found it!!" + chosenCard + "  " + foundCard);
-					
-					table.removeCard(foundCard);
-					chosenCard = CardMath.checkForSpadeVersion(hand[startingPlayer], chosenCard, true);
-					hand[startingPlayer].removeCard(chosenCard);
-				
-					team[startingPlayer%2].pickupCard(foundCard);
-					team[startingPlayer%2].pickupCard(chosenCard);
-					JOptionPane.showMessageDialog(null, player[startingPlayer] + " picked up " + chosenCard + " and " + foundCard);
-					System.out.println("Cards " +  foundCard +" and "+ chosenCard + " are in the stash");
-				
-					gameviewPanel = GameplayPanel2.getInstance();
-					gameviewPanel.redrawTable();
-				
-					updatePanel(startingPlayer);
-					hand[startingPlayer].sortBySuit();
-					hand[startingPlayer].sortByValue();
-					updateScores();
-
-				
-				} //TODO this does not pick up all suits of a given Card Number; need to fix and seperate Hand Card Removal and Table Clearance
+			if (CardMath.areThereMoreCombos(chosenCard)) {
+				updatePanel(startingPlayer);
+				hand[startingPlayer].sortBySuit();
+				hand[startingPlayer].sortByValue();
+				gameviewPanel.redrawTable();
 			}
+			updateScores();
+			return;
+			
 		}
 		
 		else {
+			
+			// this will run when Asking card cannot be built 
+			// & the same card is not on the ground
+			if (CardMath.areThereMoreCombos(chosenCard)) {
+				updatePanel(startingPlayer);
+				hand[startingPlayer].sortBySuit();
+				hand[startingPlayer].sortByValue();
+				gameviewPanel.redrawTable();
+				updateScores();
+				return;
+			}
+			
+			
+			// Last option is throwing down the card with no other action. 
+			// NO combo to pick up nor same card to pick up
 			hand[startingPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
 			gameviewPanel.redrawTable();
@@ -217,28 +244,95 @@ public class Seep {
 		
 		Card chosenCard = new Card();
 		Card foundCard = new Card();
-		if (CardMath.checkTableforCard(hand[currentPlayer])) {
+		
+		
+		int seepCard = CardMath.checkForSeep();
+		
+		//checks if player has the card that will result in Seep!
+		if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
 			chosenCard = CardMath.handCard;
-			foundCard = CardMath.tableCard;
-			table.removeCard(foundCard);
-			chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
+			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
+					+ " can Seep with their " + chosenCard + "!");
 			hand[currentPlayer].removeCard(chosenCard);
-		
-			team[currentPlayer%2].pickupCard(foundCard);
-			team[currentPlayer%2].pickupCard(chosenCard);
-			JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
-			System.out.println("Cards " +  foundCard +" and "+ chosenCard + " are in the stash");
-			
-			gameviewPanel = GameplayPanel2.getInstance();
-			gameviewPanel.redrawTable();
-		
+			pickupAllCards();
+			pickupCard(chosenCard);
 			updatePanel(currentPlayer);
-			hand[currentPlayer].sortBySuit();
-			hand[currentPlayer].sortByValue();
+			gameviewPanel.redrawTable();
 			updateScores();
+			return;
+		}
+		//TODO check to build! first
+		
+		//WIll look to pick up pile
+		if (table.getStackCount() > 2 ) {
+		// runs this only if there are more than 2 stacks or risk seep!
 		
 			
-		} else {
+			
+			
+			
+			
+			
+			if (CardMath.checkTableforStack(hand[currentPlayer])) {
+			
+				chosenCard = CardMath.handCard; 
+				chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
+			
+				hand[currentPlayer].removeCard(chosenCard);
+				pickupCard(chosenCard);
+				updatePanel(currentPlayer);
+				hand[currentPlayer].sortBySuit();
+				hand[currentPlayer].sortByValue();
+			
+				int cardsLeft = CardMath.stackSize;
+				while (cardsLeft > 0) {
+					System.out.println();
+					CardMath.pickupStack(chosenCard);
+					foundCard = CardMath.tableCard;
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
+					System.out.println(foundCard +" is in the stash");
+					gameviewPanel.redrawTable();
+					cardsLeft--;
+				}
+			
+				System.out.println(chosenCard +" is in the stash");
+				
+				if (CardMath.areThereMoreCombos(chosenCard)) {
+					updatePanel(startingPlayer);
+					hand[startingPlayer].sortBySuit();
+					hand[startingPlayer].sortByValue();
+					gameviewPanel.redrawTable();
+				}
+				
+				if (CardMath.areThereMoreCombos(chosenCard)) {
+					updatePanel(startingPlayer);
+					hand[startingPlayer].sortBySuit();
+					hand[startingPlayer].sortByValue();
+					gameviewPanel.redrawTable();
+				}
+				
+				updateScores();
+		
+			}	
+			
+			else {
+				
+				
+				chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
+				hand[currentPlayer].removeCard(chosenCard);
+				table.addCard(chosenCard);
+				gameviewPanel.redrawTable();
+				updatePanel(currentPlayer);
+				hand[currentPlayer].sortBySuit();
+				hand[currentPlayer].sortByValue();
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+				
+			}
+			
+		}
+		
+		else {
+			
 			chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 			hand[currentPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
@@ -249,28 +343,45 @@ public class Seep {
 			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 			
 		}
+		
 	}
 	
+	
+
 	public void endGame() {
 		System.out.println(team[0].getRealtimeScore() + "  " + team[0].countCards());
 		System.out.println(team[1].getRealtimeScore() + "  " + team[1].countCards());
+		
+		//TODO need to do everything required when ending game. 
+		//pick up remaining cards to last pickeruppper.
+		//such as resetting cards runtimeScores
+		//calculating who will start the game next time
 	}
 	
 	public void doTheSeep(Card card) {
-		int cardsOnTable = table.getCardCount();
-		Card currentCard;
-		for(int i = 0; i < cardsOnTable; i++) {
-			currentCard = table.getCard(i);
-			team[currentPlayer%2].pickupCard(currentCard);
-			table.removeCard(currentCard);
-		}
-		team[currentPlayer%2].pickupCard(card);
-		hand[currentPlayer].removeCard(card);
-		updatePanel(currentPlayer);
-		gameviewPanel.redrawTable();
+		
 	}
 	
+	public void pickupCard(Card card) {
+		team[currentPlayer%2].pickupCard(card);
+		lastPicker = currentPlayer;
+	}
 	
+	private void pickupAllCards() {
+		Card card = new Card();
+		
+		for ( int s = 0; s < table.getStackCount(); s++) {
+			
+			for ( int c = 0; c < table.getStackofCards(s).size(); c++) {
+				
+				card = table.getStackofCards(s).get(c);
+				team[currentPlayer%2].pickupCard(card);
+			}
+		}
+		table.clear();
+		team[currentPlayer%2].hitAseep();
+		lastPicker = currentPlayer;
+	}
 	public void clearScores() {
 		team[0].newGame();
 		team[1].newGame();

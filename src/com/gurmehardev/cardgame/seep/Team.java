@@ -64,4 +64,8 @@ public class Team {
 	public int countCards() {
 		return stash.getCardCount();
 	}
+	
+	public void hitAseep() {
+		stash.seep();
+	}
 }

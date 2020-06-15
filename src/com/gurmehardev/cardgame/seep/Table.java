@@ -14,7 +14,7 @@ public class Table {
 
 	private volatile static Table instance = null;
 	
-	private ArrayList<Card> table;
+	
 	private static ArrayList<Stack> stack;
 	
 	private Table() {
@@ -23,7 +23,7 @@ public class Table {
 					+ " to create SingletonExample instance");
 		}
 		
-		table = new ArrayList<Card>();
+		
 		stack = new ArrayList<Stack>();
 	} // Table constructor
 
@@ -43,10 +43,10 @@ public class Table {
 	 * Not sufficient when going to add on to a stack.
 	 * @param card
 	 */
-	public void addAskingCard(Card card) {
-		table.add(card);
-		addCardtoStack(card);
-		sortByValue();
+	public void placeCard(Card card) {
+		stack.add(new Stack(card));
+		System.out.println("A stack of " + card.getCardNumber() + " has been created. addAskingCard(Card)");
+		sortByStack();
 	} //end of addCard to Table
 
 	/**
@@ -85,22 +85,28 @@ public class Table {
 	 * @param card
 	 */
 	public void addCard(Card card) {
-		table.add(card);
 		addCardtoStack(card);
-		sortByValue();
+		sortByStack();
 	}
 	
+	/**
+	 * this method is for adding a card to stack
+	 * that has been built!.
+	 * @param card
+	 * @param stackVal
+	 */
 	public void addCard(Card card, int stackVal) {
-		table.add(card);
 		int stackSz = stack.size();
 		for (int x = 0; x < stackSz; x++) {
 			if (stack.get(x).getStackValue() == stackVal) {
 				stack.get(x).addCard(card);
+				System.out.println(card + " has been added to the stack of " + stackVal);
 				return;
 			}
 		}
 		stack.add(new Stack(card, stackVal));
-		sortByValue();
+		System.out.println("A stack of " + stackVal + " has been created. addCard(Card, int)");
+		sortByStack();
 	}
 	
 	/**
@@ -125,24 +131,67 @@ public class Table {
 			} 
 		}  //
 		if (!stackExists) {
-			stack.add(new Stack(card, false));
-			System.out.println("A stack of " + cardNum + " has been created");
+			stack.add(new Stack(card));
+			System.out.println("A stack of " + cardNum + " has been created. addCardtoStack(Card)");
 		}
 		
 	}
 	
 	public void removeCard(Card card) {
-		table.remove(card);
 		removeCardfromStack(card);
 	}
 	
+	/**
+	 * This is expecting the card being removed is in the stack.
+	 * And will attempt to only remove the card from the stack if
+	 * there are more cards in the stack. until it is the last card;
+	 * @param card
+	 * @param stkVal
+	 */
+	public void removeCardfromStack(Card card, int stkVal) {
+		int stackSz = stack.size();
+		for (int st = 0; st < stackSz; st++) {
+			if (stack.get(st).getStackValue() == stkVal) {
+				int cardsInStk = stack.get(st).getCardStack().size();
+				System.out.println("stack " + stack.get(st).getStackValue() 
+						+ " has " + cardsInStk + " cards. removeCardfromStack(Card , int) from Table.class ");
+				if (cardsInStk > 1) {
+
+					for (int i = 0; i < cardsInStk; i++) {
+						if (stack.get(st).getCardStack().get(i) == card) {
+							stack.get(st).getCardStack().remove(i);
+							return;
+						}
+					}
+				}
+				else if (cardsInStk == 1) {
+					stack.get(st).getCardStack().remove(0);
+					stack.remove(st);
+					return;
+				}
+				else if (cardsInStk == 0) {
+					System.out.println("some how the stack being emptied"
+							+ " was already empty?? removeCardfromStack(Card, int) in Table.class");
+					return;
+				}
+				
+				
+			}
+		}
+		
+	}
+	
+	/**
+	 * does not seem to be working Correctyl TODO
+	 * @param card
+	 */
 	private void removeCardfromStack(Card card) {
 		int cardNum = card.getCardNumber();
 		
 		for (int i = 0; i < stack.size(); i++) {
 			
 			if (stack.get(i).getStackValue() == cardNum) {
-				System.out.println("Stack of " + stack.get(i).getStackValue() + " is removed.");
+				System.out.println("Card is removed from stack of  " + stack.get(i).getStackValue() + ". removeCardfromStack(Card)");
 				stack.remove(i);
 				
 			}
@@ -163,7 +212,6 @@ public class Table {
 	}
 	
 	public void clear() {
-		table.clear();
 		clearStacks();
 	}
 	
@@ -171,17 +219,24 @@ public class Table {
 		stack.clear();
 	}
 	
+	/**
+	 * this method will check each stack and return
+	 * the total amount of cards in all stacks.
+	 * @return amount of Cards on table
+	 */
 	public int getCardCount() {
-		return table.size();
+		int stacks = stack.size();
+		int cards = 0;
+		for ( int s = 0; s < stacks; s++) {
+			cards += stack.get(s).getCardStack().size();
+		}
+		return cards;
 	}
-	
-	public Card getCard(int position) {
-		return table.get(position);
-	}
+
 	
 	public void sortByStack() {
         ArrayList<Stack> newStack = new ArrayList<Stack>();
-        while (table.size() > 0) {
+        while (stack.size() > 0) {
             int pos = 0;  // Position of minimal card.
             Stack s = stack.get(0);  // Minimal card.
             for (int i = 1; i < stack.size(); i++) {
@@ -197,24 +252,25 @@ public class Table {
         }
         stack = newStack;
     }
-	public void sortByValue() {
-        ArrayList<Card> newTable = new ArrayList<Card>();
-        while (table.size() > 0) {
-            int pos = 0;  // Position of minimal card.
-            Card c = table.get(0);  // Minimal card.
-            for (int i = 1; i < table.size(); i++) {
-                Card c1 = table.get(i);
-                if ( c1.getCardNumber() < c.getCardNumber() ||
-                        (c1.getCardNumber() == c.getCardNumber() /* && c1.getCardSuit() < c.getCardSuit() */)) {
-                    pos = i;
-                    c = c1;
-                }
-            }
-            table.remove(pos);
-            newTable.add(c);
-        }
-        table = newTable;
-    }
+	
+//	public void sortByValue() {
+//        ArrayList<Card> newTable = new ArrayList<Card>();
+//        while (table.size() > 0) {
+//            int pos = 0;  // Position of minimal card.
+//            Card c = table.get(0);  // Minimal card.
+//            for (int i = 1; i < table.size(); i++) {
+//                Card c1 = table.get(i);
+//                if ( c1.getCardNumber() < c.getCardNumber() ||
+//                        (c1.getCardNumber() == c.getCardNumber() /* && c1.getCardSuit() < c.getCardSuit() */)) {
+//                    pos = i;
+//                    c = c1;
+//                }
+//            }
+//            table.remove(pos);
+//            newTable.add(c);
+//        }
+//        table = newTable;
+//    }
 	
 	public Stack getStack(int i) {
 		return stack.get(i);
@@ -226,8 +282,33 @@ public class Table {
 	public ArrayList<Card> getStackofCards(int i) {
 		return stack.get(i).getCardStack();
 	}
+	
+	/**
+	 * This method returns the amount of Stacks are currently on the table
+	 * @return
+	 */
 	public int getStackCount() {
 		return stack.size();
 	}
+	
+	/**
+	 * This method is called from checkTableforStack() in CardMath
+	 * 
+	 * it requires the value of the stack you are looking for.
+	 * It tells you whether or not that stack exists.
+	 * 
+	 * @param stackVal
+	 * @return
+	 */
+	public boolean hasStack(int stackVal) {
+		
+		for ( int i = 0; i < stack.size(); i++) {
+			if (stack.get(i).getStackValue() == stackVal) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 }
