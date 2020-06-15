@@ -118,9 +118,7 @@ public class Seep {
 		// TODO need to throw exception and end the game.. to reshuffle and start again
 		else dealCards();
 		
-		
-		
-		
+		updateScores();
 	} //end of dealCards()
 	
 	public void checkTurn() {
@@ -239,26 +237,30 @@ public class Seep {
 			
 	} //end of First Turn()
 	
-	
+	/**
+	 * This method is called on everyturn except for the first
+	 * and except the last ???
+	 * TODO  should last turn be with this as well? I 
+	 * am starting to think so. maybe endGame should just clear
+	 * everything up on its own.
+	 */
 	public void playTurn() {
 		
 		Card chosenCard = new Card();
 		Card foundCard = new Card();
-		
 		
 		int seepCard = CardMath.checkForSeep();
 		
 		//checks if player has the card that will result in Seep!
 		if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
 			chosenCard = CardMath.handCard;
+			chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
 			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
 					+ " can Seep with their " + chosenCard + "!");
 			hand[currentPlayer].removeCard(chosenCard);
 			pickupAllCards();
 			pickupCard(chosenCard);
-			updatePanel(currentPlayer);
-			gameviewPanel.redrawTable();
-			updateScores();
+			finishTurn();
 			return;
 		}
 		//TODO check to build! first
@@ -266,52 +268,48 @@ public class Seep {
 		//WIll look to pick up pile
 		if (table.getStackCount() > 2 ) {
 		// runs this only if there are more than 2 stacks or risk seep!
-		
 			
 			
 			
 			
 			
 			
-			if (CardMath.checkTableforStack(hand[currentPlayer])) {
 			
-				chosenCard = CardMath.handCard; 
-				chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
+			if (CardMath.canAddtoStack(hand[currentPlayer])) {}
 			
-				hand[currentPlayer].removeCard(chosenCard);
-				pickupCard(chosenCard);
-				updatePanel(currentPlayer);
-				hand[currentPlayer].sortBySuit();
-				hand[currentPlayer].sortByValue();
+			else if (CardMath.checkTableforStack(hand[currentPlayer])) {
 			
-				int cardsLeft = CardMath.stackSize;
-				while (cardsLeft > 0) {
-					System.out.println();
-					CardMath.pickupStack(chosenCard);
-					foundCard = CardMath.tableCard;
-					JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
-					System.out.println(foundCard +" is in the stash");
-					gameviewPanel.redrawTable();
-					cardsLeft--;
-				}
-			
-				System.out.println(chosenCard +" is in the stash");
+				//TODO the following method doesnt actually run
+				if (!CardMath.causesSeep()) {
+					chosenCard = CardMath.handCard; 
+					chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
 				
-				if (CardMath.areThereMoreCombos(chosenCard)) {
-					updatePanel(startingPlayer);
-					hand[startingPlayer].sortBySuit();
-					hand[startingPlayer].sortByValue();
-					gameviewPanel.redrawTable();
-				}
+					pickupCard(chosenCard);
 				
-				if (CardMath.areThereMoreCombos(chosenCard)) {
-					updatePanel(startingPlayer);
-					hand[startingPlayer].sortBySuit();
-					hand[startingPlayer].sortByValue();
-					gameviewPanel.redrawTable();
-				}
+					int cardsLeft = CardMath.stackSize;
+					
+					while (cardsLeft > 0) {
+						System.out.println();
+						CardMath.pickupStack(chosenCard);
+						foundCard = CardMath.tableCard;
+						JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
+						System.out.println(foundCard +" is in the stash");
+						gameviewPanel.redrawTable();
+						cardsLeft--;
+					}
 				
-				updateScores();
+					System.out.println(chosenCard +" is in the stash");
+					
+					if (CardMath.areThereMoreCombos(chosenCard)) {
+						
+					}
+					
+					if (CardMath.areThereMoreCombos(chosenCard)) {
+						
+					}
+					
+					finishTurn();
+				}
 		
 			}	
 			
@@ -321,32 +319,33 @@ public class Seep {
 				chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
 				table.addCard(chosenCard);
-				gameviewPanel.redrawTable();
-				updatePanel(currentPlayer);
-				hand[currentPlayer].sortBySuit();
-				hand[currentPlayer].sortByValue();
+				finishTurn();
 				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 				
 			}
 			
 		}
 		
+		//Stacks are 2 or less!
 		else {
 			
 			chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 			hand[currentPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
-			gameviewPanel.redrawTable();
-			updatePanel(currentPlayer);
-			hand[currentPlayer].sortBySuit();
-			hand[currentPlayer].sortByValue();
+			finishTurn();
 			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 			
 		}
 		
+	} // end of playTurn();
+	
+	public void finishTurn() {
+		hand[currentPlayer].sortBySuit();
+		hand[currentPlayer].sortByValue();
+		updatePanel(currentPlayer);
+		gameviewPanel.redrawTable();
+		updateScores();
 	}
-	
-	
 
 	public void endGame() {
 		System.out.println(team[0].getRealtimeScore() + "  " + team[0].countCards());
@@ -362,18 +361,27 @@ public class Seep {
 		
 	}
 	
+	/**
+	 * This method is called when picking up a card to 
+	 * add to the player team's stack
+	 * @param card - usually chosenCard but can be any other
+	 * that needs to be picked up immediately and directly
+	 */
 	public void pickupCard(Card card) {
 		team[currentPlayer%2].pickupCard(card);
 		lastPicker = currentPlayer;
 	}
 	
-	private void pickupAllCards() {
+	/**
+	 * This method should only be called when committing
+	 * a SEEP of the cards. THEREFORE should only
+	 * be called within a true CheckForSeep() block
+	 */
+	public void pickupAllCards() {
 		Card card = new Card();
 		
 		for ( int s = 0; s < table.getStackCount(); s++) {
-			
 			for ( int c = 0; c < table.getStackofCards(s).size(); c++) {
-				
 				card = table.getStackofCards(s).get(c);
 				team[currentPlayer%2].pickupCard(card);
 			}
@@ -382,6 +390,14 @@ public class Seep {
 		team[currentPlayer%2].hitAseep();
 		lastPicker = currentPlayer;
 	}
+	
+	/**
+	 * This method is used when game is ended
+	 * TODO "Not sure if this is used only for
+	 * premature ending i.e. pressing STOP. 
+	 * Or for when a game is totally finishes 
+	 * Needs to be cleared up.
+	 */
 	public void clearScores() {
 		team[0].newGame();
 		team[1].newGame();
@@ -389,6 +405,10 @@ public class Seep {
 		MenuPanel2.addOppScore(0);
 	}
 	
+	/**
+	 * This method calculates the team[] scores
+	 * and send them to MenuPanel to be updated
+	 */
 	public void updateScores() {
 		MenuPanel2.addYourScore(team[0].getRealtimeScore());
 		MenuPanel2.addOppScore(team[1].getRealtimeScore());

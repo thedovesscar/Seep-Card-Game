@@ -61,10 +61,21 @@ public class Team {
 		stash.addCard(card);
 	}
 	
+	/**
+	 * This method checks the amount of Cards a
+	 * team has picked up in their stash.
+	 * @return amount of Cards in team stash
+	 */
 	public int countCards() {
 		return stash.getCardCount();
 	}
 	
+	/**
+	 * This method is called for the team that 
+	 * has gotten a SEEP.
+	 * It calls the seep() in Stash.class
+	 * to add a seep to their score tally.
+	 */
 	public void hitAseep() {
 		stash.seep();
 	}

@@ -261,6 +261,16 @@ public class CardMath {
 	}
 
 	/**
+	 * this method checks
+	 * 
+	 * @return True when player can add a card from their hand
+	 * to build on top of existing stack
+	 */
+	static boolean canAddtoStack(Hand hand) {
+		
+		return false;
+	}
+	/**
 	 * This currently checks for a pickable stack but also attempts to pick them
 	 * up
 	 * TODO currently having an error at picking up the cards correctly
@@ -285,6 +295,19 @@ public class CardMath {
 				}
 			}
 		}
+		
+		return false;
+	}
+	
+	/**
+	 * TODO
+	 * This method should be called whenever picking up cards or stacks
+	 * to check whether or not the resulting stacks left will cause a seep
+	 * to occur.
+	 * 
+	 * @return
+	 */
+	static boolean causesSeep() {
 		
 		return false;
 	}
