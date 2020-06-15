@@ -69,6 +69,16 @@ public class CardMath {
 		return 0; //TODO
 	}
 	
+	/**
+	 * This method is meant to be called only once 
+	 * checkForSeep() has been called and return a int val
+ 	 * 
+	 * @param reqVal - value gotten from checkForSeep();
+	 * @param hand - currrentPlayer's hand to check for Card
+	 * with required Val
+	 * @return - will return true and make static handCard
+	 * the card going to be used as Card for SEEP
+	 */
 	static boolean hasCardforSeep(int reqVal, Hand hand) {
 		
 		for (int c = 0; c < hand.getCardCount(); c++ ) {
@@ -77,8 +87,6 @@ public class CardMath {
 				return true;
 			}
 		}
-		
-		
 		return false;
 	}
 	
@@ -261,7 +269,7 @@ public class CardMath {
 	}
 
 	/**
-	 * this method checks
+	 * TODO
 	 * 
 	 * @return True when player can add a card from their hand
 	 * to build on top of existing stack
