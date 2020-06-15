@@ -57,7 +57,13 @@ public class Seep {
 	
 	/**
 	 * called at start of every new game or a restart
-	 * will reshuffle and deal cards for a new game
+	 * will reshuffle and deal cards for a new game if 
+	 * asking player does not receive face Card
+	 * 
+	 * Currently does not reshuffle if any other player does
+	 * not receive at least one face card 
+	 * Haven't come across that issue. 
+	 * TODO will need to keep above in MIND
 	 */
 	public void dealCards() {
 		turns = 0;
@@ -115,7 +121,6 @@ public class Seep {
 			}
 		} // end if Player has Valid faceCard
 		
-		// TODO need to throw exception and end the game.. to reshuffle and start again
 		else dealCards();
 		
 		updateScores();
@@ -175,13 +180,10 @@ public class Seep {
 			// once card stack is built, checking to see if other single cards
 			// add up to the built stack value
 			if (CardMath.areThereMoreCombos(chosenNumber)) {
-				updatePanel(startingPlayer);
-				hand[startingPlayer].sortBySuit();
-				hand[startingPlayer].sortByValue();
-				gameviewPanel.redrawTable();
+				
 			}
 			
-			updateScores();
+			finishTurn(startingPlayer);
 			return;
 			
 		}
@@ -191,20 +193,14 @@ public class Seep {
 			
 			table.removeCard(CardMath.tableCard);
 			hand[startingPlayer].removeCard(chosenCard);
-			updatePanel(startingPlayer);
-			gameviewPanel.redrawTable();
 			pickupCard(chosenCard);
 			pickupCard(CardMath.tableCard);
-			updateScores();
 			System.out.println(player[startingPlayer]+ " picked up " + chosenCard + " and " + CardMath.tableCard);
 			
 			if (CardMath.areThereMoreCombos(chosenCard)) {
-				updatePanel(startingPlayer);
-				hand[startingPlayer].sortBySuit();
-				hand[startingPlayer].sortByValue();
-				gameviewPanel.redrawTable();
+				
 			}
-			updateScores();
+			finishTurn(startingPlayer);
 			return;
 			
 		}
@@ -214,11 +210,7 @@ public class Seep {
 			// this will run when Asking card cannot be built 
 			// & the same card is not on the ground
 			if (CardMath.areThereMoreCombos(chosenCard)) {
-				updatePanel(startingPlayer);
-				hand[startingPlayer].sortBySuit();
-				hand[startingPlayer].sortByValue();
-				gameviewPanel.redrawTable();
-				updateScores();
+				finishTurn(startingPlayer);
 				return;
 			}
 			
@@ -227,10 +219,7 @@ public class Seep {
 			// NO combo to pick up nor same card to pick up
 			hand[startingPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
-			gameviewPanel.redrawTable();
-			updatePanel(startingPlayer);
-			hand[startingPlayer].sortBySuit();
-			hand[startingPlayer].sortByValue();
+			finishTurn(startingPlayer);
 			JOptionPane.showMessageDialog(null, player[startingPlayer] + " threw down " + chosenCard);
 			
 		}
@@ -260,7 +249,7 @@ public class Seep {
 			hand[currentPlayer].removeCard(chosenCard);
 			pickupAllCards();
 			pickupCard(chosenCard);
-			finishTurn();
+			finishTurn(currentPlayer);
 			return;
 		}
 		//TODO check to build! first
@@ -270,12 +259,9 @@ public class Seep {
 		// runs this only if there are more than 2 stacks or risk seep!
 			
 			
-			
-			
-			
-			
-			
-			if (CardMath.canAddtoStack(hand[currentPlayer])) {}
+			if (CardMath.canAddtoStack(hand[currentPlayer])) {
+				//TODO
+			}
 			
 			else if (CardMath.checkTableforStack(hand[currentPlayer])) {
 			
@@ -300,28 +286,34 @@ public class Seep {
 				
 					System.out.println(chosenCard +" is in the stash");
 					
+					/* These are bring called to pick up all variations
+					 * of the chosen card on the ground which you would have to do
+					 * if picking up a card of value. Returns boolean which idk
+					 * if i need
+					 * 
+					 * also idk if i need 2
+					 * 
+					 */
+					CardMath.areThereMoreCombos(chosenCard);
 					if (CardMath.areThereMoreCombos(chosenCard)) {
 						
 					}
 					
-					if (CardMath.areThereMoreCombos(chosenCard)) {
-						
-					}
-					
-					finishTurn();
+					hand[currentPlayer].removeCard(chosenCard);
+					finishTurn(currentPlayer);
+					return;
 				}
 		
 			}	
 			
 			else {
 				
-				
 				chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
 				table.addCard(chosenCard);
-				finishTurn();
+				finishTurn(currentPlayer);
 				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-				
+				return;
 			}
 			
 		}
@@ -332,17 +324,17 @@ public class Seep {
 			chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 			hand[currentPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
-			finishTurn();
+			finishTurn(currentPlayer);
 			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-			
+			return;
 		}
 		
 	} // end of playTurn();
 	
-	public void finishTurn() {
-		hand[currentPlayer].sortBySuit();
-		hand[currentPlayer].sortByValue();
-		updatePanel(currentPlayer);
+	public void finishTurn(int p) {
+		hand[p].sortBySuit();
+		hand[p].sortByValue();
+		updatePanel(p);
 		gameviewPanel.redrawTable();
 		updateScores();
 	}
@@ -355,10 +347,6 @@ public class Seep {
 		//pick up remaining cards to last pickeruppper.
 		//such as resetting cards runtimeScores
 		//calculating who will start the game next time
-	}
-	
-	public void doTheSeep(Card card) {
-		
 	}
 	
 	/**
@@ -414,6 +402,11 @@ public class Seep {
 		MenuPanel2.addOppScore(team[1].getRealtimeScore());
 	}
 	
+	/**
+	 * This method will automatically update the 
+	 * current player's panel 
+	 * @param player
+	 */
 	public void updatePanel(int player) {
 		if (player==0) {
 			userPanel = UserPanel.getInstance();
@@ -434,8 +427,10 @@ public class Seep {
 		
 		
 	}
+	
 	/**
 	 * this was just to demo test if the shuffling was working for the cards
+	 * @deprecated
 	 */
 	public void display() {
 		int count = hand[0].getCardCount();
