@@ -210,6 +210,7 @@ public class Seep {
 			// this will run when Asking card cannot be built 
 			// & the same card is not on the ground
 			if (CardMath.areThereMoreCombos(chosenCard)) {
+				hand[startingPlayer].removeCard(chosenCard);
 				finishTurn(startingPlayer);
 				return;
 			}
@@ -251,7 +252,10 @@ public class Seep {
 			pickupCard(chosenCard);
 			finishTurn(currentPlayer);
 			return;
-		}
+			
+		}  //END of Check for SEEP Block
+		
+		
 		//TODO check to build! first
 		
 		//WIll look to pick up pile
@@ -316,11 +320,74 @@ public class Seep {
 				return;
 			}
 			
-		}
+		} //end of Greater than 2 Stacks if statment block
 		
 		//Stacks are 2 or less!
 		else {
+			//if there are 2 stacks
+			if (table.getStackCount() == 2) {
 			
+				//First need to check if anything can be built!!!
+				//TODO = if no buildable then else will choose card to throw down!
+				if (false) {
+					
+				}
+				
+				//These are the THROW DOWN method calls!
+				else {
+					
+					//if both are being built then normal throwdown card method.
+					if (table.getBuiltStacks() == 2) {
+						chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
+						hand[currentPlayer].removeCard(chosenCard);
+						table.addCard(chosenCard);
+						finishTurn(currentPlayer);
+						JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+						return;
+					}
+					
+					if (table.getBuiltStacks() == 1) {
+						//need to figure out which stack is being built and make sure card thrown 
+						//down does not add up to it.
+						chosenCard = CardMath.throwDownCard1B2S(hand[currentPlayer]);
+						hand[currentPlayer].removeCard(chosenCard);
+						table.addCard(chosenCard);
+						finishTurn(currentPlayer);
+						JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+						return;
+					}
+					
+					if (table.getBuiltStacks() == 0) {
+						chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+						hand[currentPlayer].removeCard(chosenCard);
+						table.addCard(chosenCard);
+						finishTurn(currentPlayer);
+						JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+						return;
+					}
+				}
+			} //end of 2Stacks
+			
+			//if there is one stack (which player does not have since no SEEP)
+			else if (table.getStackCount() == 1) {
+				
+				//TODO
+				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+				hand[currentPlayer].removeCard(chosenCard);
+				table.addCard(chosenCard);
+				finishTurn(currentPlayer);
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+				return;
+				
+			}
+			
+			else if (table.getStackCount() == 0) {
+				
+				//TODO
+			}
+			
+			
+			//TODO eventually the following 6 lines of code will not need to be here!
 			chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 			hand[currentPlayer].removeCard(chosenCard);
 			table.addCard(chosenCard);
@@ -330,6 +397,9 @@ public class Seep {
 		}
 		
 	} // end of playTurn();
+	
+	
+	
 	
 	public void finishTurn(int p) {
 		hand[p].sortBySuit();

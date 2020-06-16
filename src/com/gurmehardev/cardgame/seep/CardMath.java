@@ -343,6 +343,7 @@ public class CardMath {
 	 * This is simple test for which card to throw down
 	 * will throw lowest card that isnt a spade
 	 * and then throw lowest card if all spades
+	 * 
 	 * @param hand
 	 * @return
 	 */
@@ -371,6 +372,117 @@ public class CardMath {
 		return hand.getCard(0);
 	}
 	
+	/** 
+	 * This method runs most of the same checks as the base throwDownCard();
+	 * method above except will check that there will be no seep afterwards.
+	 * 
+	 * 1 Built  stack, total 2 Stacks
+	 * @param hand
+	 * @return
+	 */
+	static Card throwDownCard1B2S(Hand hand) {
+		//first check which stack is being built.
+		int stk;
+		int oppStk;
+		int stkVal;
+		
+		if ( table.getStack(0).isBeingBuilt()) {
+			stk = 0;		
+			oppStk = 1;
+			stkVal = table.getStack(0).getStackValue();
+			}
+		else {
+			stk = 1;	
+			oppStk = 0;
+			stkVal = table.getStack(1).getStackValue();
+		}
+		
+		
+		//will check for lowest card not on table, and not spade first.
+		for(int ii = 0; ii < hand.getCardCount(); ii++) {
+
+			if ( hand.getCard(ii).getCardSuit() != Card.SPADE) {						
+				if ( !doesStackExist(hand.getCard(ii).getCardNumber())) {
+					if (hand.getCard(ii).getCardNumber() 
+							+ table.getStackValue(oppStk)
+							!= stkVal)
+						return hand.getCard(ii);
+				}
+			}
+		}
+		//will check for lowest card not on table of any suit
+		for(int ii = 0; ii < hand.getCardCount(); ii++) {
+				
+			if ( !doesStackExist(hand.getCard(ii).getCardNumber())) {
+				if (hand.getCard(ii).getCardNumber() 
+						+ table.getStackValue(oppStk)
+						!= stkVal)
+					return hand.getCard(ii);				
+			}			
+		}
+				
+		//will throw regardless of consequence 
+		//TODO maybe should be highest card since seep is possible
+		return hand.getCard(0);
+		
+		
+	}
+	
+	/**
+	 * This method should be called when there are now 
+	 * built stacks. This will attempt to throw a card that 
+	 * results in a total value on the field above 13
+	 * 
+	 * @param current Player's hand
+	 * @return which Card is playable and will not result in a SEEP
+	 */
+	static Card throwDownCard0B(Hand hand) {
+		
+		int totalStkVal = 0;
+		
+		for ( int i = 0; i < table.getStackCount(); i++) {
+			totalStkVal += table.getStackValue(i);
+		}
+		
+		if (totalStkVal > 13) {
+			Card card = throwDownCard(hand);
+			return card ;
+		}
+	
+		//will check for lowest card not on table, and not spade first.
+		for(int ii = 0; ii < hand.getCardCount(); ii++) {
+
+			if ( hand.getCard(ii).getCardSuit() != Card.SPADE) {
+				
+				if ( !doesStackExist(hand.getCard(ii).getCardNumber())) {
+					if ( hand.getCard(ii).getCardNumber() 
+							+ totalStkVal > 13)
+						return hand.getCard(ii);
+				}
+			}
+		}
+		//will check for lowest card not on table of any suit
+		for(int ii = 0; ii < hand.getCardCount(); ii++) {
+		
+			if ( !doesStackExist(hand.getCard(ii).getCardNumber())) {
+				if ( hand.getCard(ii).getCardNumber() 
+						+ totalStkVal > 13)
+					return hand.getCard(ii);				
+			}			
+		}
+		
+		//will throw regardless of consequence 
+		//TODO maybe should be highest card since seep is possible
+		return hand.getCard(0);
+	}
+	
+	/**
+	 * This method checks if there is any stack that currently has the 
+	 * value submitted as parameter.
+	 * 
+	 * @param val
+	 * @return - boolean - whether or not a stack with that value already exists
+	 */
 	static boolean doesStackExist(int val) {
 		
 		for ( int i = 0; i < table.getStackCount(); i++) {

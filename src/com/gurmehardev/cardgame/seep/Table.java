@@ -291,6 +291,20 @@ public class Table {
 		return stack.size();
 	}
 	
+	/** 
+	 * This method checks how many stacks are being built on the Table
+	 * @return int - amount of stacks being built.
+	 */
+	public int getBuiltStacks() {
+		int count = 0;
+		
+		for (int s = 0; s < stack.size(); s++) {
+			if (stack.get(s).isBeingBuilt())
+				count++;
+		}
+		
+		return count;
+	}
 	/**
 	 * This method is called from checkTableforStack() in CardMath
 	 * 
