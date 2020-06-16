@@ -371,7 +371,6 @@ public class Seep {
 			//if there is one stack (which player does not have since no SEEP)
 			else if (table.getStackCount() == 1) {
 				
-				//TODO
 				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
 				table.addCard(chosenCard);
@@ -383,17 +382,17 @@ public class Seep {
 			
 			else if (table.getStackCount() == 0) {
 				
-				//TODO
+				chosenCard = CardMath.throwLeastLikelySEEP(hand[currentPlayer]);
+				hand[currentPlayer].removeCard(chosenCard);
+				table.addCard(chosenCard);
+				finishTurn(currentPlayer);
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+				return;
 			}
 			
 			
 			//TODO eventually the following 6 lines of code will not need to be here!
-			chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
-			hand[currentPlayer].removeCard(chosenCard);
-			table.addCard(chosenCard);
-			finishTurn(currentPlayer);
-			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-			return;
+			
 		}
 		
 	} // end of playTurn();

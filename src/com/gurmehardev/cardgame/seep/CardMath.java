@@ -471,6 +471,90 @@ public class CardMath {
 			}			
 		}
 		
+		Card card; 
+		card = throwLeastLikelySEEP(hand);
+		return card;
+		//will throw regardless of consequence 
+		//TODO maybe should be highest card since seep is possible
+	}
+	
+	/**
+	 * This method does what it implies
+	 * 
+	 * if checks for what card the user has the most of. 
+	 * @param hand
+	 * @return
+	 */
+	static Card throwLeastLikelySEEP(Hand hand) {
+		
+		int totalStkVal = 0;
+		
+		for ( int i = 0; i < table.getStackCount(); i++) {
+			totalStkVal += table.getStackValue(i);
+		}
+		int prev = 0;
+		int curr = 0;
+		int twice = 0;
+		int thrice = 0;
+		int quad = 0;
+		
+		//TODO maybe i should save hand at beginning of round so layer "remembers"
+		//their hand
+	
+		for (int i = 0; i < hand.getCardCount(); i++) {
+			curr = hand.getCard(i).getCardNumber();
+			if (thrice == curr) {
+				quad = curr;
+			}
+			
+			if (twice == curr) {
+				thrice = twice;
+			}
+			if ( curr == prev) {
+				twice = curr;
+			}
+			
+			prev = curr;
+			
+		}
+		System.out.println("least likely seep" +quad+thrice+twice+curr);
+		
+		
+		if (quad != 0) {
+			curr = quad;
+		}
+		else if (thrice != 0) {
+			curr = thrice;
+		}
+		else if (twice != 0) {
+			curr = twice;
+		}
+		else  {
+			return hand.getCard(0);
+		}
+		
+		curr = curr - totalStkVal;
+		
+		
+		//will check for lowest card not on table, and not spade first.
+		for(int ii = 0; ii < hand.getCardCount(); ii++) {
+
+			if ( hand.getCard(ii).getCardSuit() != Card.SPADE) {
+				
+				if ( !doesStackExist(hand.getCard(ii).getCardNumber())) {
+					if ( hand.getCard(ii).getCardNumber() == curr)
+						return hand.getCard(ii);
+				}
+			}
+		}
+		//will check for lowest card not on table of any suit
+		for(int ii = 0; ii < hand.getCardCount(); ii++) {
+		
+			if ( !doesStackExist(hand.getCard(ii).getCardNumber())) {
+				if ( hand.getCard(ii).getCardNumber() == curr)
+					return hand.getCard(ii);				
+			}			
+		}
 		//will throw regardless of consequence 
 		//TODO maybe should be highest card since seep is possible
 		return hand.getCard(0);
