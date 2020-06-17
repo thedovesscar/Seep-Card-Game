@@ -14,6 +14,7 @@ public class Card {
 	 */
 	private final String cardName;
 	
+	private final boolean buildable;
 	
 	public final static int SPADE = 0;
 	public final static int CLOVER = 1;
@@ -65,6 +66,7 @@ public class Card {
 		cardPoints = 0;
 		cardNumber = 0;
 		cardImg = "";
+		buildable = false;
 	}
 
 	/**
@@ -81,6 +83,11 @@ public class Card {
 		cardName = cardNumberString + " of " + cardSuitString + "s";
 		counter++;
 		cardCounter = counter;
+		if (number > 8) {
+			buildable = true;
+		}
+		else 
+			buildable = false;
 	}
 	
 
@@ -192,6 +199,9 @@ public class Card {
 		return cardNumber;
 	}
 
+	public boolean isBuildable() {
+		return buildable;
+	}
 
 	/**
 	 * @return the cardCount

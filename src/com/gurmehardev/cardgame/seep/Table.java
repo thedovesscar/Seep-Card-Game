@@ -350,6 +350,15 @@ public class Table {
 			
 		return val;
 	}
+
+	public int getfirstBuiltStack() {
+		for (int s = 0; s < getStackCount(); s++) {
+			if (stack.get(s).isBeingBuilt() ) 
+				return stack.get(s).getStackValue();
+		}
+	
+		return 0;
+	}
 	
 	
 }

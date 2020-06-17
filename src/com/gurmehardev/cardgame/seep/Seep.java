@@ -201,6 +201,8 @@ public class Seep {
 			if (CardMath.areThereMoreCombos(chosenCard)) {
 				
 			}
+
+			CardMath.isThereAnotherCard(chosenCard);
 			finishTurn(startingPlayer);
 			return;
 			
@@ -427,9 +429,7 @@ public class Seep {
 						 * 
 						 */
 						CardMath.areThereMoreCombos(chosenCard);
-						if (CardMath.areThereMoreCombos(chosenCard)) {
-							
-						}
+						CardMath.isThereAnotherCard(chosenCard);
 						
 						hand[currentPlayer].removeCard(chosenCard);
 						finishTurn(currentPlayer);
@@ -460,25 +460,17 @@ public class Seep {
 					return;
 				}
 				
-				int toBuild = CardMath.chooseStacktoBuild(hand[currentPlayer]);
-				
-				if (toBuild == 0) {
-					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
-					hand[currentPlayer].removeCard(chosenCard);
-					table.addCard(chosenCard);
+				if (CardMath.buildStack(hand[currentPlayer])) {
+					JOptionPane.showMessageDialog(null, "Built a new Stack!");
 					finishTurn(currentPlayer);
-					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 					return;
 				}
-				
-				chosenCard = CardMath.handCard;
-				foundCard = CardMath.tableCard;
+			
+				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
-				table.removeCard(foundCard);
-				gameviewPanel.redrawTable();
-				table.addCard(chosenCard, toBuild);
-				table.addCard(foundCard, toBuild);
+				table.addCard(chosenCard);
 				finishTurn(currentPlayer);
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 				return;
 			}
 			
@@ -492,26 +484,20 @@ public class Seep {
 					finishTurn(currentPlayer);
 					return;
 				}
-				int toBuild = CardMath.chooseStacktoBuild(hand[currentPlayer]);
 				
-				if (toBuild == 0) {
-					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
-					hand[currentPlayer].removeCard(chosenCard);
-					table.addCard(chosenCard);
+				if (CardMath.buildStack(hand[currentPlayer])) {
+					JOptionPane.showMessageDialog(null, "Built a new Stack!");
 					finishTurn(currentPlayer);
-					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 					return;
 				}
-				
-				chosenCard = CardMath.handCard;
-				foundCard = CardMath.tableCard;
+			
+				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
-				table.removeCard(foundCard);
-				gameviewPanel.redrawTable();
-				table.addCard(chosenCard, toBuild);
-				table.addCard(foundCard, toBuild);
+				table.addCard(chosenCard);
 				finishTurn(currentPlayer);
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 				return;
+				
 				
 			}
 			
@@ -532,26 +518,19 @@ public class Seep {
 					}
  				}
 				
-				int toBuild = CardMath.chooseStacktoBuild(hand[currentPlayer]);
-				
-				if (toBuild == 0) {
-					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
-					hand[currentPlayer].removeCard(chosenCard);
-					table.addCard(chosenCard);
+				if (CardMath.buildStack(hand[currentPlayer])) {
+					JOptionPane.showMessageDialog(null, "Built a new Stack!");
 					finishTurn(currentPlayer);
-					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 					return;
 				}
 				
-				chosenCard = CardMath.handCard;
-				foundCard = CardMath.tableCard;
+				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
-				table.removeCard(foundCard);
-				gameviewPanel.redrawTable();
-				table.addCard(chosenCard, toBuild);
-				table.addCard(foundCard, toBuild);
+				table.addCard(chosenCard);
 				finishTurn(currentPlayer);
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 				return;
+				
 				
 			}
 		}
@@ -563,6 +542,19 @@ public class Seep {
 			//TODO = if no buildable then else will choose card to throw down!
 			//if both are being built then normal throwdown card method.
 				if (table.getBuiltStacks() == 2) {
+					
+					if (CardMath.throwOnTop()) {
+						chosenCard = CardMath.handCard;
+						hand[currentPlayer].removeCard(chosenCard);
+						table.addCard(chosenCard);
+						finishTurn(currentPlayer);
+						return;
+					}
+					
+					if (CardMath.breakStack(hand[currentPlayer])) {
+						
+					}
+					
 					chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 					hand[currentPlayer].removeCard(chosenCard);						table.addCard(chosenCard);
 					finishTurn(currentPlayer);
@@ -573,19 +565,45 @@ public class Seep {
 				if (table.getBuiltStacks() == 1) {
 					//need to figure out which stack is being built and make sure card thrown 
 					//down does not add up to it.
+					if (CardMath.throwOnTop()) {
+						chosenCard = CardMath.handCard;
+						hand[currentPlayer].removeCard(chosenCard);
+						table.addCard(chosenCard);
+						finishTurn(currentPlayer);
+						return;
+					}
+					
+					if (CardMath.buildStack(hand[currentPlayer])) {
+						JOptionPane.showMessageDialog(null, "Built a new Stack!");
+						finishTurn(currentPlayer);
+						return;
+					}
+					
+					if (CardMath.breakStack(hand[currentPlayer])) {
+						
+					}
+					
 					chosenCard = CardMath.throwDownCard1B2S(hand[currentPlayer]);
 					hand[currentPlayer].removeCard(chosenCard);
 					table.addCard(chosenCard);
 					finishTurn(currentPlayer);
-					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);						return;
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);	
+					return;
 				}
 					
 				if (table.getBuiltStacks() == 0) {
+					
+					if (CardMath.buildStack(hand[currentPlayer])) {
+						JOptionPane.showMessageDialog(null, "Built a new Stack!");
+						finishTurn(currentPlayer);
+						return;
+					}
+					
 					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
 					hand[currentPlayer].removeCard(chosenCard);
 					table.addCard(chosenCard);
-						finishTurn(currentPlayer);
-				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
 					return;
 				}
 			

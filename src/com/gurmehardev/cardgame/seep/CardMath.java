@@ -91,21 +91,31 @@ public class CardMath {
 		return false;
 	}
 	
-	/**
-	 * This should be called beginning of turn to check if Seep is possible.
-	 * @param card
-	 * @return
-	 */
-	static boolean checkForSeep(Card card) {
+	
+	public static boolean throwOnTop() {
+		
+		int p = Seep.currentPlayer;
+		Hand hd = gameSeep.hand[p];
+		for ( int s = 0; s < table.getStackCount(); s++) {
+			int stack = table.getStackValue(s);
+			Card c = new Card();
+			for (int hc = 0; hc < hd.getCardCount(); hc++) {
+		
+				if (hd.getCard(hc).getCardNumber() == c.getCardNumber()) {
+					if ( c.getCardNumber() == table.getStackValue(s)) {
+						if (table.getStack(s).isBeingBuilt()) {
+							handCard = c;
+							stack = s;
+							return true;
+						}
+					}
+				}
+				c = hd.getCard(hc);
+			}
+		}
+		
+		
 		return false;
-	}
-	
-	
-	/**
-	 *  Should be called when there are 3 Stacks
-	 * @param Card c 
-	 */
-	static void checkForCombo(Card c) {
 		
 	}
 	
@@ -245,6 +255,19 @@ public class CardMath {
 						}
 					}
 				}
+			}
+		}
+		return false;
+	}
+	
+	static boolean isThereAnotherCard(Card card) {
+		int stackSz = table.getStackCount();
+		
+		
+		//Will go through all possible combos of existing stacks
+		for (int i = 0; i < stackSz; i++) {
+			if (card.getCardNumber() == table.getStackValue(i) ) {
+				pickupStack(card);
 			}
 		}
 		return false;
@@ -689,7 +712,7 @@ public class CardMath {
 		int val = 0;
 		
 		for (int i = 0; i < hand.getCardCount(); i++) {
-			if ( hand.getCard(i).getCardNumber() > 8 ) {
+			if ( hand.getCard(i).isBuildable()) {
 				if ( hand.getCard(i).getCardSuit() == Card.SPADE) {
 					val = hand.getCard(i).getCardNumber();
 					break;
@@ -697,8 +720,8 @@ public class CardMath {
 			}
 		}
 		if (val == 0) {
-			for (int i = hand.getCardCount(); i >= 0; i--) {
-				if ( hand.getCard(i-1).getCardNumber() > 8 ) {
+			for (int i = hand.getCardCount(); i > 0; i--) {
+				if ( hand.getCard(i-1).isBuildable()) {
 					val = hand.getCard(i-1).getCardNumber();
 					break;	
 				}
@@ -722,9 +745,61 @@ public class CardMath {
 		else 
 			return true;
 	}
-	
-	
-	
-	
+
+	/**
+	 * This method will try to build any stack possible!
+	 * with which ever card is on the ground
+	 * 
+	 * @param hand
+	 * @return
+	 */
+	public static boolean buildStack(Hand hand) {
+		// TODO Auto-generated method stub
+		
+		for ( int c = 0; c < hand.getCardCount(); c++) {
+			for ( int s = 0; s < table.getStackCount(); s++) {
+				for ( int bC = 0; bC < hand.getCardCount(); bC++) {
+					if ( !table.getStack(s).isBeingBuilt()) {
+						if ( hand.getCard(c).getCardNumber() + table.getStackValue(s) 
+						== hand.getCard(bC).getCardNumber()) {
+							if (hand.getCard(bC).isBuildable()) {
+								if ( hand.getCard(bC).getCardNumber() != table.getfirstBuiltStack()) {
+									handCard = hand.getCard(c);
+									tableCard = table.getStack(s).getCardStack().get(0);
+									table.removeCard(tableCard);
+									stack = hand.getCard(bC).getCardNumber();
+									table.addCard(tableCard, stack);
+									gameSeep.hand[Seep.currentPlayer].removeCard(handCard);
+									table.addCard(handCard, stack);
+									return true;
+								}
+							}
+						}
+					}
+					
+					
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		return false;
+	}
+
+	/**
+	 * THis method will check if a stack on the ground is breakable
+	 * 
+	 * @param hand
+	 * @return
+	 */
+	public static boolean breakStack(Hand hand) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }
