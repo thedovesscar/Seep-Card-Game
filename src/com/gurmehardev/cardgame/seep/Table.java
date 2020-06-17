@@ -1,6 +1,7 @@
 package com.gurmehardev.cardgame.seep;
 
 import com.gurmehardev.cardgame.*;
+import com.sun.istack.internal.FragmentContentHandler;
 
 import java.util.ArrayList;
 
@@ -305,6 +306,17 @@ public class Table {
 		
 		return count;
 	}
+	
+	public int getNonBuiltValue() {
+		int val = 0;
+		for (int s = 0; s < getStackCount(); s++) {
+			if (!stack.get(s).isBeingBuilt()) {
+				val += getStackValue(s);
+			}
+		}
+		return val;
+	}
+	
 	/**
 	 * This method is called from checkTableforStack() in CardMath
 	 * 
@@ -322,6 +334,21 @@ public class Table {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * returns the total stack Vals of Table
+	 * 
+	 * @return
+	 */
+	public int getTotalStackValue() {
+		int val = 0;
+		
+		for ( int s = 0; s < getStackCount(); s++) {
+			val += getStackValue(s);
+		}
+			
+		return val;
 	}
 	
 	

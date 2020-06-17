@@ -192,6 +192,7 @@ public class Seep {
 		else if (CardMath.isAskingCardonTable(chosenCard)) {
 			
 			table.removeCard(CardMath.tableCard);
+			chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard, true);
 			hand[startingPlayer].removeCard(chosenCard);
 			pickupCard(chosenCard);
 			pickupCard(CardMath.tableCard);
@@ -259,15 +260,10 @@ public class Seep {
 		//TODO check to build! first
 		
 		//WIll look to pick up pile
-		if (table.getStackCount() > 2 ) {
+		if (table.getStackCount() >= 5 ) {
 		// runs this only if there are more than 2 stacks or risk seep!
 			
-			
-			if (CardMath.canAddtoStack(hand[currentPlayer])) {
-				//TODO
-			}
-			
-			else if (CardMath.checkTableforStack(hand[currentPlayer])) {
+			if (CardMath.checkTableforStack(hand[currentPlayer])) {
 			
 				//TODO the following method doesnt actually run
 				if (!CardMath.causesSeep()) {
@@ -322,78 +318,301 @@ public class Seep {
 			
 		} //end of Greater than 2 Stacks if statment block
 		
-		//Stacks are 2 or less!
-		else {
-			//if there are 2 stacks
-			if (table.getStackCount() == 2) {
+		else if (table.getStackCount() == 4) {
 			
-				//First need to check if anything can be built!!!
-				//TODO = if no buildable then else will choose card to throw down!
-				if (false) {
+			if (CardMath.checkTableforStack(hand[currentPlayer])) {
+			
+				//TODO the following method doesnt actually run
+				if (!CardMath.causesSeep()) {
+					chosenCard = CardMath.handCard; 
+					chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
+				
+					pickupCard(chosenCard);
+				
+					int cardsLeft = CardMath.stackSize;
 					
+					while (cardsLeft > 0) {
+						System.out.println();
+						CardMath.pickupStack(chosenCard);
+						foundCard = CardMath.tableCard;
+						JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
+						System.out.println(foundCard +" is in the stash");
+						gameviewPanel.redrawTable();
+						cardsLeft--;
+					}
+				
+					System.out.println(chosenCard +" is in the stash");
+					
+					/* These are bring called to pick up all variations
+					 * of the chosen card on the ground which you would have to do
+					 * if picking up a card of value. Returns boolean which idk
+					 * if i need
+					 * 
+					 * also idk if i need 2
+					 * 
+					 */
+					CardMath.areThereMoreCombos(chosenCard);
+					if (CardMath.areThereMoreCombos(chosenCard)) {
+						
+					}
+					
+					hand[currentPlayer].removeCard(chosenCard);
+					finishTurn(currentPlayer);
+					return;
+				}
+		
+			}	
+			
+			else {
+				
+				chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
+				hand[currentPlayer].removeCard(chosenCard);
+				table.addCard(chosenCard);
+				finishTurn(currentPlayer);
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+				return;
+			}
+		}
+		
+		else if (table.getStackCount() == 3) {
+		
+			if (table.getBuiltStacks() == 3) {
+				
+				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+					chosenCard = CardMath.handCard;
+					pickupCard(chosenCard);
+					hand[currentPlayer].removeCard(chosenCard);
+					
+					int cardsLeft = CardMath.stackSize;
+					while (cardsLeft > 0) {
+						System.out.println();
+						CardMath.pickupStack(chosenCard);
+						foundCard = CardMath.tableCard;
+						JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
+						System.out.println(foundCard +" is in the stash");
+						gameviewPanel.redrawTable();
+						cardsLeft--;
+					}
+					finishTurn(currentPlayer);
+					return;
 				}
 				
-				//These are the THROW DOWN method calls!
+				else if (CardMath.checkTableforStack(hand[currentPlayer])) {
+					
+					//TODO the following method doesnt actually run
+					if (!CardMath.causesSeep()) {
+						chosenCard = CardMath.handCard; 
+						chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
+						pickupCard(chosenCard);
+					
+						int cardsLeft = CardMath.stackSize;
+						while (cardsLeft > 0) {
+							System.out.println();
+							CardMath.pickupStack(chosenCard);
+							foundCard = CardMath.tableCard;
+							JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
+							System.out.println(foundCard +" is in the stash");
+							gameviewPanel.redrawTable();
+							cardsLeft--;
+						}
+					
+						System.out.println(chosenCard +" is in the stash");
+						
+						/* These are bring called to pick up all variations
+						 * of the chosen card on the ground which you would have to do
+						 * if picking up a card of value. Returns boolean which idk
+						 * if i need
+						 * 
+						 * also idk if i need 2
+						 * 
+						 */
+						CardMath.areThereMoreCombos(chosenCard);
+						if (CardMath.areThereMoreCombos(chosenCard)) {
+							
+						}
+						
+						hand[currentPlayer].removeCard(chosenCard);
+						finishTurn(currentPlayer);
+						return;
+					}
+			
+				}	
+				
 				else {
 					
-					//if both are being built then normal throwdown card method.
-					if (table.getBuiltStacks() == 2) {
-						chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
-						hand[currentPlayer].removeCard(chosenCard);
-						table.addCard(chosenCard);
-						finishTurn(currentPlayer);
-						JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-						return;
-					}
-					
-					if (table.getBuiltStacks() == 1) {
-						//need to figure out which stack is being built and make sure card thrown 
-						//down does not add up to it.
-						chosenCard = CardMath.throwDownCard1B2S(hand[currentPlayer]);
-						hand[currentPlayer].removeCard(chosenCard);
-						table.addCard(chosenCard);
-						finishTurn(currentPlayer);
-						JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-						return;
-					}
-					
-					if (table.getBuiltStacks() == 0) {
-						chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
-						hand[currentPlayer].removeCard(chosenCard);
-						table.addCard(chosenCard);
-						finishTurn(currentPlayer);
-						JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-						return;
-					}
+					chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);
+					table.addCard(chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					return;
 				}
-			} //end of 2Stacks
+			}
+			
+			else if (table.getBuiltStacks() == 2) {
+				
+				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+					chosenCard = CardMath.handCard;
+					pickupCard(chosenCard);
+					hand[currentPlayer].removeCard(chosenCard);
+					CardMath.pickupStack(chosenCard);
+					finishTurn(currentPlayer);
+					return;
+				}
+				
+				int toBuild = CardMath.chooseStacktoBuild(hand[currentPlayer]);
+				
+				if (toBuild == 0) {
+					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);
+					table.addCard(chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					return;
+				}
+				
+				chosenCard = CardMath.handCard;
+				foundCard = CardMath.tableCard;
+				hand[currentPlayer].removeCard(chosenCard);
+				table.removeCard(foundCard);
+				gameviewPanel.redrawTable();
+				table.addCard(chosenCard, toBuild);
+				table.addCard(foundCard, toBuild);
+				finishTurn(currentPlayer);
+				return;
+			}
+			
+			else if (table.getBuiltStacks() == 1) {
+
+				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+					chosenCard = CardMath.handCard;
+					pickupCard(chosenCard);
+					hand[currentPlayer].removeCard(chosenCard);
+					CardMath.pickupStack(chosenCard);
+					finishTurn(currentPlayer);
+					return;
+				}
+				int toBuild = CardMath.chooseStacktoBuild(hand[currentPlayer]);
+				
+				if (toBuild == 0) {
+					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);
+					table.addCard(chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					return;
+				}
+				
+				chosenCard = CardMath.handCard;
+				foundCard = CardMath.tableCard;
+				hand[currentPlayer].removeCard(chosenCard);
+				table.removeCard(foundCard);
+				gameviewPanel.redrawTable();
+				table.addCard(chosenCard, toBuild);
+				table.addCard(foundCard, toBuild);
+				finishTurn(currentPlayer);
+				return;
+				
+			}
+			
+			// ***********************************
+			//  ZER0 Built stacks*****
+			else {
+				
+				//will check if Card can be picked up without seep!
+				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+					chosenCard = CardMath.handCard;
+					
+					if (!CardMath.causesSeep0B(chosenCard.getCardNumber())) {
+						pickupCard(chosenCard);
+						hand[currentPlayer].removeCard(chosenCard);
+						CardMath.pickupStack(chosenCard);
+						finishTurn(currentPlayer);
+						return;
+					}
+ 				}
+				
+				int toBuild = CardMath.chooseStacktoBuild(hand[currentPlayer]);
+				
+				if (toBuild == 0) {
+					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);
+					table.addCard(chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					return;
+				}
+				
+				chosenCard = CardMath.handCard;
+				foundCard = CardMath.tableCard;
+				hand[currentPlayer].removeCard(chosenCard);
+				table.removeCard(foundCard);
+				gameviewPanel.redrawTable();
+				table.addCard(chosenCard, toBuild);
+				table.addCard(foundCard, toBuild);
+				finishTurn(currentPlayer);
+				return;
+				
+			}
+		}
+		
+			//if there are 2 stacks
+		else if (table.getStackCount() == 2) {
+			
+			//First need to check if anything can be built!!!
+			//TODO = if no buildable then else will choose card to throw down!
+			//if both are being built then normal throwdown card method.
+				if (table.getBuiltStacks() == 2) {
+					chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);						table.addCard(chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					return;
+				}
+					
+				if (table.getBuiltStacks() == 1) {
+					//need to figure out which stack is being built and make sure card thrown 
+					//down does not add up to it.
+					chosenCard = CardMath.throwDownCard1B2S(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);
+					table.addCard(chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);						return;
+				}
+					
+				if (table.getBuiltStacks() == 0) {
+					chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);
+					table.addCard(chosenCard);
+						finishTurn(currentPlayer);
+				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					return;
+				}
+			
+		} //end of 2Stacks
 			
 			//if there is one stack (which player does not have since no SEEP)
-			else if (table.getStackCount() == 1) {
+		else if (table.getStackCount() == 1) {
 				
-				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
-				hand[currentPlayer].removeCard(chosenCard);
-				table.addCard(chosenCard);
-				finishTurn(currentPlayer);
-				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-				return;
-				
-			}
-			
-			else if (table.getStackCount() == 0) {
-				
-				chosenCard = CardMath.throwLeastLikelySEEP(hand[currentPlayer]);
-				hand[currentPlayer].removeCard(chosenCard);
-				table.addCard(chosenCard);
-				finishTurn(currentPlayer);
-				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-				return;
-			}
-			
-			
-			//TODO eventually the following 6 lines of code will not need to be here!
+			chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+			hand[currentPlayer].removeCard(chosenCard);
+			table.addCard(chosenCard);
+			finishTurn(currentPlayer);
+			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+			return;
 			
 		}
+			
+		else if (table.getStackCount() == 0) {
+				
+			chosenCard = CardMath.throwLeastLikelySEEP(hand[currentPlayer]);
+			hand[currentPlayer].removeCard(chosenCard);
+			table.addCard(chosenCard);
+			finishTurn(currentPlayer);
+			JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+			return;
+		}
+		//TODO eventually the following 6 lines of code will not need to be here!
 		
 	} // end of playTurn();
 	

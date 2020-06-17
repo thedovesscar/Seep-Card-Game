@@ -1,6 +1,7 @@
 package com.gurmehardev.cardgame.seep;
 
 import com.gurmehardev.cardgame.*;
+import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
 
 import java.util.ArrayList;
 
@@ -274,7 +275,24 @@ public class CardMath {
 	 * @return True when player can add a card from their hand
 	 * to build on top of existing stack
 	 */
-	static boolean canAddtoStack(Hand hand) {
+	static boolean canCardBeBuilt(int cVal, Hand hand) {
+		int stkSz = table.getStackCount();
+		
+		for ( int x = 0 ; x < hand.getCardCount(); x++ ) {
+			for ( int y = 0; y < stkSz; y++) {
+				if (!table.getStack(y).isDoubled()) {
+					if (hand.getCard(x).getCardNumber() + table.getStackValue(y) == cVal) {
+						if (hand.getCard(x).getCardNumber() == cVal) {
+						}
+						else {
+							handCard = hand.getCard(x);
+							tableCard = table.getStackofCards(y).get(0);
+							return true;
+						}
+					}
+				}
+			}
+		}
 		
 		return false;
 	}
@@ -501,8 +519,8 @@ public class CardMath {
 		//TODO maybe i should save hand at beginning of round so layer "remembers"
 		//their hand
 	
-		for (int i = 0; i < hand.getCardCount(); i++) {
-			curr = hand.getCard(i).getCardNumber();
+		for (int i = hand.getCardCount(); i > 0; i--) {
+			curr = hand.getCard(i-1).getCardNumber();
 			if (thrice == curr) {
 				quad = curr;
 			}
@@ -631,5 +649,82 @@ public class CardMath {
 		
 		return cardFound;
 	}
+
+	/**
+	 * This method is called to check if user can pick up Spade of any stack
+	 * if so then player should pick up that card. and stack.
+	 * 
+	 * @param hand
+	 * @return
+	 */
+	public static boolean hasSpadeToPickUp(Hand hand) {
+		for (int hc = 0; hc < hand.getCardCount(); hc++) {
+			if (hand.getCard(hc).getCardSuit() == Card.SPADE) {
+				for ( int s = 0; s < table.getStackCount(); s++) {
+					if ( hand.getCard(hc).getCardNumber() == table.getStackValue(s) ) {
+						handCard = hand.getCard(hc);
+						stack = s;
+						stackSize = table.getStackofCards(s).size();
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * THis method will run when player must build Stack and check which
+	 * stack Value can be built with which card.
+	 * 
+	 * FIrst the highest spade face card will be chosen
+	 * then the highest non spade.
+	 * 
+	 * then it will be checked if it can be built
+	 * 
+	 * @param hand
+	 * @return - val = the stack val that can be built with handCard and tableCard.
+	 */
+	public static int chooseStacktoBuild(Hand hand) {
+		int val = 0;
+		
+		for (int i = 0; i < hand.getCardCount(); i++) {
+			if ( hand.getCard(i).getCardNumber() > 8 ) {
+				if ( hand.getCard(i).getCardSuit() == Card.SPADE) {
+					val = hand.getCard(i).getCardNumber();
+					break;
+				}
+			}
+		}
+		if (val == 0) {
+			for (int i = hand.getCardCount(); i >= 0; i--) {
+				if ( hand.getCard(i-1).getCardNumber() > 8 ) {
+					val = hand.getCard(i-1).getCardNumber();
+					break;	
+				}
+			}
+		}
+		
+		if (canCardBeBuilt(val, hand)) {
+			return val;
+		}
+		return 0;
+	}
+
+	//** this will check if picking up a certain can risk a simple <14 SEEP
+	public static boolean causesSeep0B(int cV) {
+		
+		int totStkVal = table.getTotalStackValue();
+		// TODO Auto-generated method stub
+		
+		if (totStkVal - cV >= 14) 
+			return false;
+		else 
+			return true;
+	}
+	
+	
+	
+	
 	
 }
