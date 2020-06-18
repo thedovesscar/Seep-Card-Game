@@ -33,7 +33,11 @@ public class Player3Panel extends JPanel{
 	public void dealCards() {
 		this.removeAll();
 		cardLabel.clear();
+		JLabel myTurnJLabel = new JLabel("Player Three's Turn!");
 		
+		if (Seep.currentPlayer == 3) {
+			add(myTurnJLabel);
+		}
 		for (int i = 0; i < gameSeep.hand[3].getCardCount(); i++) {
 			cardLabel.add(new JLabel(new ImageIcon(gameSeep.hand[3].getCard(i).getCardImg())));
 			add(cardLabel.get(i));

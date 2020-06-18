@@ -359,6 +359,18 @@ public class Table {
 	
 		return 0;
 	}
+
+	public void removeStack(int stackValue) {
+for (int i = 0; i < stack.size(); i++) {
+			
+			if (stack.get(i).getStackValue() == stackValue) {
+				stack.remove(i);
+				
+			}
+			
+		}
+		
+	}
 	
 	
 }

@@ -34,6 +34,11 @@ public class Player2Panel extends JPanel {
 		this.removeAll();
 		cardLabel.clear();
 		
+		JLabel myTurnJLabel = new JLabel("Player Two's Turn!");
+		
+		if (Seep.currentPlayer == 2) {
+			add(myTurnJLabel);
+		}
 		for (int i = 0; i < gameSeep.hand[2].getCardCount(); i++) {
 			cardLabel.add(new JLabel(new ImageIcon(gameSeep.hand[2].getCard(i).getCardImg())));
 			add(cardLabel.get(i));

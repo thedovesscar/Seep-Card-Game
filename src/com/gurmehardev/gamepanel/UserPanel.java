@@ -75,7 +75,11 @@ public class UserPanel extends JPanel implements ActionListener {
 	public void dealCards(boolean asking) {
 		this.removeAll();
 		cardLabel.clear();
+		JLabel myTurnJLabel = new JLabel("My Turn!");
 		
+		if (Seep.currentPlayer == 0) {
+			add(myTurnJLabel);
+		}
 		for (int i = 0; i < gameSeep.hand[0].getCardCount(); i++) {
 			cardLabel.add(new JLabel(new ImageIcon(gameSeep.hand[0].getCard(i).getCardImg())));
 			add(cardLabel.get(i));

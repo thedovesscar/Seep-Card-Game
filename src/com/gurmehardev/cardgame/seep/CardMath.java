@@ -1,11 +1,15 @@
 package com.gurmehardev.cardgame.seep;
 
 import com.gurmehardev.cardgame.*;
-import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
+
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 
 public class CardMath {
@@ -16,6 +20,8 @@ public class CardMath {
 	static Card tableCard = new Card();
 	private static int stack;
 	static int stackSize;
+	private static Set<Integer> stkValues = new HashSet<Integer>(0);	
+	
 	public CardMath() {
 		
 	}
@@ -42,10 +48,9 @@ public class CardMath {
 			return 0;
 		}
 		
-		int totalCards = 0;
+		
 		int totalStkVal = 0;
 		for ( int s = 0; s < stacks; s++) {
-			totalCards += table.getStack(s).getCardCount();
 			totalStkVal += table.getStack(s).getStackValue();
 		}
 		
@@ -66,10 +71,29 @@ public class CardMath {
 				return stkBeingBuilt;
 			}
 		}
-		
-		return 0; //TODO
+		return 0;
 	}
 	
+	
+	
+	/**
+	 * This method will create a HashSet of all the stacks that
+	 * are currently on the field.
+	 */
+	static int  getStackValSet() {
+		stkValues.clear();
+		
+		for (int s = 0; s < table.getStackCount(); s++) {
+			stkValues.add(table.getStackValue(s));
+			
+		}
+		return stkValues.size();
+	}
+	
+	
+	static void testRemoving1StackValSet() {
+		
+	}
 	/**
 	 * This method is meant to be called only once 
 	 * checkForSeep() has been called and return a int val
@@ -87,7 +111,7 @@ public class CardMath {
 				handCard = hand.getCard(c);
 				handCard = checkForSpadeVersion(hand, handCard);
 				gameSeep.pickupCard(handCard);
-				gameSeep.pickupAllCards();
+				gameSeep.pickupAllCards(Seep.currentPlayer);
 				gameSeep.hand[Seep.currentPlayer].removeCard(handCard);
 				return true;
 			}
@@ -101,7 +125,6 @@ public class CardMath {
 		int p = Seep.currentPlayer;
 		Hand hd = gameSeep.hand[p];
 		for ( int s = 0; s < table.getStackCount(); s++) {
-			int stack = table.getStackValue(s);
 			Card c = new Card();
 			for (int hc = 0; hc < hd.getCardCount(); hc++) {
 		
@@ -262,8 +285,47 @@ public class CardMath {
 	static boolean areThereMoreCombos(Card card) {
 		int stackSz = table.getStackCount();
 		
+		//will go thru all possible combos for 3 stacks!
+		for (int i = 0; i < stackSz; i++) {
+			for (int j = 0; j < stackSz; j++) {
+				for ( int l = 0; l < stackSz; l ++) {
+					if ((i != j && i!= l) && l != j) {
+						Stack s1 = table.getStack(i);
+						Stack s2 = table.getStack(j);
+						Stack s3 = table.getStack(l);
+						
+						
+						if ( (s1.getStackValue() != card.getCardNumber()
+								&& !s1.isBeingBuilt() )
+								&& ( s2.getStackValue() != card.getCardNumber()
+								&& !s2.isBeingBuilt() ) ) {
+							
+							if (s3.getStackValue() != card.getCardNumber() && !s3.isBeingBuilt() ) {
+								if (s1.getStackValue() 
+										+ s2.getStackValue() + s3.getStackValue()== card.getCardNumber()) {
+									ArrayList<Card> stack1 = table.getStackofCards(i);  //this should be a single card
+									ArrayList<Card> stack2 = table.getStackofCards(j);  //this should be a single card
+									ArrayList<Card> stack3 = table.getStackofCards(l);  //this should be a single card
+									Card card1 = stack1.get(0);
+									Card card2 = stack2.get(0);
+									Card card3 = stack3.get(0);
+									table.removeCard(card1);
+									table.removeCard(card2);
+									table.removeCard(card3);
+									JOptionPane.showMessageDialog(null, card1 + ", " + card2 + " and "+ card3+" was also picked up.");
+									gameSeep.pickupCard(card1);
+									gameSeep.pickupCard(card2);
+									gameSeep.pickupCard(card3);
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		
-		//Will go through all possible combos of existing stacks
+		//Will go through all possible combos of 2 stacks
 		for (int i = 0; i < stackSz; i++) {
 			for (int j = 0; j < stackSz; j++) {
 				if (i != j) {
@@ -403,12 +465,16 @@ public class CardMath {
 	
 	static void pickupStack(Card card) {
 		if (card.getCardNumber() == table.getStackValue(stack)) {
-			int n = stackSize;
+			int n = table.getStackofCards(stack).size();
 			for (int i = 0; i < n; i++) {
-				tableCard = table.getStack(stack).getCardStack().get(0);
-				gameSeep.pickupCard(tableCard);
-				table.removeCardfromStack(tableCard, card.getCardNumber());
-				
+				if (table.getStack(stack).getCardCount() != 0 ){
+					tableCard = table.getStack(stack).getCardStack().get(0);
+					gameSeep.pickupCard(tableCard);
+					table.removeCardfromStack(tableCard, card.getCardNumber());
+				}
+				else {
+					
+				}
 			}
 		}
 	}
@@ -723,7 +789,9 @@ public class CardMath {
 	 * @return
 	 */
 	public static boolean hasSpadeToPickUp(Hand hand) {
-		for (int hc = 0; hc < hand.getCardCount(); hc++) {
+		int totC = hand.getCardCount();
+		totC--;
+		for (int hc = totC; hc >= 0; hc--) {
 			if (hand.getCard(hc).getCardSuit() == Card.SPADE) {
 				for ( int s = 0; s < table.getStackCount(); s++) {
 					if (hand.getCard(hc).getCardNumber() == table.getStackValue(s) ) {
@@ -804,9 +872,50 @@ public class CardMath {
 	public static boolean buildStack(Hand hand) {
 		// TODO Auto-generated method stub
 		
+		int max = hand.getCardCount();
+		max--;
+		
 		for ( int c = 0; c < hand.getCardCount(); c++) {
 			for ( int s = 0; s < table.getStackCount(); s++) {
-				for ( int bC = 0; bC < hand.getCardCount(); bC++) {
+				for ( int t = 0; t < table.getStackCount(); t++) {
+					for ( int bC = max; bC >= 0; bC--) {
+						if (s != t) {
+							if ( !table.getStack(s).isBeingBuilt()) {
+								if ( !table.getStack(t).isBeingBuilt()) {
+									if ( hand.getCard(c).getCardNumber() + table.getStackValue(s) 
+										+ table.getStackValue(t) == hand.getCard(bC).getCardNumber()) {
+										if (hand.getCard(bC).isBuildable()) {
+											if ( hand.getCard(bC).getCardNumber() != table.getfirstBuiltStack()) {
+												handCard = hand.getCard(c);
+												stack = hand.getCard(bC).getCardNumber();
+												
+												tableCard = table.getStack(s).getCardStack().get(0);
+												table.removeCard(tableCard);
+												table.addCard(tableCard, stack);
+												
+												tableCard = table.getStack(t).getCardStack().get(0);
+												table.removeCard(tableCard);
+												table.addCard(tableCard, stack);
+												
+												gameSeep.hand[Seep.currentPlayer].removeCard(handCard);
+												table.addCard(handCard, stack);
+												
+												return true;
+											}
+										}
+									}
+								}
+							}
+						}
+						
+					}
+				}
+			}
+		}
+		
+		for ( int c = 0; c < hand.getCardCount(); c++) {
+			for ( int s = 0; s < table.getStackCount(); s++) {
+				for ( int bC = max; bC >= 0; bC--) {
 					if ( !table.getStack(s).isBeingBuilt()) {
 						if ( hand.getCard(c).getCardNumber() + table.getStackValue(s) 
 						== hand.getCard(bC).getCardNumber()) {
@@ -879,7 +988,49 @@ public class CardMath {
 	 * @return
 	 */
 	public static boolean breakStack(Hand hand) {
-		// TODO Auto-generated method stub
+		int max = hand.getCardCount();
+		
+		
+		for ( int s = 0; s < table.getStackCount(); s++) {
+			if(table.getStack(s).isBeingBuilt() && !table.getStack(s).isDoubled()) {
+				for (int c = 0; c < max; c++) {
+					BUILD_CARD_LOOP:
+					for (int bC = max-1; bC >= 0; bC--) {
+						if (c != bC) {
+							for (int s2 = 0; s2 < table.getStackCount(); s2++) {
+								if (hand.getCard(bC).getCardNumber() == table.getStackValue(s2)) {
+									continue BUILD_CARD_LOOP;
+								}
+									
+							}
+							if (hand.getCard(c).getCardNumber() + table.getStackValue(s) 
+							== hand.getCard(bC).getCardNumber()) {
+								
+								handCard = hand.getCard(c); 
+								int stackVal = hand.getCard(bC).getCardNumber();
+								int oldStk = table.getStackValue(s);
+								ArrayList<Card> tempCards = table.getStack(s).getCardStack();
+
+								table.removeStack(oldStk);
+								stackSize = tempCards.size();
+								for (int tc =0; tc < stackSize; tc++) {
+									table.addCard(tempCards.get(tc), stackVal);
+								}
+								
+								table.addCard(handCard, stackVal);
+								gameSeep.hand[Seep.currentPlayer].removeCard(handCard);
+								JOptionPane.showMessageDialog(null, gameSeep.player[Seep.currentPlayer] +" just broke " + oldStk
+										+ " and made it into " + stackVal);
+								return true;
+							}
+						}
+					}
+				}
+			}
+				
+				
+		}
+
 		return false;
 	}
 	

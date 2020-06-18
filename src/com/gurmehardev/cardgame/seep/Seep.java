@@ -139,7 +139,6 @@ public class Seep {
 		else {
 			playTurn();
 			}
-		
 		turns++;
 		currentPlayer++;
 	}	
@@ -159,10 +158,28 @@ public class Seep {
 		chosenCard = CardMath.findAskingCard(hand[startingPlayer]);
 		chosenNumber = chosenCard.getCardNumber();
 		
-//		if (CardMath.checkForSeep(chosenCard)) {
-//			doTheSeep(chosenCard);
-//			return;
-//		}
+		int seepCard = CardMath.checkForSeep();
+		if (chosenNumber == seepCard) {
+			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
+						+ " can Seep with their " + chosenCard + "!");
+			pickupCard(chosenCard);
+			pickupAllCards(currentPlayer);
+			finishTurn(currentPlayer);
+			return;
+				
+			
+		}
+		
+		
+		//checks if player has the card that will result in Seep!
+		if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
+			chosenCard = CardMath.handCard;
+			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
+					+ " can Seep with their " + chosenCard + "!");
+			finishTurn(currentPlayer);
+			return;
+			
+		}
 		
 		//checking to see if Card can be built
 		if (CardMath.canAskingCardBeBuilt(chosenCard, hand[startingPlayer]) ) {
@@ -329,26 +346,29 @@ public class Seep {
 		
 			if (table.getBuiltStacks() == 3) {
 				
-				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
-					chosenCard = CardMath.handCard;
-					if (CardMath.areThereMoreCombos(chosenCard)) {	
+				if (CardMath.getStackValSet() > 2) {
+					if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+						chosenCard = CardMath.handCard;
+						if (CardMath.areThereMoreCombos(chosenCard)) {	
+						}
+						if (CardMath.isThereAnotherCard(chosenCard)) {
+						}
+						finishTurn(currentPlayer);
+						return;
 					}
-					if (CardMath.isThereAnotherCard(chosenCard)) {
+					
+					else if (CardMath.checkTableforStack(hand[currentPlayer])) {
+						chosenCard = CardMath.handCard;
+						if (CardMath.areThereMoreCombos(chosenCard)) {	
+						}
+						if (CardMath.isThereAnotherCard(chosenCard)) {
+						}
+						finishTurn(currentPlayer);
+						return;
+						
 					}
-					finishTurn(currentPlayer);
-					return;
 				}
 				
-				else if (CardMath.checkTableforStack(hand[currentPlayer])) {
-					chosenCard = CardMath.handCard;
-					if (CardMath.areThereMoreCombos(chosenCard)) {	
-					}
-					if (CardMath.isThereAnotherCard(chosenCard)) {
-					}
-					finishTurn(currentPlayer);
-					return;
-					
-				}
 				
 				else {
 					
@@ -363,14 +383,16 @@ public class Seep {
 			
 			else if (table.getBuiltStacks() == 2) {
 				
-				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
-					chosenCard = CardMath.handCard;
-					if (CardMath.areThereMoreCombos(chosenCard)) {	
+				if (CardMath.getStackValSet() > 2) {
+					if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+						chosenCard = CardMath.handCard;
+						if (CardMath.areThereMoreCombos(chosenCard)) {	
+						}
+						if (CardMath.isThereAnotherCard(chosenCard)) {
+						}
+						finishTurn(currentPlayer);
+						return;
 					}
-					if (CardMath.isThereAnotherCard(chosenCard)) {
-					}
-					finishTurn(currentPlayer);
-					return;
 				}
 				
 				else if (CardMath.buildExistingStack(hand[currentPlayer])) {
@@ -379,22 +401,24 @@ public class Seep {
 					return;
 				}
 				
-
+			
 				if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
 					finishTurn(currentPlayer);
 					return;
 				}
 				
 				
-				else if (CardMath.checkTableforStack(hand[currentPlayer])) {
-					chosenCard = CardMath.handCard;
-					if (CardMath.areThereMoreCombos(chosenCard)) {	
+				if (CardMath.getStackValSet() > 2) {
+					if (CardMath.checkTableforStack(hand[currentPlayer])) {
+						chosenCard = CardMath.handCard;
+						if (CardMath.areThereMoreCombos(chosenCard)) {	
+						}
+						if (CardMath.isThereAnotherCard(chosenCard)) {
+						}
+						finishTurn(currentPlayer);
+						return;
+						
 					}
-					if (CardMath.isThereAnotherCard(chosenCard)) {
-					}
-					finishTurn(currentPlayer);
-					return;
-					
 				}
 				
 				else if (CardMath.buildStack(hand[currentPlayer])) {
@@ -414,14 +438,16 @@ public class Seep {
 			
 			else if (table.getBuiltStacks() == 1) {
 
-				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
-					chosenCard = CardMath.handCard;
-					if (CardMath.areThereMoreCombos(chosenCard)) {	
+				if (CardMath.getStackValSet() > 2) {
+					if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+						chosenCard = CardMath.handCard;
+						if (CardMath.areThereMoreCombos(chosenCard)) {	
+						}
+						if (CardMath.isThereAnotherCard(chosenCard)) {
+						}
+						finishTurn(currentPlayer);
+						return;
 					}
-					if (CardMath.isThereAnotherCard(chosenCard)) {
-					}
-					finishTurn(currentPlayer);
-					return;
 				}
 
 				else if (CardMath.buildExistingStack(hand[currentPlayer])) {
@@ -431,7 +457,8 @@ public class Seep {
 				}
 				
 				
-				///TODO TODO
+				///TODO 
+				//TODO
 				//THis method along with checktable for stack shouldnt run if 2 stacks havae same value
 				if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
 					
@@ -446,15 +473,17 @@ public class Seep {
 					return;
 				}
 				
-				else if (CardMath.checkTableforStack(hand[currentPlayer])) {
-					chosenCard = CardMath.handCard;
-					if (CardMath.areThereMoreCombos(chosenCard)) {	
+				else if (CardMath.getStackValSet() > 2) {
+					if (CardMath.checkTableforStack(hand[currentPlayer])) {
+						chosenCard = CardMath.handCard;
+						if (CardMath.areThereMoreCombos(chosenCard)) {	
+						}
+						if (CardMath.isThereAnotherCard(chosenCard)) {
+						}
+						finishTurn(currentPlayer);
+						return;
+						
 					}
-					if (CardMath.isThereAnotherCard(chosenCard)) {
-					}
-					finishTurn(currentPlayer);
-					return;
-					
 				}
 				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
@@ -505,15 +534,17 @@ public class Seep {
 			//if both are being built then normal throwdown card method.
 				if (table.getBuiltStacks() == 2) {
 					
-					if (CardMath.throwOnTop()) {
-						finishTurn(currentPlayer);
-						return;
-					}
 					
 					if (CardMath.breakStack(hand[currentPlayer])) {
 						finishTurn(currentPlayer);
 						return;
 					}
+					
+					if (CardMath.throwOnTop()) {
+						finishTurn(currentPlayer);
+						return;
+					}
+					
 					
 					
 					chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
@@ -532,15 +563,16 @@ public class Seep {
 						return;
 					}
 					
+					if (CardMath.breakStack(hand[currentPlayer])) {
+						finishTurn(currentPlayer);
+						return;
+					}
+					
 					if (CardMath.throwOnTop()) {
 						finishTurn(currentPlayer);
 						return;
 					}
 					
-					if (CardMath.breakStack(hand[currentPlayer])) {
-						finishTurn(currentPlayer);
-						return;
-					}
 					
 					chosenCard = CardMath.throwDownCard1B2S(hand[currentPlayer]);
 					hand[currentPlayer].removeCard(chosenCard);
@@ -626,22 +658,24 @@ public class Seep {
 	}
 	
 	/**
-	 * This method should only be called when committing
+	 *  * This method should only be called when committing
 	 * a SEEP of the cards. THEREFORE should only
 	 * be called within a true CheckForSeep() block
+	 * 
+	 * @param p -- currentPlayer
 	 */
-	public void pickupAllCards() {
+	public void pickupAllCards(int p) {
 		Card card = new Card();
 		
 		for ( int s = 0; s < table.getStackCount(); s++) {
 			for ( int c = 0; c < table.getStackofCards(s).size(); c++) {
 				card = table.getStackofCards(s).get(c);
-				team[currentPlayer%2].pickupCard(card);
+				team[p%2].pickupCard(card);
 			}
 		}
 		table.clear();
-		team[currentPlayer%2].hitAseep();
-		lastPicker = currentPlayer;
+		team[p%2].hitAseep();
+		lastPicker = p;
 	}
 	
 	/**
@@ -673,24 +707,10 @@ public class Seep {
 	 * @param player
 	 */
 	public void updatePanel(int player) {
-		if (player==0) {
-			userPanel = UserPanel.getInstance();
-			userPanel.dealCards(true);
-		}
-		
-		if (player==1) {
-			gameviewPanel.deal(1);;
-		}
-		
-		if (player==2) {
-			gameviewPanel.deal(2);;
-		}
-		
-		if (player==3) {
-			gameviewPanel.deal(3);;
-		}
-		
-		
+		userPanel.dealCards(true);
+		gameviewPanel.deal(1);
+		gameviewPanel.deal(2);
+		gameviewPanel.deal(3);
 	}
 	
 	/**
