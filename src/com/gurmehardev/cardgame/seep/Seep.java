@@ -402,9 +402,11 @@ public class Seep {
 				}
 				
 			
-				if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
-					finishTurn(currentPlayer);
-					return;
+				else if (CardMath.getStackValSet() > 2) {
+					if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
+						finishTurn(currentPlayer);
+						return;
+					}
 				}
 				
 				
@@ -457,18 +459,16 @@ public class Seep {
 				}
 				
 				
-				///TODO 
-				//TODO
-				//THis method along with checktable for stack shouldnt run if 2 stacks havae same value
-				if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
-					
-					finishTurn(currentPlayer);
-					return;
+				else if (CardMath.getStackValSet() > 2) {
+					if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
+						finishTurn(currentPlayer);
+						return;
+					}
 				}
 				
 
 				else if (CardMath.buildStack(hand[currentPlayer])) {
-					JOptionPane.showMessageDialog(null, "Built a new Stack of " + CardMath.handCard.getCardNumber());
+					JOptionPane.showMessageDialog(null, "Built a new Stack of " + CardMath.stack);
 					finishTurn(currentPlayer);
 					return;
 				}

@@ -18,7 +18,7 @@ public class CardMath {
 	static Table table = Table.getInstance();
 	static Card handCard = new Card();
 	static Card tableCard = new Card();
-	private static int stack;
+	static int stack;
 	static int stackSize;
 	private static Set<Integer> stkValues = new HashSet<Integer>(0);	
 	
