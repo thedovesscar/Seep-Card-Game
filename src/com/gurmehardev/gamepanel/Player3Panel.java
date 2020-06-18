@@ -21,7 +21,7 @@ public class Player3Panel extends JPanel{
 	
 	public Player3Panel() {
 		setPreferredSize(new Dimension(265, 500));
-		this.setBackground(new Color(91,99,111));
+		this.setBackground(new Color(200,40,80));
 
 		gameSeep = Seep.getInstance();
 		cardLabel = new ArrayList<JLabel>();

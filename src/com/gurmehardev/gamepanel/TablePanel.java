@@ -25,7 +25,7 @@ public class TablePanel extends JPanel{
 	public TablePanel() {
 		// TODO Auto-generated constructor stub
 		this.setPreferredSize(new Dimension(670, 250));
-		this.setBackground(new Color(111,11,111));
+		this.setBackground(new Color(240,240,240));
 		
 		gameSeep = Seep.getInstance();
 		cardLabel = new ArrayList<JLabel>();

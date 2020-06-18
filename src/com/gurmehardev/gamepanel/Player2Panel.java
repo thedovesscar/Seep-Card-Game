@@ -21,7 +21,7 @@ public class Player2Panel extends JPanel {
 	
 	public Player2Panel() {
 		this.setPreferredSize(new Dimension(670, 250));
-		this.setBackground(new Color(141,11,11));
+		this.setBackground(new Color(40,11,11));
 
 		gameSeep = Seep.getInstance();
 		p2Label = new JLabel("Player 2?");
