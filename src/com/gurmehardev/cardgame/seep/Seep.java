@@ -12,7 +12,7 @@ public class Seep {
 	public static int startingPlayer;
 	public static int currentPlayer;
 	private int lastPicker;
-	private String[] player;
+	public String[] player;
 	public Hand[] hand;
 	public Table table;
 	private Deck deck;
@@ -247,67 +247,38 @@ public class Seep {
 		//checks if player has the card that will result in Seep!
 		if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
 			chosenCard = CardMath.handCard;
-			chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
 			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
 					+ " can Seep with their " + chosenCard + "!");
-			hand[currentPlayer].removeCard(chosenCard);
-			pickupAllCards();
-			pickupCard(chosenCard);
 			finishTurn(currentPlayer);
 			return;
 			
 		}  //END of Check for SEEP Block
 		
 		
-		//TODO check to build! first
-		
-		//WIll look to pick up pile
 		if (table.getStackCount() >= 5 ) {
 		// runs this only if there are more than 2 stacks or risk seep!
 			
-			if (CardMath.checkTableforStack(hand[currentPlayer])) {
-			
-				//TODO the following method doesnt actually run
-				if (!CardMath.causesSeep()) {
-					chosenCard = CardMath.handCard; 
-					chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
-				
-					pickupCard(chosenCard);
-				
-					int cardsLeft = CardMath.stackSize;
-					
-					while (cardsLeft > 0) {
-						System.out.println();
-						CardMath.pickupStack(chosenCard);
-						foundCard = CardMath.tableCard;
-						JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
-						System.out.println(foundCard +" is in the stash");
-						gameviewPanel.redrawTable();
-						cardsLeft--;
-					}
-				
-					System.out.println(chosenCard +" is in the stash");
-					
-					/* These are bring called to pick up all variations
-					 * of the chosen card on the ground which you would have to do
-					 * if picking up a card of value. Returns boolean which idk
-					 * if i need
-					 * 
-					 * also idk if i need 2
-					 * 
-					 */
-					CardMath.areThereMoreCombos(chosenCard);
-					if (CardMath.areThereMoreCombos(chosenCard)) {
-						
-					}
-					
-					hand[currentPlayer].removeCard(chosenCard);
-					finishTurn(currentPlayer);
-					return;
+			if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+				chosenCard = CardMath.handCard;
+				if (CardMath.areThereMoreCombos(chosenCard)) {	
 				}
-		
+				if (CardMath.isThereAnotherCard(chosenCard)) {
+				}
+				finishTurn(currentPlayer);
+				return;
+			}
+			
+			if (CardMath.checkTableforStack(hand[currentPlayer])) {
+				chosenCard = CardMath.handCard;
+				if (CardMath.areThereMoreCombos(chosenCard)) {	
+				}
+				if (CardMath.isThereAnotherCard(chosenCard)) {
+				}
+				finishTurn(currentPlayer);
+				return;
 			}	
 			
+			//Throw Down Card final Option!
 			else {
 				
 				chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
@@ -322,48 +293,26 @@ public class Seep {
 		
 		else if (table.getStackCount() == 4) {
 			
-			if (CardMath.checkTableforStack(hand[currentPlayer])) {
-			
-				//TODO the following method doesnt actually run
-				if (!CardMath.causesSeep()) {
-					chosenCard = CardMath.handCard; 
-					chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
-				
-					pickupCard(chosenCard);
-				
-					int cardsLeft = CardMath.stackSize;
-					
-					while (cardsLeft > 0) {
-						System.out.println();
-						CardMath.pickupStack(chosenCard);
-						foundCard = CardMath.tableCard;
-						JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
-						System.out.println(foundCard +" is in the stash");
-						gameviewPanel.redrawTable();
-						cardsLeft--;
-					}
-				
-					System.out.println(chosenCard +" is in the stash");
-					
-					/* These are bring called to pick up all variations
-					 * of the chosen card on the ground which you would have to do
-					 * if picking up a card of value. Returns boolean which idk
-					 * if i need
-					 * 
-					 * also idk if i need 2
-					 * 
-					 */
-					CardMath.areThereMoreCombos(chosenCard);
-					if (CardMath.areThereMoreCombos(chosenCard)) {
-						
-					}
-					
-					hand[currentPlayer].removeCard(chosenCard);
-					finishTurn(currentPlayer);
-					return;
+			if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
+				chosenCard = CardMath.handCard;
+				if (CardMath.areThereMoreCombos(chosenCard)) {	
 				}
-		
-			}	
+				if (CardMath.isThereAnotherCard(chosenCard)) {
+				}
+				finishTurn(currentPlayer);
+				return;
+			}
+			
+			if (CardMath.checkTableforStack(hand[currentPlayer])) {
+				chosenCard = CardMath.handCard;
+				if (CardMath.areThereMoreCombos(chosenCard)) {	
+				}
+				if (CardMath.isThereAnotherCard(chosenCard)) {
+				}
+				finishTurn(currentPlayer);
+				return;
+				
+			}
 			
 			else {
 				
@@ -382,61 +331,24 @@ public class Seep {
 				
 				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
 					chosenCard = CardMath.handCard;
-					pickupCard(chosenCard);
-					hand[currentPlayer].removeCard(chosenCard);
-					
-					int cardsLeft = CardMath.stackSize;
-					while (cardsLeft > 0) {
-						System.out.println();
-						CardMath.pickupStack(chosenCard);
-						foundCard = CardMath.tableCard;
-						JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
-						System.out.println(foundCard +" is in the stash");
-						gameviewPanel.redrawTable();
-						cardsLeft--;
+					if (CardMath.areThereMoreCombos(chosenCard)) {	
+					}
+					if (CardMath.isThereAnotherCard(chosenCard)) {
 					}
 					finishTurn(currentPlayer);
 					return;
 				}
 				
 				else if (CardMath.checkTableforStack(hand[currentPlayer])) {
-					
-					//TODO the following method doesnt actually run
-					if (!CardMath.causesSeep()) {
-						chosenCard = CardMath.handCard; 
-						chosenCard = CardMath.checkForSpadeVersion(hand[currentPlayer], chosenCard);
-						pickupCard(chosenCard);
-					
-						int cardsLeft = CardMath.stackSize;
-						while (cardsLeft > 0) {
-							System.out.println();
-							CardMath.pickupStack(chosenCard);
-							foundCard = CardMath.tableCard;
-							JOptionPane.showMessageDialog(null, player[currentPlayer] + " picked up " + chosenCard + " and " + foundCard);
-							System.out.println(foundCard +" is in the stash");
-							gameviewPanel.redrawTable();
-							cardsLeft--;
-						}
-					
-						System.out.println(chosenCard +" is in the stash");
-						
-						/* These are bring called to pick up all variations
-						 * of the chosen card on the ground which you would have to do
-						 * if picking up a card of value. Returns boolean which idk
-						 * if i need
-						 * 
-						 * also idk if i need 2
-						 * 
-						 */
-						CardMath.areThereMoreCombos(chosenCard);
-						CardMath.isThereAnotherCard(chosenCard);
-						
-						hand[currentPlayer].removeCard(chosenCard);
-						finishTurn(currentPlayer);
-						return;
+					chosenCard = CardMath.handCard;
+					if (CardMath.areThereMoreCombos(chosenCard)) {	
 					}
-			
-				}	
+					if (CardMath.isThereAnotherCard(chosenCard)) {
+					}
+					finishTurn(currentPlayer);
+					return;
+					
+				}
 				
 				else {
 					
@@ -453,44 +365,97 @@ public class Seep {
 				
 				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
 					chosenCard = CardMath.handCard;
-					pickupCard(chosenCard);
-					hand[currentPlayer].removeCard(chosenCard);
-					CardMath.pickupStack(chosenCard);
+					if (CardMath.areThereMoreCombos(chosenCard)) {	
+					}
+					if (CardMath.isThereAnotherCard(chosenCard)) {
+					}
 					finishTurn(currentPlayer);
 					return;
 				}
 				
-				if (CardMath.buildStack(hand[currentPlayer])) {
+				else if (CardMath.buildExistingStack(hand[currentPlayer])) {
+					JOptionPane.showMessageDialog(null, "Added to an Existing Stack!");
+					finishTurn(currentPlayer);
+					return;
+				}
+				
+
+				if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
+					finishTurn(currentPlayer);
+					return;
+				}
+				
+				
+				else if (CardMath.checkTableforStack(hand[currentPlayer])) {
+					chosenCard = CardMath.handCard;
+					if (CardMath.areThereMoreCombos(chosenCard)) {	
+					}
+					if (CardMath.isThereAnotherCard(chosenCard)) {
+					}
+					finishTurn(currentPlayer);
+					return;
+					
+				}
+				
+				else if (CardMath.buildStack(hand[currentPlayer])) {
 					JOptionPane.showMessageDialog(null, "Built a new Stack!");
 					finishTurn(currentPlayer);
 					return;
 				}
 			
-				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
-				hand[currentPlayer].removeCard(chosenCard);
-				table.addCard(chosenCard);
-				finishTurn(currentPlayer);
-				JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
-				return;
+				else {chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
+					hand[currentPlayer].removeCard(chosenCard);
+					table.addCard(chosenCard);
+					finishTurn(currentPlayer);
+					JOptionPane.showMessageDialog(null, player[currentPlayer] + " threw down " + chosenCard);
+					return;
+				}
 			}
 			
 			else if (table.getBuiltStacks() == 1) {
 
 				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
 					chosenCard = CardMath.handCard;
-					pickupCard(chosenCard);
-					hand[currentPlayer].removeCard(chosenCard);
-					CardMath.pickupStack(chosenCard);
+					if (CardMath.areThereMoreCombos(chosenCard)) {	
+					}
+					if (CardMath.isThereAnotherCard(chosenCard)) {
+					}
+					finishTurn(currentPlayer);
+					return;
+				}
+
+				else if (CardMath.buildExistingStack(hand[currentPlayer])) {
+					JOptionPane.showMessageDialog(null, "Added to an Existing Stack!");
 					finishTurn(currentPlayer);
 					return;
 				}
 				
-				if (CardMath.buildStack(hand[currentPlayer])) {
-					JOptionPane.showMessageDialog(null, "Built a new Stack!");
+				
+				///TODO TODO
+				//THis method along with checktable for stack shouldnt run if 2 stacks havae same value
+				if (CardMath.pickUpSingle(hand[currentPlayer]) ) {
+					
 					finishTurn(currentPlayer);
 					return;
 				}
-			
+				
+
+				else if (CardMath.buildStack(hand[currentPlayer])) {
+					JOptionPane.showMessageDialog(null, "Built a new Stack of " + CardMath.handCard.getCardNumber());
+					finishTurn(currentPlayer);
+					return;
+				}
+				
+				else if (CardMath.checkTableforStack(hand[currentPlayer])) {
+					chosenCard = CardMath.handCard;
+					if (CardMath.areThereMoreCombos(chosenCard)) {	
+					}
+					if (CardMath.isThereAnotherCard(chosenCard)) {
+					}
+					finishTurn(currentPlayer);
+					return;
+					
+				}
 				chosenCard = CardMath.throwDownCard0B(hand[currentPlayer]);
 				hand[currentPlayer].removeCard(chosenCard);
 				table.addCard(chosenCard);
@@ -507,12 +472,9 @@ public class Seep {
 				
 				//will check if Card can be picked up without seep!
 				if (CardMath.hasSpadeToPickUp(hand[currentPlayer])) {
-					chosenCard = CardMath.handCard;
 					
-					if (!CardMath.causesSeep0B(chosenCard.getCardNumber())) {
-						pickupCard(chosenCard);
-						hand[currentPlayer].removeCard(chosenCard);
-						CardMath.pickupStack(chosenCard);
+				if (!CardMath.causesSeep0B(chosenCard.getCardNumber())) {
+						
 						finishTurn(currentPlayer);
 						return;
 					}
@@ -544,16 +506,15 @@ public class Seep {
 				if (table.getBuiltStacks() == 2) {
 					
 					if (CardMath.throwOnTop()) {
-						chosenCard = CardMath.handCard;
-						hand[currentPlayer].removeCard(chosenCard);
-						table.addCard(chosenCard);
 						finishTurn(currentPlayer);
 						return;
 					}
 					
 					if (CardMath.breakStack(hand[currentPlayer])) {
-						
+						finishTurn(currentPlayer);
+						return;
 					}
+					
 					
 					chosenCard = CardMath.throwDownCard(hand[currentPlayer]);
 					hand[currentPlayer].removeCard(chosenCard);						table.addCard(chosenCard);
@@ -565,22 +526,20 @@ public class Seep {
 				if (table.getBuiltStacks() == 1) {
 					//need to figure out which stack is being built and make sure card thrown 
 					//down does not add up to it.
-					if (CardMath.throwOnTop()) {
-						chosenCard = CardMath.handCard;
-						hand[currentPlayer].removeCard(chosenCard);
-						table.addCard(chosenCard);
-						finishTurn(currentPlayer);
-						return;
-					}
-					
 					if (CardMath.buildStack(hand[currentPlayer])) {
 						JOptionPane.showMessageDialog(null, "Built a new Stack!");
 						finishTurn(currentPlayer);
 						return;
 					}
 					
+					if (CardMath.throwOnTop()) {
+						finishTurn(currentPlayer);
+						return;
+					}
+					
 					if (CardMath.breakStack(hand[currentPlayer])) {
-						
+						finishTurn(currentPlayer);
+						return;
 					}
 					
 					chosenCard = CardMath.throwDownCard1B2S(hand[currentPlayer]);

@@ -22,6 +22,7 @@ public class Stash {
 	 */
 	public void clear() {
 		stash.clear();
+		seep = 0;
 	}
 	
 	/**
