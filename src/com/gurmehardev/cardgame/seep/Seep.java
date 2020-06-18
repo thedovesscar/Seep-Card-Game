@@ -133,7 +133,7 @@ public class Seep {
 		if (turns == 0) {
 			firstTurn();
 		}
-		else if (turns >= 47) {
+		else if (turns >= 48) {
 			endGame();
 		}
 		else {
@@ -605,8 +605,11 @@ public class Seep {
 	}
 
 	public void endGame() {
-		System.out.println(team[0].getRealtimeScore() + "  " + team[0].countCards());
-		System.out.println(team[1].getRealtimeScore() + "  " + team[1].countCards());
+		
+		JOptionPane.showMessageDialog(null, "Your team scored " + team[0].getRealtimeScore() 
+				+ " points and picked up " + team[0].countCards() + " cards!");
+		JOptionPane.showMessageDialog(null, "Your team scored " + team[1].getRealtimeScore() 
+				+ " points and picked up " + team[1].countCards() + " cards!");
 		
 		//TODO need to do everything required when ending game. 
 		//pick up remaining cards to last pickeruppper.
