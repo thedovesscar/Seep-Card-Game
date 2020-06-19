@@ -21,7 +21,7 @@ public class Player2Panel extends JPanel {
 	
 	public Player2Panel() {
 		this.setPreferredSize(new Dimension(670, 250));
-		this.setBackground(new Color(40,11,11));
+		this.setBackground(new Color(141,11,11));
 
 		gameSeep = Seep.getInstance();
 		p2Label = new JLabel("Player 2?");
@@ -34,6 +34,11 @@ public class Player2Panel extends JPanel {
 		this.removeAll();
 		cardLabel.clear();
 		
+		JLabel myTurnJLabel = new JLabel("Player Two's Turn!");
+		
+		if (Seep.currentPlayer == 2) {
+			add(myTurnJLabel);
+		}
 		for (int i = 0; i < gameSeep.hand[2].getCardCount(); i++) {
 			cardLabel.add(new JLabel(new ImageIcon(gameSeep.hand[2].getCard(i).getCardImg())));
 			add(cardLabel.get(i));

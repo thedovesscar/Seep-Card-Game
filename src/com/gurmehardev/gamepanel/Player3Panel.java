@@ -21,7 +21,7 @@ public class Player3Panel extends JPanel{
 	
 	public Player3Panel() {
 		setPreferredSize(new Dimension(265, 500));
-		this.setBackground(new Color(200,40,80));
+		this.setBackground(new Color(91,99,111));
 
 		gameSeep = Seep.getInstance();
 		cardLabel = new ArrayList<JLabel>();
@@ -33,7 +33,11 @@ public class Player3Panel extends JPanel{
 	public void dealCards() {
 		this.removeAll();
 		cardLabel.clear();
+		JLabel myTurnJLabel = new JLabel("Player Three's Turn!");
 		
+		if (Seep.currentPlayer == 3) {
+			add(myTurnJLabel);
+		}
 		for (int i = 0; i < gameSeep.hand[3].getCardCount(); i++) {
 			cardLabel.add(new JLabel(new ImageIcon(gameSeep.hand[3].getCard(i).getCardImg())));
 			add(cardLabel.get(i));
