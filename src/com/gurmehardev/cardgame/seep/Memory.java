@@ -12,8 +12,33 @@ package com.gurmehardev.cardgame.seep;
  */
 public class Memory {
 
-	public Memory() {
-		// TODO Auto-generated constructor stub
+	private volatile static Memory instance = null;
+	
+	private Memory() {
+		if (instance != null) {
+			throw new RuntimeException("Use getInstance() method "
+					+ "to create a Memory Instance...");
+		}
+		
+ 	}
+	
+	public Memory getInstance() {
+		if (instance == null) {
+			synchronized (Memory.class) {
+				if (instance == null) {
+					instance = new Memory();
+				}
+			}
+		}
+		return instance;
+	}
+	
+	/**
+	 * This method should be called at the end of every play-through
+	 * to restart the collective memory for the AI players.
+	 */
+	public static void clearMemory() {
+		
 	}
 
 }
