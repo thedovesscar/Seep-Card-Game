@@ -21,7 +21,7 @@ public class Table {
 	private Table() {
 		if (instance != null) {
 			throw new RuntimeException("Use getInstance() method "
-					+ " to create SingletonExample instance");
+					+ "to create a Table instance");
 		}
 		
 		
@@ -276,6 +276,18 @@ public class Table {
 	public Stack getStack(int i) {
 		return stack.get(i);
 	}
+	
+	public Stack getLargestStack() {
+		int i = 0;
+		Stack s = stack.get(0);
+		for (; i < stack.size(); i++ ) {
+			if (s.getStackValue() < stack.get(i).getStackValue()) {
+				s = stack.get(i);
+			}
+		}
+		return s;
+	}
+	
 	public int getStackValue(int i) {
 		return stack.get(i).getStackValue();
 	}

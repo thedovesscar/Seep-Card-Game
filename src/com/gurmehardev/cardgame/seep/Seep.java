@@ -170,17 +170,6 @@ public class Seep {
 			
 		}
 		
-		
-		//checks if player has the card that will result in Seep!
-		if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
-			chosenCard = CardMath.handCard;
-			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
-					+ " can Seep with their " + chosenCard + "!");
-			finishTurn(currentPlayer);
-			return;
-			
-		}
-		
 		//checking to see if Card can be built
 		if (CardMath.canAskingCardBeBuilt(chosenCard, hand[startingPlayer]) ) {
 			buildHandCard = CardMath.handCard;
@@ -259,18 +248,20 @@ public class Seep {
 		Card chosenCard = new Card();
 		Card foundCard = new Card();
 		
-		int seepCard = CardMath.checkForSeep();
-		
-		//checks if player has the card that will result in Seep!
-		if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
-			chosenCard = CardMath.handCard;
-			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
-					+ " can Seep with their " + chosenCard + "!");
-			finishTurn(currentPlayer);
-			return;
+		if (table.getStackCount() != 0) {
+			int seepCard = CardMath.checkForSeep();
 			
-		}  //END of Check for SEEP Block
-		
+			//checks if player has the card that will result in Seep!
+			if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
+				chosenCard = CardMath.handCard;
+				JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
+						+ " can Seep with their " + chosenCard + "!");
+				finishTurn(currentPlayer);
+				return;
+				
+			}  //END of Check for SEEP Block
+			
+		}
 		
 		if (table.getStackCount() >= 5 ) {
 		// runs this only if there are more than 2 stacks or risk seep!
@@ -294,6 +285,15 @@ public class Seep {
 				finishTurn(currentPlayer);
 				return;
 			}	
+			
+			//TODO
+			/*
+			 * Currently players do not pick up combos of their chosen card
+			 * if they don't already exist specifically.
+			 * such as player did not pick up 9 and 3 when Q was in hand.
+			 * Need to add separate if block for picking up only combos.
+			 * 
+			 */
 			
 			//Throw Down Card final Option!
 			else {
@@ -424,7 +424,7 @@ public class Seep {
 				}
 				
 				else if (CardMath.buildStack(hand[currentPlayer])) {
-					JOptionPane.showMessageDialog(null, "Built a new Stack!");
+					JOptionPane.showMessageDialog(null, "Built a new stack of " + CardMath.stack);
 					finishTurn(currentPlayer);
 					return;
 				}
