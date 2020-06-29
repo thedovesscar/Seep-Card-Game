@@ -1,5 +1,9 @@
 package com.gurmehardev.cardgame.seep;
 
+import java.util.ArrayList;
+
+import com.gurmehardev.cardgame.Card;
+
 /**
  * TODO
  * This class will/should contain a static hold of the gameplay
@@ -13,6 +17,12 @@ package com.gurmehardev.cardgame.seep;
 public class Memory {
 
 	private volatile static Memory instance = null;
+	
+	private ArrayList<Stack> making;
+	private ArrayList<Card> makeables;
+	private ArrayList<Card> made;
+	private ArrayList<Card> known;
+	private ArrayList<Card> out;
 	
 	private Memory() {
 		if (instance != null) {
@@ -33,6 +43,9 @@ public class Memory {
 		return instance;
 	}
 	
+	public static void addingStack() {
+		
+	}
 	/**
 	 * This method should be called at the end of every play-through
 	 * to restart the collective memory for the AI players.

@@ -11,7 +11,7 @@ package com.gurmehardev.cardgame.seep;
  * @author Gurmehar
  *
  */
-public class PersonalMemory extends Memory {
+public class PersonalMemory {
 
 	public PersonalMemory() {
 		// TODO Auto-generated constructor stub
