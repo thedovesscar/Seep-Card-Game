@@ -245,6 +245,11 @@ public class Seep {
 	 */
 	public void playTurn() {
 		
+		for (int i = 0; i < table.getStackCount(); i++) {
+			System.out.println("Stack " + table.getStack(i).getStackValue() 
+					+ " built by " + table.getStack(i).builtBy);
+		}
+		
 		Card chosenCard = new Card();
 		Card foundCard = new Card();
 		

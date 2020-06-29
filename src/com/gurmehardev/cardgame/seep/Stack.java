@@ -12,6 +12,7 @@ public class Stack {
 	boolean facePile;
 	private int stackValue;
 	private ArrayList<Card> cardStack;
+	int builtBy;
 	
 	/**
 	 * This constructor should only be called when creating a new Stack 
@@ -33,6 +34,8 @@ public class Stack {
 			facePile = true;
 		}
 		else facePile = false;
+		
+		builtBy = -1;
 	}
 
 	
@@ -43,7 +46,7 @@ public class Stack {
 	 * @param card
 	 * @param stackVal
 	 */
-	public Stack(Card card, int stackVal) {
+	public Stack(Card card, int stackVal, int builtBy) {
 		cardStack = new ArrayList<Card>();
 		cardStack.add(card);
 		stackValue = stackVal;
@@ -54,6 +57,11 @@ public class Stack {
 			facePile = true;
 		}
 		else facePile = false;
+		this.builtBy = builtBy;
+		
+		if (this.cardStack.size() == 1) {
+			builtBy = -1;
+		}
 	}
 	
 	public void doubleStack(boolean doubling) {
@@ -87,13 +95,6 @@ public class Stack {
 		return cardStack.size();
 	}
 
-	/**
-	 * 
-	 * @param cardStack Setter I dont think i need this really
-	 */
-	public void setCardStack(ArrayList<Card> cardStack) {
-		this.cardStack = cardStack;
-	}
 	
 	/**
 	 * this method will add card to the stack
@@ -104,6 +105,13 @@ public class Stack {
 	 */
 	public void addCard(Card card) {
 		cardStack.add(card);
+		if (builtBy == -1) {
+			builtBy = Seep.currentPlayer;
+		}
+		if (this.cardStack.size() == 1) {
+			builtBy = -1;
+		}
+	
 	}
 	
 	/**
@@ -152,5 +160,18 @@ public class Stack {
 			return true;
 		}
 		return false;
+	}
+	
+	public int wasBuiltBy() {
+		return builtBy;
+	}
+	
+	public int getStackPoints() {
+		int points = 0;
+		for (int i = 0; i < cardStack.size(); i++)
+		{		
+			points += cardStack.get(i).getCardPoints();
+		}
+		return points;
 	}
 }

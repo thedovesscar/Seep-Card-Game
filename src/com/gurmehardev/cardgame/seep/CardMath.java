@@ -38,28 +38,18 @@ public class CardMath {
 	static int checkForSeep() {
 		int stacks = table.getStackCount();
 		int stacksBeingBuilt = 0;
+		int totalStkVal = 0;
 		
 		for ( int s = 0; s < stacks; s++) {
 			if  ( table.getStack(s).isBeingBuilt() )
 				stacksBeingBuilt++;
 		}
-		
-		if (stacksBeingBuilt > 1) {
-			return 0;
-		}
-		
-		
-		int totalStkVal = 0;
 		for ( int s = 0; s < stacks; s++) {
 			totalStkVal += table.getStack(s).getStackValue();
 		}
 		
-		if (stacksBeingBuilt == 0) {
-			if (totalStkVal % table.getLargestStack().getStackValue() 
-					== 0) {
-				return table.getLargestStack().getStackValue();
-			}
-		return totalStkVal;
+		if (stacksBeingBuilt >= 2) {
+			return 0;
 		}
 		
 		if (stacksBeingBuilt == 1) {
@@ -71,10 +61,25 @@ public class CardMath {
 				}
 			}
 			
+			// This if-statement makes sure that the 
+			// built stack is the largest denominator
+			if (table.getLargestStack().getStackValue() != stkBeingBuilt) {
+				return 0;
+			}
+			
 			if (totalStkVal%stkBeingBuilt == 0) {
 				return stkBeingBuilt;
 			}
 		}
+		
+		if (stacksBeingBuilt == 0) {
+			if (totalStkVal % table.getLargestStack().getStackValue() 
+					== 0) {
+				return table.getLargestStack().getStackValue();
+			}
+		return totalStkVal;
+		}
+
 		return 0;
 	}
 	

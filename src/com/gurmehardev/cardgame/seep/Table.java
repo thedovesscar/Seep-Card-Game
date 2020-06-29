@@ -105,7 +105,7 @@ public class Table {
 				return;
 			}
 		}
-		stack.add(new Stack(card, stackVal));
+		stack.add(new Stack(card, stackVal, Seep.currentPlayer));
 		System.out.println("A stack of " + stackVal + " has been created. addCard(Card, int)");
 		sortByStack();
 	}
@@ -132,7 +132,7 @@ public class Table {
 			} 
 		}  //
 		if (!stackExists) {
-			stack.add(new Stack(card));
+			stack.add(new Stack(card, card.getCardNumber(), Seep.currentPlayer));
 			System.out.println("A stack of " + cardNum + " has been created. addCardtoStack(Card)");
 		}
 		
@@ -286,6 +286,23 @@ public class Table {
 			}
 		}
 		return s;
+	}
+	
+	/**
+	 * This method returns the stack points for 
+	 * a certain stack...
+	 * 
+	 * TODO
+	 * I think maybe this should be scrapped for a method
+	 * that handles all stacks and their respective points??
+	 * 
+	 * ORRRR..... that can be handled in the class that calls this method
+	 * 
+	 * @param stack
+	 * @return
+	 */
+	public int getStackPoints(int stack) {
+		return Table.stack.get(stack).getStackPoints();
 	}
 	
 	public int getStackValue(int i) {
