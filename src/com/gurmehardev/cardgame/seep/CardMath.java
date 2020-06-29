@@ -55,7 +55,11 @@ public class CardMath {
 		}
 		
 		if (stacksBeingBuilt == 0) {
-			return totalStkVal;
+			if (totalStkVal % table.getLargestStack().getStackValue() 
+					== 0) {
+				return table.getLargestStack().getStackValue();
+			}
+		return totalStkVal;
 		}
 		
 		if (stacksBeingBuilt == 1) {
