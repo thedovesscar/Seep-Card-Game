@@ -39,7 +39,12 @@ public class TablePanel extends JPanel{
 		int l = 0;
 		int stacks = gameSeep.table.getStackCount();
 		for (int i = 0; i < stacks; i++) {
-			stackLabel.add(new JLabel("Stack of " + gameSeep.table.getStackValue(i)));
+			if (gameSeep.table.getStack(i).isBeingBuilt()) {
+				stackLabel.add(new JLabel("Stack: " + gameSeep.table.getStackValue(i)));
+			} else {
+				stackLabel.add(new JLabel("Card: " + gameSeep.table.getStackValue(i)));
+			}
+			
 			add(stackLabel.get(i));
 			for (int j = 0; j < gameSeep.table.getStack(i).getCardStack().size(); j++) {
 				cardLabel.add(new JLabel(new ImageIcon(gameSeep.table.getStackofCards(i).get(j).getCardImg())));
