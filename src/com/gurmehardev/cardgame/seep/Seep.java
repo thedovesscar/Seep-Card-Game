@@ -247,7 +247,7 @@ public class Seep {
 		
 		for (int i = 0; i < table.getStackCount(); i++) {
 			System.out.println("Stack " + table.getStack(i).getStackValue() 
-					+ " built by " + table.getStack(i).builtBy);
+					+ " built by " + table.getStack(i).wasBuiltBy());
 		}
 		
 		Card chosenCard = new Card();

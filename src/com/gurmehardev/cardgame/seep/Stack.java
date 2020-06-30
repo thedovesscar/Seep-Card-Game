@@ -12,7 +12,7 @@ public class Stack {
 	boolean facePile;
 	private int stackValue;
 	private ArrayList<Card> cardStack;
-	int builtBy;
+	private int builtBy;
 	
 	/**
 	 * This constructor should only be called when creating a new Stack 
@@ -163,6 +163,9 @@ public class Stack {
 	}
 	
 	public int wasBuiltBy() {
+		if (cardStack.size() == 1) {
+			return -1;
+		}
 		return builtBy;
 	}
 	
