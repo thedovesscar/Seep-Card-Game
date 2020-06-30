@@ -133,7 +133,7 @@ public class Seep {
 		if (turns == 0) {
 			firstTurn();
 		}
-		else if (turns >= 47) {
+		else if (turns == 48) {
 			endGame();
 		}
 		else {
