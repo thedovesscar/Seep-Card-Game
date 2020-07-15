@@ -1,5 +1,10 @@
 package com.gurmehardev.cardgame.seep;
 
+import java.util.ArrayList;
+
+import com.gurmehardev.cardgame.Card;
+import com.gurmehardev.cardgame.Hand;
+
 /**
  * TODO 
  * This class should/will contain all of the static
@@ -13,8 +18,25 @@ package com.gurmehardev.cardgame.seep;
  */
 public class PersonalMemory {
 
-	public PersonalMemory() {
-		// TODO Auto-generated constructor stub
+	ArrayList<Card> myCards = new ArrayList<Card>();
+	
+	public PersonalMemory(Hand hand) {
+		for (int i = 0; i < hand.getCardCount(); i++) {
+			myCards.add(hand.getCard(i));
+		}
 	}
 
-}
+	/**
+	 * Once a card is thrown by a player it enters 
+	 * the collective memory and needs to be removed from personal memory
+	 * 
+	 * @param card
+	 */
+	public void playingCard(Card card) {
+		if (myCards.remove(card)) {
+			Memory.addCardtoMemory(card);
+		}
+		
+	} //end of playingCard()
+	
+} //end of Personal Memory
