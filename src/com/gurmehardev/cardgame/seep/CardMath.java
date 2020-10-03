@@ -445,9 +445,13 @@ public class CardMath {
 						
 						gameSeep.pickupCard(handCard);
 						gameSeep.hand[Seep.currentPlayer].removeCard(handCard);
-						JOptionPane.showMessageDialog(null, gameSeep.player[Seep.currentPlayer] 
-								+ " picked up the stack of " + table.getStackValue(tS) + " with their " + handCard);
-
+						if (stackSize == 1) {
+							JOptionPane.showMessageDialog(null, gameSeep.player[Seep.currentPlayer] 
+									+ " picked up the card " + table.getStackValue(tS) + " with their " + handCard);
+						} else {
+							JOptionPane.showMessageDialog(null, gameSeep.player[Seep.currentPlayer] 
+									+ " picked up the stack of " + table.getStackValue(tS) + " with their " + handCard);
+						}
 						pickupStack(handCard);
 						return true;
 						
@@ -809,8 +813,13 @@ public class CardMath {
 						stack = s;
 						stackSize = table.getStackofCards(s).size();
 						gameSeep.hand[Seep.currentPlayer].removeCard(handCard);
-						JOptionPane.showMessageDialog(null, gameSeep.player[Seep.currentPlayer] 
-								+ " picked up the stack of " + table.getStackValue(s) + " with their " + handCard);
+						if (stackSize == 1) {
+							JOptionPane.showMessageDialog(null, gameSeep.player[Seep.currentPlayer] 
+									+ " picked up the card " + table.getStackValue(s) + " with their " + handCard);
+						} else {
+							JOptionPane.showMessageDialog(null, gameSeep.player[Seep.currentPlayer] 
+									+ " picked up the stack of " + table.getStackValue(s) + " with their " + handCard);
+						}
 						pickupStack(handCard);
 						return true;
 					}

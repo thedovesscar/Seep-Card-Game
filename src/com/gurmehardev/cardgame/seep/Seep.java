@@ -161,7 +161,7 @@ public class Seep {
 		int seepCard = CardMath.checkForSeep();
 		if (chosenNumber == seepCard) {
 			JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
-						+ " can Seep with their " + chosenCard + "!");
+						+ " can SEEP with their " + chosenCard + "!");
 			pickupCard(chosenCard);
 			pickupAllCards(currentPlayer);
 			finishTurn(currentPlayer);
@@ -244,11 +244,19 @@ public class Seep {
 	 * everything up on its own.
 	 */
 	public void playTurn() {
-		
+		System.out.println();
 		for (int i = 0; i < table.getStackCount(); i++) {
-			System.out.println("Stack " + table.getStack(i).getStackValue() 
-					+ " built by " + table.getStack(i).wasBuiltBy());
+			
+			if (table.getStack(i).wasBuiltBy() == -1) {
+				System.out.println("The card " + table.getStack(i).getStackValue() + " of " +
+						table.getStack(i).getCardStack().get(0).getCardSuitString() + " is a stand alone!");
+			}
+			else {
+				System.out.println("Stack " + table.getStack(i).getStackValue() 
+						+ " built by player " + table.getStack(i).wasBuiltBy());
+			}
 		}
+		System.out.println("These messsages brought to you by : Seep.playturn() \n");
 		
 		Card chosenCard = new Card();
 		Card foundCard = new Card();
@@ -260,7 +268,7 @@ public class Seep {
 			if (CardMath.hasCardforSeep(seepCard, hand[currentPlayer])) {
 				chosenCard = CardMath.handCard;
 				JOptionPane.showMessageDialog(null, "WOW! " + player[currentPlayer] 
-						+ " can Seep with their " + chosenCard + "!");
+						+ " can SEEP with their " + chosenCard + "!");
 				finishTurn(currentPlayer);
 				return;
 				
@@ -401,7 +409,7 @@ public class Seep {
 				}
 				
 				else if (CardMath.buildExistingStack(hand[currentPlayer])) {
-					JOptionPane.showMessageDialog(null, "Added to an Existing Stack!");
+					JOptionPane.showMessageDialog(null, "Added to an existing stack!");
 					finishTurn(currentPlayer);
 					return;
 				}
@@ -458,7 +466,7 @@ public class Seep {
 				}
 
 				else if (CardMath.buildExistingStack(hand[currentPlayer])) {
-					JOptionPane.showMessageDialog(null, "Added to an Existing Stack!");
+					JOptionPane.showMessageDialog(null, "Added to an existing stack!");
 					finishTurn(currentPlayer);
 					return;
 				}
@@ -473,7 +481,7 @@ public class Seep {
 				
 
 				else if (CardMath.buildStack(hand[currentPlayer])) {
-					JOptionPane.showMessageDialog(null, "Built a new Stack of " + CardMath.stack);
+					JOptionPane.showMessageDialog(null, "Built a new stack of " + CardMath.stack);
 					finishTurn(currentPlayer);
 					return;
 				}
@@ -515,7 +523,7 @@ public class Seep {
  				}
 				
 				if (CardMath.buildStack(hand[currentPlayer])) {
-					JOptionPane.showMessageDialog(null, "Built a new Stack!");
+					JOptionPane.showMessageDialog(null, "Built a new stack!");
 					finishTurn(currentPlayer);
 					return;
 				}
@@ -563,7 +571,7 @@ public class Seep {
 					//need to figure out which stack is being built and make sure card thrown 
 					//down does not add up to it.
 					if (CardMath.buildStack(hand[currentPlayer])) {
-						JOptionPane.showMessageDialog(null, "Built a new Stack!");
+						JOptionPane.showMessageDialog(null, "Built a new stack!");
 						finishTurn(currentPlayer);
 						return;
 					}
@@ -590,7 +598,7 @@ public class Seep {
 				if (table.getBuiltStacks() == 0) {
 					
 					if (CardMath.buildStack(hand[currentPlayer])) {
-						JOptionPane.showMessageDialog(null, "Built a new Stack!");
+						JOptionPane.showMessageDialog(null, "Built a new stack!");
 						finishTurn(currentPlayer);
 						return;
 					}
